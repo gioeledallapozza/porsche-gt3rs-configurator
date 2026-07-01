@@ -1,8 +1,16 @@
 name: CI Pipeline
 
 on:
-  pull_request:
+  push:
     branches: [ main ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch: #Manual test
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   build-and-test:
