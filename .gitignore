@@ -22,3 +22,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Raw 3D Assets and Archives
+*.blend
+*.blend1
+*.fbx
+*.obj
+*.mtl
+*.max
+*.c4d
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# Env files
+.env
+.env.local
+.env.*.local
