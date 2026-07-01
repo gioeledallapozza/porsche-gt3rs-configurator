@@ -4,15 +4,22 @@ import { vehicleRegistry } from '../../config/vehicles';
 import { useConfiguratorStore } from '../../store/configuratorStore';
 
 const Configurator: React.FC = () => {
-  const { vehicleId } = useParams<{ vehicleId: string }>();
+  //FIRST TO DO WHEN COMPONENT MOUNT 
+  const { vehicleId } = useParams<{ vehicleId: string }>(); //Get the vehicleID from the URL params. In the router we specified :vehicleID as a dynamic segment
 
   const config = vehicleId ? vehicleRegistry[vehicleId] : null;
   
   //CURRENT STATE
   const currentColor = useConfiguratorStore((state) => state.carColor);
+  // currentWheel
+  // currentMaterial (for specific parts of the car)
+  // Etc...
 
   //ACTIONS
   const setCarColor = useConfiguratorStore((state) => state.setCarColor);
+  //setWheels
+  //Set material to specific part of the car
+  //Etc...
 
   if (!config) {
     return <div>Vehicle not found in the registry.</div>;

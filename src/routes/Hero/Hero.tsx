@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 // TO IMPORT CSS file
 
 const Hero: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook to integrate browser history (API) and the router navigation.
 
   const handleConfigureClick = () => {
-    //Navigate to the configurator for the GT3 RS model. 
-    // This is a hardcoded example; in a real application, you might want to dynamically determine the vehicleId based on user selection or other logic.
+    // Navigate to the configurator for the GT3 RS model. 
+    // This is a hardcoded example; in production you might want to dynamically determine the vehicleId based on user selection or other logic.
     navigate('/configurator/gt3rs');
   };
 
