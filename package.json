@@ -16,7 +16,9 @@
     "@vercel/analytics": "^2.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "three": "^0.185.0"
+    "react-router-dom": "^7.18.1",
+    "three": "^0.185.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
