@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "compress": "node scripts/compress-textures.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -16,7 +17,9 @@
     "@vercel/analytics": "^2.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "three": "^0.185.0"
+    "react-router-dom": "^7.18.1",
+    "three": "^0.185.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -23,7 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Raw 3D Assets and Archives
+# Raw 3D Assets and Archive
+_raw_assets/
 *.blend
 *.blend1
 *.fbx

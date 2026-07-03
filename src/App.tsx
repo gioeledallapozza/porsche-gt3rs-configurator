@@ -1,38 +1,36 @@
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { Perf } from 'r3f-perf';
-import { useControls } from 'leva';
+import React, { Suspense } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Hero from './routes/Hero/Hero';
 
-function ConfiguratorScene() {
-  // Leva UI per modificare i parametri del materiale in tempo reale
-  const { boxColor, lightIntensity } = useControls({
-    boxColor: '#ff0000',
-    lightIntensity: { value: 1.5, min: 0, max: 5, step: 0.1 },
-  });
+// Separate in a different Chunk the configurator module to optimize the initial load time
+const ConfiguratorChunk = React.lazy(() => import('./routes/Configurator/Configurator')); //Type Inference React.LazyExoticComponent<React.FC>
 
-  return (
-    <>
-      <Perf position="top-left" />
-      
-      <OrbitControls makeDefault />
-      
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={lightIntensity} castShadow />
+// Loader UI for transition to the configurator route
+const SceneLoader: React.FC = () => (
+  <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+    <p>Initializing virtual environment...</p>
+  </div>
+);
 
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[2, 2, 2]} />
-        <meshStandardMaterial color={boxColor} roughness={0.2} metalness={0.8} />
-      </mesh>
-    </>
-  );
-}
+// Data router API to map the URL to the corresponding React components.
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Hero />,
+  },
+  {
+    path: '/configurator/:vehicleId',
+    element: (
+      // Suspense is used to handle asynchronous (lazy) loading of the ConfiguratorChunk.
+      <Suspense fallback={<SceneLoader />}> 
+        <ConfiguratorChunk />
+      </Suspense>
+    ),
+  },
+]);
 
-export default function App() {
-  return (
-    <div style={{ width: '100vw', height: '100vh', backgroundColor: '#1a1a1a' }}>
-      <Canvas shadows camera={{ position: [5, 5, 5], fov: 45 }}>
-        <ConfiguratorScene />
-      </Canvas>
-    </div>
-  );
-}
+const App: React.FC = () => {
+  return <RouterProvider router={router} />; //The app contains the router provider setted up with our routes configuration.
+};
+
+export default App;
