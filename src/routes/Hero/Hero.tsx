@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// TO IMPORT CSS file
+import styles from './Hero.module.css';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate(); // Hook to integrate browser history (API) and the router navigation.
@@ -12,29 +12,40 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: '4rem', fontFamily: 'sans-serif', textAlign: 'center' }}>
-      <h1>Porsche 911 GT3 RS</h1>
-      <p>Aerodynamics meets surgical precision.</p>
-      
-      {/* 
-      DOM pure, optimized for TTI.
-      */}
-      <button 
-        onClick={handleConfigureClick}
-        style={{
-          marginTop: '2rem',
-          padding: '1rem 2rem',
-          fontSize: '1.2rem',
-          backgroundColor: '#000',
-          color: '#fff',
-          border: 'none',
-          cursor: 'pointer',
-          textTransform: 'uppercase',
-          letterSpacing: '1px'
-        }}
+    <div className={styles.heroContainer}>
+      <video 
+        className={styles.videoBackground} 
+        autoPlay 
+        loop 
+        muted 
+        playsInline
       >
-        Configure
-      </button>
+        <source src="/videos/hero-bg.webm" type="video/webm" />
+      </video>
+
+      <div className={styles.gradientOverlay} />
+
+      <div className={styles.content}>
+          <h1 className={styles.title}>Porsche 911 GT3 RS</h1>
+          <p className={styles.subtitle}>Aerodynamics meets surgical precision.</p>
+
+        <button 
+            onClick={handleConfigureClick}
+            className={styles.ctaButton}
+          >
+            Configure
+          </button>
+      </div>
+
+      {/* Author of background video */}
+      <a 
+        href="https://www.youtube.com/@lennartraw" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className={styles.attribution}
+      >
+        Cinematics by LR Media
+      </a>
     </div>
   );
 };

@@ -4,12 +4,11 @@ import { Canvas } from '@react-three/fiber';
 import { Perf } from 'r3f-perf';
 import { vehicleRegistry } from '../../config/vehicles';
 import { useConfiguratorStore } from '../../store/configuratorStore';
-import MemoryTestBox from '../../scene/MemoryTestBox';
+import MemoryTestBox from '../../scene/MemoryTestBox'; //TO REMOVE
+import styles from './Configurator.module.css';
 
 const Configurator: React.FC = () => {
-  //FIRST TO DO WHEN COMPONENT MOUNT 
   const { vehicleId } = useParams<{ vehicleId: string }>(); //Get the vehicleID from the URL params. In the router we specified :vehicleID as a dynamic segment
-
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
   
   //CURRENT STATE
@@ -25,13 +24,14 @@ const Configurator: React.FC = () => {
   //Etc...
 
   if (!config) {
-    return <div>Vehicle not found in the registry.</div>;
+    return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', width: '100vw' }}>
+    <div className={styles.configuratorContainer}>
+
       {/* Canvas WebGL 3D Scene */}
-      <div style={{ flex: 1, position: 'relative', height: '100%', overflow: 'hidden' }}>
+      <div className={styles.canvasWrapper}>
         <Canvas
           gl={{ 
             antialias: true, 
@@ -52,23 +52,18 @@ const Configurator: React.FC = () => {
         </Canvas>
       </div>
 
-      {/* Pannello UI del Configuratore */}
-      <aside style={{ width: '300px', padding: '2rem', backgroundColor: '#f5f5f5', borderLeft: '1px solid #ddd' }}>
-        <h3>Paint Options</h3>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '1rem' }}>
+      {/* Configurator UI pannel */}
+      <aside className={styles.uiPanel}>
+        <h3 className={styles.panelTitle}>Exterior Paint</h3>
+        <div className={styles.colorPickerGrid}>
           {config.paintOptions.map((paint) => (
             <button
               key={paint.hex}
               onClick={() => setCarColor(paint.hex)}
               title={paint.name}
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                backgroundColor: paint.hex,
-                border: currentColor === paint.hex ? '3px solid #000' : '2px solid transparent',
-                cursor: 'pointer'
-              }}
+              className={`${styles.colorButton} ${currentColor === paint.hex ? styles.active : ''}`}
+              style={{ backgroundColor: paint.hex }}
+              aria-label={`Select ${paint.name} paint`}
             />
           ))}
         </div>
