@@ -3,17 +3,14 @@ import { useConfiguratorStore } from '../../store/configuratorStore';
 
 // 3D Asset Orchestrator
 // Load the component only when it's needed with React.lazy
-const PorscheGT3RS = React.lazy(() => import('./PorscheGT3RS'));
+const PorscheModel = React.lazy(() => import('./PorscheModel'));
 
 const Vehicle: React.FC = () => {
-
-  //Use only attributes of the store needed
   const carColor = useConfiguratorStore((state) => state.carColor);
-  // wheel...
 
   return (
-    <group>
-      <PorscheGT3RS carColor={carColor} />
+    <group position={[0, -0.5, 0]}>
+      <PorscheModel exteriorColor={carColor} />
     </group>
   );
 };
