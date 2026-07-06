@@ -45,7 +45,7 @@ const Configurator: React.FC = () => {
             preserveDrawingBuffer: false,
             powerPreference: "high-performance"
           }}
-          camera={{ position: [5, 2.5, 6], fov: 45 }}
+          camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
         >
           {/* Only for development purposes */}
           <Perf position="top-left" minimal={false} /> 
@@ -71,10 +71,12 @@ const Configurator: React.FC = () => {
           <OrbitControls 
             makeDefault 
             enablePan={false} 
-            enableDamping={false}
+            enableDamping={true}
             minDistance={3} 
             maxDistance={10} 
             maxPolarAngle={Math.PI / 2 - 0.05} // Always over the ground
+            rotateSpeed={0.4}
+            zoomSpeed={0.6}
           />
         </Canvas>
       </div>

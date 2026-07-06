@@ -11,3 +11,10 @@ High-performance real-time 3D configurator for the Porsche 911 GT3 RS. Built wit
 - **Runtime UI Debugging:** Leva
 - **CI/CD & Hosting:** GitHub Actions + Vercel
 
+
+## Credits & Acknowledgements
+
+This project was made possible thanks to the work of these amazing creators:
+
+- **3D Model:** [Porsche 911 GT3 RS](https://sketchfab.com/BlackSnow02) by BlackSnow02 on Sketchfab.
+- **Media:** [LR media](https://www.youtube.com/@lennartraw) on YouTube.
