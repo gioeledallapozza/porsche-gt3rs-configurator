@@ -1,20 +1,69 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Perf } from 'r3f-perf';
 import { Canvas } from '@react-three/fiber';
-import { Html, OrbitControls } from '@react-three/drei';
-import { vehicleRegistry } from '../../config/vehicles';
+import { Environment, Html, OrbitControls } from '@react-three/drei';
+import { vehicleRegistry } from '@/config/vehicles';
+import Vehicle from '@/scene/vehicle/Vehicle';
 import styles from './Configurator.module.css';
-import Vehicle from '../../scene/vehicle/Vehicle';
-import ExteriorColorPicker from './components/ExteriorColorPicker';
+
+//Smart Sections
+import ExteriorColorSection from './components/sections/ExteriorColorSection.tsx';
+import AeroPackageSection from './components/sections/AeroPackageSection.tsx';
 
 const Configurator: React.FC = () => {
 
   const { vehicleId } = useParams<{ vehicleId: string }>(); //Get the vehicleID from the URL params. In the router we specified :vehicleID as a dynamic segment
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
 
+  const [contextLost, setContextLost] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const handleWebGlContextLost = useCallback(() => {
+    console.warn('WebGL context was lost, attempting recovery...');
+    setContextLost(true);
+  }, []);
+
+  const handleWebGlContextRestored = useCallback(() => {
+    console.log('WebGL context restored');
+    setContextLost(false);
+  }, []);
+
   if (!config) {
     return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
+  }
+
+  if (contextLost) {
+    return (
+      <div className={`${styles.configuratorContainer} animate-entry`}>
+        <div className={styles.canvasWrapper}>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            color: '#fff',
+            gap: '1rem'
+          }}>
+            <div>WebGL Context Lost - Reloading...</div>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                padding: '0.5rem 1rem',
+                background: '#ff6b6b',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Reload Page
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -36,9 +85,16 @@ const Configurator: React.FC = () => {
           <Perf position="top-left" minimal={false} /> 
 
           {/* TO SUBSTITUTE WITH HIGH QUALITY HDR MAP */}
+          {/* <Suspense>
+            <Environment preset="studio" environmentIntensity={1.0}/>
+          </Suspense> */}
           <ambientLight intensity={1.5} /> 
           <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
           <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#8888ff" />
+
+          {/* <Environment preset="studio" />  */}
+          {/* Aggiunge realismo a terra senza pesanti luci dinamiche */}
+          {/* <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.5} far={5} /> */}
 
           <Suspense fallback={
             <Html center>
@@ -65,11 +121,15 @@ const Configurator: React.FC = () => {
         </Canvas>
       </div>
 
-      {/* Configurator UI pannel */}
-     <aside className={styles.uiPanel}>
-        <ExteriorColorPicker paintOptions={config.paintOptions} />
+    {/* Configurator UI pannel */}
+    <aside className={styles.uiPanel}>
+        {/* Isolated Subscriptions: Zero impact on Canvas performance */}
+        <ExteriorColorSection options={config.paintOptions} />
+        
+        {config.aeroOptions && (
+          <AeroPackageSection options={config.aeroOptions} />
+        )}
 
-        {/* IN FUTURE one component for each possible sections */}
         <div className={styles.accordionSection}>
           <h3 className={styles.panelTitle} style={{ opacity: 0.5 }}>
             Wheels and Rims <span>▼</span>

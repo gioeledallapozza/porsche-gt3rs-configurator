@@ -195,7 +195,7 @@ type GLTFResult = GLTF & {
     Material_Radiator_Static: THREE.MeshStandardMaterial
     Material_Caliper_Dynamic: THREE.MeshStandardMaterial
     Material_Interior_Stitching_Dynamic: THREE.MeshStandardMaterial
-    Material_Glass_Static: THREE.MeshStandardMaterial
+    Material_Glass_Static: THREE.MeshPhysicalMaterial
     ['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']: THREE.MeshStandardMaterial
     ['TwiXeR_992_plastic_mgl_060606FF.002']: THREE.MeshStandardMaterial
     ['TwiXeR_992_speakers.002']: THREE.MeshStandardMaterial
@@ -205,12 +205,12 @@ type GLTFResult = GLTF & {
     Material_Interior_Metal_Static: THREE.MeshStandardMaterial
     Material_Interior_Metal_Lucid_Static: THREE.MeshStandardMaterial
     Material_Mirror_Glass_Static: THREE.MeshStandardMaterial
-    Material_Chassis_Paint: THREE.MeshStandardMaterial
+    Material_Chassis_Paint: THREE.MeshPhysicalMaterial
     Material_RubberTrim_Static: THREE.MeshStandardMaterial
-    Material_Carbon_Trim_Static: THREE.MeshStandardMaterial
-    Material_Exterior_LowerAero_Dynamic: THREE.MeshStandardMaterial
+    Material_Carbon_Trim_Static: THREE.MeshPhysicalMaterial
+    Material_Exterior_LowerAero_Dynamic: THREE.MeshPhysicalMaterial
     Exterior_Badges: THREE.MeshStandardMaterial
-    Material_Exterior_Weissach_Dynamic: THREE.MeshStandardMaterial
+    Material_Exterior_Weissach_Dynamic: THREE.MeshPhysicalMaterial
     Material_Headlight_Emissive: THREE.MeshStandardMaterial
     Material_Plastic_Smooth_Static: THREE.MeshStandardMaterial
     Material_Signal_Emissive: THREE.MeshStandardMaterial
@@ -228,7 +228,7 @@ type GLTFResult = GLTF & {
     TwiXeR_992_ID06_stitch_001: THREE.MeshStandardMaterial
     Material_Wheel_Leather_Dynamic: THREE.MeshStandardMaterial
     Material_Interior_Plastic_Static: THREE.MeshStandardMaterial
-    Material_Carbon_Trim_Lighter_Static: THREE.MeshStandardMaterial
+    Material_Carbon_Trim_Lighter_Static: THREE.MeshPhysicalMaterial
     Material_Interior_Structure_Static: THREE.MeshStandardMaterial
     Material_Interior_Carpet_Static: THREE.MeshStandardMaterial
     Material_DashClock_Dynamic: THREE.MeshStandardMaterial

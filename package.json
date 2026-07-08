@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "compress": "node scripts/compress-textures.js",
-    "generate-model": "npx gltfjsx public/models/gt3rs/scene-opt.glb --types && node scripts/patch-model.js"
+    "generate-model": "bash scripts/generate-model.sh"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

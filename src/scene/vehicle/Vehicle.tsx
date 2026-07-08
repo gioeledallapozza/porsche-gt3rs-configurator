@@ -1,5 +1,6 @@
 import { vehicleRegistry } from '@/config/vehicles';
-import React from 'react';
+import { useGLTF } from '@react-three/drei';
+import React, { useEffect } from 'react';
 
 interface ControllerProps {
   modelPath: string;
@@ -16,9 +17,6 @@ interface VehicleProps {
 }
 
 const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
-
-  console.log(`[Vehicle Router] Rendering vehicle with ID: ${vehicleId}`);
-
   const config = vehicleRegistry[vehicleId];
   const Controller = controllerMap[vehicleId];
 
@@ -26,9 +24,10 @@ const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
     console.warn(`[Vehicle Router] Configuration or Controller not found for: ${vehicleId}`);
     return null;
   }
+
   return (
     <group position={[0, -0.5, 0]}>
-      <Controller modelPath={config.modelPath} />
+        <Controller key={vehicleId} modelPath={config.modelPath} />
     </group>
   );
 };
