@@ -1,16 +1,30 @@
+import { vehicleRegistry } from '@/config/vehicles';
 import React from 'react';
-import { useConfiguratorStore } from '../../store/configuratorStore';
 
-// 3D Asset Orchestrator
-// Load the component only when it's needed with React.lazy
-const PorscheModel = React.lazy(() => import('./PorscheModel'));
+// 3d Assets Orchestration
+const controllerMap: Record<string, React.LazyExoticComponent<React.FC<any>>> = {
+  gt3rs: React.lazy(() => import('./controllers/Gt3rsController')),
+  // gt4rs: React.lazy(() => import('./controllers/Gt4rsController')),
+};
 
-const Vehicle: React.FC = () => {
-  const carColor = useConfiguratorStore((state) => state.carColor);
+interface VehicleProps {
+  vehicleId: string;
+}
 
+const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
+
+  console.log(`[Vehicle Router] Rendering vehicle with ID: ${vehicleId}`);
+
+  const config = vehicleRegistry[vehicleId];
+  const Controller = controllerMap[vehicleId];
+
+  if (!config || !Controller) {
+    console.warn(`[Vehicle Router] Configuration or Controller not found for: ${vehicleId}`);
+    return null;
+  }
   return (
     <group position={[0, -0.5, 0]}>
-      <PorscheModel exteriorColor={carColor} />
+      <Controller modelPath={config.modelPath} />
     </group>
   );
 };
