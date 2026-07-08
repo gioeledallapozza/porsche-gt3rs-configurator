@@ -85,12 +85,12 @@ const Configurator: React.FC = () => {
           <Perf position="top-left" minimal={false} /> 
 
           {/* TO SUBSTITUTE WITH HIGH QUALITY HDR MAP */}
-          {/* <Suspense>
-            <Environment preset="studio" environmentIntensity={1.0}/>
-          </Suspense> */}
-          <ambientLight intensity={1.5} /> 
+          <Suspense>
+            <Environment preset="studio" environmentIntensity={1.0} background/>
+          </Suspense>
+          {/* <ambientLight intensity={1.5} /> 
           <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-          <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#8888ff" />
+          <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#8888ff" /> */}
 
           {/* <Environment preset="studio" />  */}
           {/* Aggiunge realismo a terra senza pesanti luci dinamiche */}

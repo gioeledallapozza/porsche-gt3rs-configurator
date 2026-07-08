@@ -195,7 +195,7 @@ type GLTFResult = GLTF & {
     Material_Radiator_Static: THREE.MeshStandardMaterial
     Material_Caliper_Dynamic: THREE.MeshStandardMaterial
     Material_Interior_Stitching_Dynamic: THREE.MeshStandardMaterial
-    Material_Glass_Static: THREE.MeshPhysicalMaterial
+    Material_Glass_Cabin_Static: THREE.MeshPhysicalMaterial
     ['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']: THREE.MeshStandardMaterial
     ['TwiXeR_992_plastic_mgl_060606FF.002']: THREE.MeshStandardMaterial
     ['TwiXeR_992_speakers.002']: THREE.MeshStandardMaterial
@@ -212,6 +212,7 @@ type GLTFResult = GLTF & {
     Exterior_Badges: THREE.MeshStandardMaterial
     Material_Exterior_Weissach_Dynamic: THREE.MeshPhysicalMaterial
     Material_Headlight_Emissive: THREE.MeshStandardMaterial
+    Material_Glass_Lights_Static: THREE.MeshPhysicalMaterial
     Material_Plastic_Smooth_Static: THREE.MeshStandardMaterial
     Material_Signal_Emissive: THREE.MeshStandardMaterial
     Material_LicensePlateLight_Emissive: THREE.MeshStandardMaterial
@@ -320,7 +321,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       </group>
       <group position={[0.819, 0.52, 0.575]}>
         <mesh geometry={nodes.Door_Accent_L.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[-0.143, 0.122, -0.542]} />
-        <mesh geometry={nodes.Door_Glass_L.geometry} material={materials.Material_Glass_Static} position={[-0.164, 0.51, -0.767]} />
+        <mesh geometry={nodes.Door_Glass_L.geometry} material={materials.Material_Glass_Cabin_Static} position={[-0.164, 0.51, -0.767]} />
         <group position={[-0.143, 0.122, -0.542]}>
           <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0.geometry} material={materials['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']} />
           <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_1.geometry} material={materials['TwiXeR_992_plastic_mgl_060606FF.002']} />
@@ -345,7 +346,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       </group>
       <group position={[-0.826, 0.575, 0.565]}>
         <mesh geometry={nodes.Door_Accent_R.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.15, 0.071, -0.529]} />
-        <mesh geometry={nodes.Door_Glass_R.geometry} material={materials.Material_Glass_Static} position={[0.171, 0.455, -0.753]} />
+        <mesh geometry={nodes.Door_Glass_R.geometry} material={materials.Material_Glass_Cabin_Static} position={[0.171, 0.455, -0.753]} />
         <group position={[0.15, 0.071, -0.529]}>
           <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0.geometry} material={materials['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']} />
           <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_1.geometry} material={materials['TwiXeR_992_plastic_mgl_060606FF.002']} />
@@ -378,7 +379,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       <mesh geometry={nodes.Aero_Wing_Supports.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
       <mesh geometry={nodes.Badge_Rear_Logo.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
       <mesh geometry={nodes.Chassis_Paint.geometry} material={materials.Material_Chassis_Paint} />
-      <mesh geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Cabin_Static} />
       <mesh geometry={nodes.Wing_Endplates.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
       <mesh geometry={nodes.Hood_Aero_Vents_dynamic.geometry} material={materials.Material_Radiator_Static} />
       <mesh geometry={nodes.Hood_Badge_Logo.geometry} material={materials.Exterior_Badges} />
@@ -386,21 +387,21 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       <mesh geometry={nodes.Hood_Paint.geometry} material={materials.Material_Chassis_Paint} />
       <mesh geometry={nodes.Hood_Vents_Static.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
       <mesh geometry={nodes.Headlight_Emissive.geometry} material={materials.Material_Headlight_Emissive} />
-      <mesh geometry={nodes.HeadLight_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.HeadLight_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.HeadLight_Housing_Static.geometry} material={materials.Material_Plastic_Smooth_Static} />
       <mesh geometry={nodes.Signal_Front_Emissive.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-      <mesh geometry={nodes.Signal_Front_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Signal_Front_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Signal_Side_Emissive.geometry} material={materials.Material_Signal_Emissive} />
-      <mesh geometry={nodes.Signal_Side_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Signal_Side_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Licence_Plate_Emissive.geometry} material={materials.Material_LicensePlateLight_Emissive} />
-      <mesh geometry={nodes.License_Plate_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.License_Plate_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Rear_Reflactors_Red.geometry} material={materials.Material_Reflector_Red_Static} />
       <mesh geometry={nodes.Tailgate_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive} />
-      <mesh geometry={nodes.Tailgate_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Tailgate_Glass.geometry} material={materials.Material_Glass_Cabin_Static} />
       <mesh geometry={nodes.Taillight_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive} />
       <mesh geometry={nodes.Taillight_Housing_Static_AntiChrome.geometry} material={materials.Material_Taillight_Housing_Static} />
       <mesh geometry={nodes.Taillight_Housing_Static_PlasticSmooth.geometry} material={materials.Material_Plastic_Smooth_Static} />
-      <mesh geometry={nodes.Taillight_Main_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Taillight_Main_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Taillight_Strip_Emissive.geometry} material={materials.Material_Taillight_Emissive} />
       <mesh geometry={nodes.Wing_Flap_Active.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
       <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002.geometry} material={materials.Material_Radiator_Static} />
@@ -412,7 +413,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       <mesh geometry={nodes.TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_3.geometry} material={materials.Material_Carbon_Trim_Static} />
       <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
       <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_1.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_2.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_2.geometry} material={materials.Material_Glass_Lights_Static} />
       <group position={[0.343, 0.76, 0.165]}>
         <group position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]}>
           <mesh geometry={nodes.TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0.geometry} material={materials.TwiXeR_992_symbols_6} />
@@ -447,7 +448,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       <mesh geometry={nodes.TwiXeR_992_dash_9000_TwiXeR_992_rubbertrim011_0004_1.geometry} material={materials.Material_Interior_Plastic_Static} />
       <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001.geometry} material={materials.Material_Interior_Structure_Static} />
       <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_1.geometry} material={materials.Material_Mirror_Glass_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_2.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_2.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0.geometry} material={materials.Material_Interior_Metal_Static} />
       <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0_1.geometry} material={materials.Material_Interior_Clock_Static} />
       <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0_2.geometry} material={materials.Material_Interior_Vent_Static} />

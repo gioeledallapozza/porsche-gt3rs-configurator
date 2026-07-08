@@ -4,8 +4,8 @@ import { invalidate } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import Gt3rsModel from '@/scene/vehicle/models/Gt3rsModel.tsx';
-import { applyBlackPlastic, applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
-import { configureGlass } from '@/scene/materials/presets/glass';
+import { applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
+import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
 import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
 
 
@@ -62,8 +62,9 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   // Memoize materials 
   const mats = useMemo(() => {
     const extractedMaterials = {
-      paint: materials.Material_Chassis_Paint as THREE.MeshPhysicalMaterial | THREE.MeshStandardMaterial,
-      glass: materials.Material_Glass_Static as THREE.MeshPhysicalMaterial,
+      paint: materials.Material_Chassis_Paint as THREE.MeshPhysicalMaterial,
+      glassCabin: materials.Material_Glass_Cabin_Static as THREE.MeshPhysicalMaterial,
+      glassLights: materials.Material_Glass_Lights_Static as THREE.MeshPhysicalMaterial,
       carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
       exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
       exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
@@ -73,7 +74,8 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     extractedMaterials.paint.color.set(initialState.carColor);
 
     //STATIC SETUP
-    configureGlass(extractedMaterials.glass);
+    configureCabinGlass(extractedMaterials.glassCabin);
+    configureLightsGlass(extractedMaterials.glassLights);
     // applyBlackPlastic(extractedMaterials.exteriorLowerAero); //Not necessary iin blender the colors are already ok
 
     // PURGE BLENDER GARBAGE DATA ONCE
@@ -135,7 +137,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
         needsRender = true;
       }
 
-      // Se cambia il pacchetto aerodinamico
+      // If aero changed
       if (currentState.aeroPackage !== prevState.aeroPackage) {
         if (currentState.aeroPackage === 'weissach' && carbonNormal && carbonRoughness) {
           applyCarbonFiber(mats.exteriorWeissach, { 
@@ -143,7 +145,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
             roughnessMap: carbonRoughness 
           });
         } else {
-          // Torna verniciato (colore carrozzeria)
+          // Base material
           mats.exteriorWeissach.color.set(currentState.carColor);
           mats.exteriorWeissach.normalMap = null;
           mats.exteriorWeissach.roughnessMap = null;
