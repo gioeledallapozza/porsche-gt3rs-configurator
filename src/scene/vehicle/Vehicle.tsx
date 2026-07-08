@@ -1,8 +1,12 @@
 import { vehicleRegistry } from '@/config/vehicles';
 import React from 'react';
 
+interface ControllerProps {
+  modelPath: string;
+}
+
 // 3d Assets Orchestration
-const controllerMap: Record<string, React.LazyExoticComponent<React.FC<any>>> = {
+const controllerMap: Record<string, React.LazyExoticComponent<React.FC<ControllerProps>>> = {
   gt3rs: React.lazy(() => import('./controllers/Gt3rsController')),
   // gt4rs: React.lazy(() => import('./controllers/Gt4rsController')),
 };
