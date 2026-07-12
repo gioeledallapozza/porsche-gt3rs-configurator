@@ -15,71 +15,69 @@ type GLTFResult = GLTF & {
     Rim_Center_FL: THREE.Mesh
     Rim_Outer_FL: THREE.Mesh
     Tire_FL: THREE.Mesh
-    amdb11_brakedisc_FR002_amdb11_misc_chrome002_0: THREE.Mesh
-    amdb11_brakedisc_FR002_amdb11_misc_chrome002_0_1: THREE.Mesh
+    Brake_Static_FL_1: THREE.Mesh
+    Brake_Static_FL_2: THREE.Mesh
     Caliper_Paint_FL: THREE.Mesh
     Disc_FR: THREE.Mesh
     Hub_FR: THREE.Mesh
     Rim_Center_FR: THREE.Mesh
     Rim_Outer_FR: THREE.Mesh
     Tire_FR: THREE.Mesh
-    amdb11_brakedisc_FR003_amdb11_misc_chrome002_0001: THREE.Mesh
-    amdb11_brakedisc_FR003_amdb11_misc_chrome002_0001_1: THREE.Mesh
+    Brake_Static_FR_1: THREE.Mesh
+    Brake_Static_FR_2: THREE.Mesh
     Caliper_Paint_FR: THREE.Mesh
     Disc_RL: THREE.Mesh
     Hub_RL: THREE.Mesh
     Rim_Center_RL: THREE.Mesh
     Rim_Outer_RL: THREE.Mesh
     Tire_RL: THREE.Mesh
-    amdb11_brakedisc_FR004_amdb11_misc002_0: THREE.Mesh
-    amdb11_brakedisc_FR004_amdb11_misc002_0_1: THREE.Mesh
+    Brake_Static_RL_1: THREE.Mesh
+    Brake_Static_RL_2: THREE.Mesh
     Caliper_Paint_RL: THREE.Mesh
     Disc_RR: THREE.Mesh
     Hub_RR: THREE.Mesh
     Rim_Center_RR: THREE.Mesh
     Rim_Outer_RR: THREE.Mesh
     Tire_RR: THREE.Mesh
-    amdb11_brakedisc_FR001_amdb11_misc_chrome002_0: THREE.Mesh
-    amdb11_brakedisc_FR001_amdb11_misc_chrome002_0_1: THREE.Mesh
+    Brake_Static_RR_1: THREE.Mesh
+    Brake_Static_RR_2: THREE.Mesh
     Caliper_Paint_RR: THREE.Mesh
     Door_Accent_L: THREE.Mesh
     Door_Glass_L: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_1: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_2: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_3: THREE.Mesh
+    Door_Interior_Base_L_1: THREE.Mesh
+    Door_Interior_Base_L_2: THREE.Mesh
+    Door_Interior_Base_L_3: THREE.Mesh
     Door_Leather_Primary_L: THREE.Mesh
     Door_Leather_Secondary_L: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID08_fabric_002_FFFFFFFF005_0003: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID08_fabric_002_FFFFFFFF005_0003_1: THREE.Mesh
-    TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID08_fabric_002_FFFFFFFF005_0003_2: THREE.Mesh
+    Door_Metal_Trim_L_1: THREE.Mesh
+    Door_Metal_Trim_L_2: THREE.Mesh
+    Door_Metal_Trim_L_3: THREE.Mesh
     Door_Mirror_L: THREE.Mesh
     Door_Paint_L: THREE.Mesh
     Door_Painted_Trim_L_Dynamic: THREE.Mesh
-    TwiXeR_992_mirror_L_TwiXeR_992_plastic_mgl002_0: THREE.Mesh
-    TwiXeR_992_mirror_L_TwiXeR_992_plastic_mgl002_0_1: THREE.Mesh
-    TwiXeR_992_mirror_L_TwiXeR_992_plastic_mgl002_0_2: THREE.Mesh
+    Door_Plastic_L_1: THREE.Mesh
+    Door_Plastic_L_2: THREE.Mesh
+    Door_Plastic_L_3: THREE.Mesh
     Door_Accent_R: THREE.Mesh
     Door_Glass_R: THREE.Mesh
-    TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0: THREE.Mesh
-    TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_1: THREE.Mesh
-    TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_2: THREE.Mesh
-    TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_3: THREE.Mesh
+    Door_Interior_Base_R_1: THREE.Mesh
+    Door_Interior_Base_R_2: THREE.Mesh
+    Door_Interior_Base_R_3: THREE.Mesh
     Door_Leather_Primary_R: THREE.Mesh
     Door_Leather_Secondary_R: THREE.Mesh
-    TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID09_rubbertrim_FFFFFFFF002_0: THREE.Mesh
-    TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID09_rubbertrim_FFFFFFFF002_0_1: THREE.Mesh
+    Door_Metal_Trim_R_1: THREE.Mesh
+    Door_Metal_Trim_R_2: THREE.Mesh
     Door_Mirror_R: THREE.Mesh
     Door_Paint_R: THREE.Mesh
     Door_Painted_Trim_R_Dynamic: THREE.Mesh
-    TwiXeR_992_door_R_antichrome_end_TwiXeR_992_chrome003_0: THREE.Mesh
-    TwiXeR_992_door_R_antichrome_end_TwiXeR_992_chrome003_0_1: THREE.Mesh
-    TwiXeR_992_door_R_antichrome_end_TwiXeR_992_chrome003_0_2: THREE.Mesh
-    Hood_Aero_Vents_dynamic: THREE.Mesh
+    Door_Plastic_R_1: THREE.Mesh
+    Door_Plastic_R_2: THREE.Mesh
+    Door_Plastic_R_3: THREE.Mesh
+    Hood_Aero_Vents_Static: THREE.Mesh
     Hood_Badge_Logo: THREE.Mesh
     Hood_Carbon_Center: THREE.Mesh
     Hood_Paint: THREE.Mesh
-    Hood_Vents_Static: THREE.Mesh
+    Hood_Radiator_Static: THREE.Mesh
     Headlight_Emissive: THREE.Mesh
     HeadLight_Glass: THREE.Mesh
     HeadLight_Housing_Static: THREE.Mesh
@@ -107,81 +105,77 @@ type GLTFResult = GLTF & {
     Aero_Sideskirts: THREE.Mesh
     Aero_Tailgate: THREE.Mesh
     Aero_Wing_Supports: THREE.Mesh
-    Badge_Rear_Logo: THREE.Mesh
+    Badge_Rear_Lettering: THREE.Mesh
     Chassis_Paint: THREE.Mesh
-    TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002: THREE.Mesh
-    TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002_1: THREE.Mesh
-    TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002_2: THREE.Mesh
-    TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0: THREE.Mesh
-    TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_1: THREE.Mesh
-    TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_2: THREE.Mesh
-    TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_3: THREE.Mesh
-    TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0: THREE.Mesh
-    TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_1: THREE.Mesh
-    TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_2: THREE.Mesh
+    Chassis_Underbody_Static_1: THREE.Mesh
+    Chassis_Underbody_Static_2: THREE.Mesh
+    Chassis_Underbody_Static_3: THREE.Mesh
+    Chassis_Window_Trims_Static_1: THREE.Mesh
+    Chassis_Window_Trims_Static_2: THREE.Mesh
+    Chassis_Window_Trims_Static_3: THREE.Mesh
+    Chassis_Window_Trims_Static_4: THREE.Mesh
+    Exterior_Badges_1: THREE.Mesh
+    Exterior_Badges_2: THREE.Mesh
+    Exterior_Badges_3: THREE.Mesh
     Windows_Cabin_Static: THREE.Mesh
     Wing_Endplates: THREE.Mesh
-    TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0: THREE.Mesh
-    TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0_1: THREE.Mesh
-    TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0_2: THREE.Mesh
+    Interior_SteeringWheel_Buttons_Static_1: THREE.Mesh
+    Interior_SteeringWheel_Buttons_Static_2: THREE.Mesh
+    Interior_SteeringWheel_Buttons_Static_3: THREE.Mesh
     Interior_SteeringWheel_Grip: THREE.Mesh
     Interior_SteeringWheel_Stitching_Dynamic: THREE.Mesh
     Interior_SteeringWheel_Trim_Dynamic: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_rubbertrim004_0261: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_rubbertrim004_0261_1: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_carpet001_0: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_carpet001_0_1: THREE.Mesh
+    Interior_Carbon_Trims_1: THREE.Mesh
+    Interior_Carbon_Trims_2: THREE.Mesh
+    Interior_Carpet_Static_1: THREE.Mesh
+    Interior_Carpet_Static_2: THREE.Mesh
     Interior_Clock_Dial_Dynamic: THREE.Mesh
     Interior_Dash_Lower_Primary: THREE.Mesh
-    TwiXeR_992_dash_9000_TwiXeR_992_rubbertrim011_0004: THREE.Mesh
-    TwiXeR_992_dash_9000_TwiXeR_992_rubbertrim011_0004_1: THREE.Mesh
+    Interior_Dash_Trim_Dynamic_1: THREE.Mesh
+    Interior_Dash_Trim_Dynamic_2: THREE.Mesh
     Interior_Dash_Upper_Secondary: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_1: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_2: THREE.Mesh
+    Interior_Glass_Static_1: THREE.Mesh
+    Interior_Glass_Static_2: THREE.Mesh
+    Interior_Glass_Static_3: THREE.Mesh
     Interior_Headliner: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0_1: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0_2: THREE.Mesh
+    Interior_Metal_Accents_1: THREE.Mesh
+    Interior_Metal_Accents_2: THREE.Mesh
+    Interior_Metal_Accents_3: THREE.Mesh
     Interior_Mirror_Housing_Dynamic: THREE.Mesh
     Interior_Painted_Trims_Dynamic: THREE.Mesh
     Interior_Pedals_Metal: THREE.Mesh
     Interior_Pedals_Rubber: THREE.Mesh
-    TwiXeR_992_dash_9000_TwiXeR_992_gps_screen003_0: THREE.Mesh
-    TwiXeR_992_dash_9000_TwiXeR_992_gps_screen003_0_1: THREE.Mesh
+    Interior_Screens_Digital_1: THREE.Mesh
+    Interior_Screens_Digital_2: THREE.Mesh
     Interior_Seatbelts_Dynamic: THREE.Mesh
-    TwiXeR_992_shifter_knob_M_TwiXeR_992_symbols_3001_0: THREE.Mesh
-    TwiXeR_992_shifter_knob_M_TwiXeR_992_symbols_3001_0_1: THREE.Mesh
+    Interior_Shifter_Base_Static_1: THREE.Mesh
+    Interior_Shifter_Base_Static_2: THREE.Mesh
     Interior_Shifter_Trim_Dynamic: THREE.Mesh
     Interior_Shifter_Upholstery: THREE.Mesh
-    TwiXeR_992_signalstalk_TwiXeR_992_symbols004_0: THREE.Mesh
-    TwiXeR_992_signalstalk_TwiXeR_992_symbols004_0_1: THREE.Mesh
-    TwiXeR_992_signalstalk_TwiXeR_992_symbols004_0_2: THREE.Mesh
+    Interior_SteeringColumn_Stalks_1: THREE.Mesh
+    Interior_SteeringColumn_Stalks_2: THREE.Mesh
+    Interior_SteeringColumn_Stalks_3: THREE.Mesh
     Interior_Stitching_Dynamic: THREE.Mesh
     Interior_Tacho_Dial_Dynamic: THREE.Mesh
     Interior_Tacho_Needle: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_1: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_2: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_3: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_4: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_5: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_6: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_7: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_8: THREE.Mesh
-    TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_9: THREE.Mesh
+    Interior_Tub_Static_1: THREE.Mesh
+    Interior_Tub_Static_2: THREE.Mesh
+    Interior_Tub_Static_3: THREE.Mesh
+    Interior_Tub_Static_4: THREE.Mesh
+    Interior_Tub_Static_5: THREE.Mesh
+    Interior_Tub_Static_6: THREE.Mesh
+    Interior_Tub_Static_7: THREE.Mesh
+    Interior_Tub_Static_8: THREE.Mesh
     Seats_Leather_Primary: THREE.Mesh
     Seats_Leather_Secondary: THREE.Mesh
-    TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0: THREE.Mesh
-    TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_1: THREE.Mesh
-    TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_2: THREE.Mesh
-    TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_3: THREE.Mesh
-    TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_4: THREE.Mesh
-    TwiXeR_992_seat_FL_TwiXeR_992_plastic004_0: THREE.Mesh
-    TwiXeR_992_seat_FL_TwiXeR_992_plastic004_0_1: THREE.Mesh
-    TwiXeR_992_seat_FL_TwiXeR_992_plastic004_0_2: THREE.Mesh
-    TwiXeR_992_coolantlines_TwiXeR_992001_0: THREE.Mesh
-    TwiXeR_992_coolantlines_TwiXeR_992001_0_1: THREE.Mesh
+    Seats_Metal_Mechanics: THREE.Mesh
+    Seats_Metal_Mechanics_1: THREE.Mesh
+    Seats_Metal_Mechanics_2: THREE.Mesh
+    Seats_Metal_Mechanics_3: THREE.Mesh
+    Seats_Metal_Mechanics_4: THREE.Mesh
+    Seats_Metal_Mechanics_5: THREE.Mesh
+    Chassis_Powertrain_Static_1: THREE.Mesh
+    Chassis_Powertrain_Static_2: THREE.Mesh
     Exterior_ExhaustTips_Dynamic: THREE.Mesh
     Chassis_Suspension_Static: THREE.Mesh
   }
@@ -195,23 +189,23 @@ type GLTFResult = GLTF & {
     Material_Radiator_Static: THREE.MeshStandardMaterial
     Material_Caliper_Dynamic: THREE.MeshStandardMaterial
     Material_Interior_Stitching_Dynamic: THREE.MeshStandardMaterial
-    Material_Glass_Static: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_plastic_mgl_060606FF.002']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_speakers.002']: THREE.MeshStandardMaterial
+    Material_Glass_Cabin_Static: THREE.MeshPhysicalMaterial
+    Material_Interior_LightGrey_Plastic_Static: THREE.MeshStandardMaterial
+    Material_Front_Speaker_Static: THREE.MeshStandardMaterial
     Material_Exterior_Badges_Dynamic: THREE.MeshStandardMaterial
     Material_Leather_Primary: THREE.MeshStandardMaterial
     Material_Upper_Leather_Dynamic: THREE.MeshStandardMaterial
     Material_Interior_Metal_Static: THREE.MeshStandardMaterial
     Material_Interior_Metal_Lucid_Static: THREE.MeshStandardMaterial
     Material_Mirror_Glass_Static: THREE.MeshStandardMaterial
-    Material_Chassis_Paint: THREE.MeshStandardMaterial
+    Material_Chassis_Paint: THREE.MeshPhysicalMaterial
     Material_RubberTrim_Static: THREE.MeshStandardMaterial
-    Material_Carbon_Trim_Static: THREE.MeshStandardMaterial
-    Material_Exterior_LowerAero_Dynamic: THREE.MeshStandardMaterial
+    Material_Carbon_Trim_Static: THREE.MeshPhysicalMaterial
+    Material_Exterior_LowerAero_Dynamic: THREE.MeshPhysicalMaterial
     Exterior_Badges: THREE.MeshStandardMaterial
-    Material_Exterior_Weissach_Dynamic: THREE.MeshStandardMaterial
+    Material_Exterior_Weissach_Dynamic: THREE.MeshPhysicalMaterial
     Material_Headlight_Emissive: THREE.MeshStandardMaterial
+    Material_Glass_Lights_Static: THREE.MeshPhysicalMaterial
     Material_Plastic_Smooth_Static: THREE.MeshStandardMaterial
     Material_Signal_Emissive: THREE.MeshStandardMaterial
     Material_LicensePlateLight_Emissive: THREE.MeshStandardMaterial
@@ -223,12 +217,12 @@ type GLTFResult = GLTF & {
     Material_RubberTrim2_Staitc: THREE.MeshStandardMaterial
     Material_Glass_Black_Static: THREE.MeshStandardMaterial
     Material_Exterior_ExhaustTips_Dynamic: THREE.MeshStandardMaterial
-    TwiXeR_992_symbols_6: THREE.MeshStandardMaterial
-    TwiXeR_992_Interior_D: THREE.MeshStandardMaterial
-    TwiXeR_992_ID06_stitch_001: THREE.MeshStandardMaterial
+    Material_SteeringWheel_Icons_Static: THREE.MeshStandardMaterial
+    Material_SteeringWheel_Buttons_Static: THREE.MeshStandardMaterial
+    Material_Logo_Static: THREE.MeshStandardMaterial
     Material_Wheel_Leather_Dynamic: THREE.MeshStandardMaterial
     Material_Interior_Plastic_Static: THREE.MeshStandardMaterial
-    Material_Carbon_Trim_Lighter_Static: THREE.MeshStandardMaterial
+    Material_Carbon_Trim_Lighter_Static: THREE.MeshPhysicalMaterial
     Material_Interior_Structure_Static: THREE.MeshStandardMaterial
     Material_Interior_Carpet_Static: THREE.MeshStandardMaterial
     Material_DashClock_Dynamic: THREE.MeshStandardMaterial
@@ -243,18 +237,17 @@ type GLTFResult = GLTF & {
     Material_Interior_Screen_GPS_Digital: THREE.MeshStandardMaterial
     Material_SeatBelt_Dynamic: THREE.MeshStandardMaterial
     Material_Sticker_Tacho_Dynamic: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID04_plastic_textured_001_060606FF.001']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID08_fabric_002.001']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_speakers.001']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID05_leather_coarse_mglvents_a.003']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_plastic.004']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID04_plastic_textured_001shifterassy_a.003']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID03_stitch_001vents_a.004']: THREE.MeshStandardMaterial
+    Material_Interior_Plastic_Lucid_Static: THREE.MeshStandardMaterial
+    Material_Warning_Triangle_Static: THREE.MeshStandardMaterial
+    Material_Speakers_Static: THREE.MeshStandardMaterial
+    Material_Behind_Vents_Static: THREE.MeshStandardMaterial
+    Material_Interior_Metallic_Structure_Static: THREE.MeshStandardMaterial
     Material_Leather_Secondary: THREE.MeshStandardMaterial
-    ['TwiXeR_992_int_chrome.007']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID05_leather_coarse_mgl_FFFFFFFF.001']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_ID08_fabric_002_B60000FF.001']: THREE.MeshStandardMaterial
-    ['TwiXeR_992_gauges_9000.001']: THREE.MeshStandardMaterial
+    Material_Slide_Seat_Static: THREE.MeshStandardMaterial
+    Material_SeatBelt_Buckle_Static: THREE.MeshStandardMaterial
+    Material_SeatBelt_Release_Button_Static: THREE.MeshStandardMaterial
+    Material_Buckle_Housing_Static: THREE.MeshStandardMaterial
+    Material_Seat_Plastic_Static: THREE.MeshStandardMaterial
   }
 }
 
@@ -271,8 +264,8 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
           <mesh geometry={nodes.Tire_FL.geometry} material={materials.Material_Tire_Static} position={[0.01, -0.001, -0.005]} rotation={[Math.PI / 2, 0, 0]} scale={[-1.414, -1.161, -1.161]} />
         </group>
         <group position={[-0.02, 0.001, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}>
-          <mesh geometry={nodes.amdb11_brakedisc_FR002_amdb11_misc_chrome002_0.geometry} material={materials.Material_Wheels_Bolts_Static} />
-          <mesh geometry={nodes.amdb11_brakedisc_FR002_amdb11_misc_chrome002_0_1.geometry} material={materials.Material_Radiator_Static} />
+          <mesh geometry={nodes.Brake_Static_FL_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
+          <mesh geometry={nodes.Brake_Static_FL_2.geometry} material={materials.Material_Radiator_Static} />
         </group>
         <mesh geometry={nodes.Caliper_Paint_FL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.02, 0.001, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
       </group>
@@ -285,8 +278,8 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
           <mesh geometry={nodes.Tire_FR.geometry} material={materials.Material_Tire_Static} position={[-0.01, 0.005, 0.006]} scale={[1.171, 0.961, 0.961]} />
         </group>
         <group position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
-          <mesh geometry={nodes.amdb11_brakedisc_FR003_amdb11_misc_chrome002_0001.geometry} material={materials.Material_Wheels_Bolts_Static} />
-          <mesh geometry={nodes.amdb11_brakedisc_FR003_amdb11_misc_chrome002_0001_1.geometry} material={materials.Material_Radiator_Static} />
+          <mesh geometry={nodes.Brake_Static_FR_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
+          <mesh geometry={nodes.Brake_Static_FR_2.geometry} material={materials.Material_Radiator_Static} />
         </group>
         <mesh geometry={nodes.Caliper_Paint_FR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
       </group>
@@ -299,8 +292,8 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
           <mesh geometry={nodes.Tire_RL.geometry} material={materials.Material_Tire_Static} position={[0.006, 0.003, 0]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[1.128, 1.079, 1.079]} />
         </group>
         <group position={[-0.024, 0.002, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}>
-          <mesh geometry={nodes.amdb11_brakedisc_FR004_amdb11_misc002_0.geometry} material={materials.Material_Radiator_Static} />
-          <mesh geometry={nodes.amdb11_brakedisc_FR004_amdb11_misc002_0_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
+          <mesh geometry={nodes.Brake_Static_RL_1.geometry} material={materials.Material_Radiator_Static} />
+          <mesh geometry={nodes.Brake_Static_RL_2.geometry} material={materials.Material_Wheels_Bolts_Static} />
         </group>
         <mesh geometry={nodes.Caliper_Paint_RL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.024, 0.002, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
       </group>
@@ -313,58 +306,56 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
           <mesh geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static} position={[0.003, -0.007, -0.004]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[1.128, 1.079, 1.079]} />
         </group>
         <group position={[0.017, 0.006, -0.155]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
-          <mesh geometry={nodes.amdb11_brakedisc_FR001_amdb11_misc_chrome002_0.geometry} material={materials.Material_Wheels_Bolts_Static} />
-          <mesh geometry={nodes.amdb11_brakedisc_FR001_amdb11_misc_chrome002_0_1.geometry} material={materials.Material_Radiator_Static} />
+          <mesh geometry={nodes.Brake_Static_RR_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
+          <mesh geometry={nodes.Brake_Static_RR_2.geometry} material={materials.Material_Radiator_Static} />
         </group>
         <mesh geometry={nodes.Caliper_Paint_RR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.017, 0.006, -0.155]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
       </group>
       <group position={[0.819, 0.52, 0.575]}>
         <mesh geometry={nodes.Door_Accent_L.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[-0.143, 0.122, -0.542]} />
-        <mesh geometry={nodes.Door_Glass_L.geometry} material={materials.Material_Glass_Static} position={[-0.164, 0.51, -0.767]} />
+        <mesh geometry={nodes.Door_Glass_L.geometry} material={materials.Material_Glass_Cabin_Static} position={[-0.164, 0.51, -0.767]} />
         <group position={[-0.143, 0.122, -0.542]}>
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0.geometry} material={materials['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_1.geometry} material={materials['TwiXeR_992_plastic_mgl_060606FF.002']} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_2.geometry} material={materials['TwiXeR_992_speakers.002']} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+          <mesh geometry={nodes.Door_Interior_Base_L_1.geometry} material={materials.Material_Interior_LightGrey_Plastic_Static} />
+          <mesh geometry={nodes.Door_Interior_Base_L_2.geometry} material={materials.Material_Front_Speaker_Static} />
+          <mesh geometry={nodes.Door_Interior_Base_L_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
         </group>
         <mesh geometry={nodes.Door_Leather_Primary_L.geometry} material={materials.Material_Leather_Primary} position={[-0.143, 0.122, -0.542]} />
         <mesh geometry={nodes.Door_Leather_Secondary_L.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[-0.143, 0.122, -0.542]} />
         <group position={[-0.143, 0.122, -0.542]}>
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID08_fabric_002_FFFFFFFF005_0003.geometry} material={materials.Material_Interior_Metal_Static} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID08_fabric_002_FFFFFFFF005_0003_1.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_L_antichrome_TwiXeR_992_ID08_fabric_002_FFFFFFFF005_0003_2.geometry} material={materials.Material_Interior_Metal_Static} />
+          <mesh geometry={nodes.Door_Metal_Trim_L_1.geometry} material={materials.Material_Interior_Metal_Static} />
+          <mesh geometry={nodes.Door_Metal_Trim_L_2.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
+          <mesh geometry={nodes.Door_Metal_Trim_L_3.geometry} material={materials.Material_Interior_Metal_Static} />
         </group>
         <mesh geometry={nodes.Door_Mirror_L.geometry} material={materials.Material_Mirror_Glass_Static} position={[0.092, 0.374, -0.325]} />
         <mesh geometry={nodes.Door_Paint_L.geometry} material={materials.Material_Chassis_Paint} position={[0.092, 0.374, -0.325]} />
         <mesh geometry={nodes.Door_Painted_Trim_L_Dynamic.geometry} material={materials.Material_Interior_Metal_Static} position={[-0.143, 0.122, -0.542]} />
         <group position={[0.092, 0.374, -0.325]}>
-          <mesh geometry={nodes.TwiXeR_992_mirror_L_TwiXeR_992_plastic_mgl002_0.geometry} material={materials.Material_RubberTrim_Static} />
-          <mesh geometry={nodes.TwiXeR_992_mirror_L_TwiXeR_992_plastic_mgl002_0_1.geometry} material={materials.Material_Carbon_Trim_Static} />
-          <mesh geometry={nodes.TwiXeR_992_mirror_L_TwiXeR_992_plastic_mgl002_0_2.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
+          <mesh geometry={nodes.Door_Plastic_L_1.geometry} material={materials.Material_RubberTrim_Static} />
+          <mesh geometry={nodes.Door_Plastic_L_2.geometry} material={materials.Material_Carbon_Trim_Static} />
+          <mesh geometry={nodes.Door_Plastic_L_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
         </group>
       </group>
       <group position={[-0.826, 0.575, 0.565]}>
         <mesh geometry={nodes.Door_Accent_R.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.15, 0.071, -0.529]} />
-        <mesh geometry={nodes.Door_Glass_R.geometry} material={materials.Material_Glass_Static} position={[0.171, 0.455, -0.753]} />
+        <mesh geometry={nodes.Door_Glass_R.geometry} material={materials.Material_Glass_Cabin_Static} position={[0.171, 0.455, -0.753]} />
         <group position={[0.15, 0.071, -0.529]}>
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0.geometry} material={materials['TwiXeR_992_ID04_plastic_textured_001_060606FF.002']} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_1.geometry} material={materials['TwiXeR_992_plastic_mgl_060606FF.002']} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_2.geometry} material={materials['TwiXeR_992_speakers.002']} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID04_plastic_textured_001_060606FF002_0_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+          <mesh geometry={nodes.Door_Interior_Base_R_1.geometry} material={materials.Material_Interior_LightGrey_Plastic_Static} />
+          <mesh geometry={nodes.Door_Interior_Base_R_2.geometry} material={materials.Material_Front_Speaker_Static} />
+          <mesh geometry={nodes.Door_Interior_Base_R_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
         </group>
         <mesh geometry={nodes.Door_Leather_Primary_R.geometry} material={materials.Material_Leather_Primary} position={[0.15, 0.071, -0.529]} />
         <mesh geometry={nodes.Door_Leather_Secondary_R.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[0.15, 0.071, -0.529]} />
         <group position={[0.15, 0.071, -0.529]}>
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID09_rubbertrim_FFFFFFFF002_0.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
-          <mesh geometry={nodes.TwiXeR_992_doorpanel_R_antichrome_TwiXeR_992_ID09_rubbertrim_FFFFFFFF002_0_1.geometry} material={materials.Material_Interior_Metal_Static} />
+          <mesh geometry={nodes.Door_Metal_Trim_R_1.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
+          <mesh geometry={nodes.Door_Metal_Trim_R_2.geometry} material={materials.Material_Interior_Metal_Static} />
         </group>
         <mesh geometry={nodes.Door_Mirror_R.geometry} material={materials.Material_Mirror_Glass_Static} position={[-0.085, 0.319, -0.315]} />
         <mesh geometry={nodes.Door_Paint_R.geometry} material={materials.Material_Chassis_Paint} position={[-0.085, 0.319, -0.315]} />
         <mesh geometry={nodes.Door_Painted_Trim_R_Dynamic.geometry} material={materials.Material_Interior_Metal_Static} position={[0.15, 0.071, -0.529]} />
         <group position={[0.089, 0.298, -0.677]}>
-          <mesh geometry={nodes.TwiXeR_992_door_R_antichrome_end_TwiXeR_992_chrome003_0.geometry} material={materials.Material_RubberTrim_Static} />
-          <mesh geometry={nodes.TwiXeR_992_door_R_antichrome_end_TwiXeR_992_chrome003_0_1.geometry} material={materials.Material_Carbon_Trim_Static} />
-          <mesh geometry={nodes.TwiXeR_992_door_R_antichrome_end_TwiXeR_992_chrome003_0_2.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
+          <mesh geometry={nodes.Door_Plastic_R_1.geometry} material={materials.Material_RubberTrim_Static} />
+          <mesh geometry={nodes.Door_Plastic_R_2.geometry} material={materials.Material_Carbon_Trim_Static} />
+          <mesh geometry={nodes.Door_Plastic_R_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
         </group>
       </group>
       <mesh geometry={nodes.Aero_Engine_Fans_Carbon.geometry} material={materials.Material_Carbon_Trim_Static} />
@@ -376,48 +367,48 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       <mesh geometry={nodes.Aero_Sideskirts.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
       <mesh geometry={nodes.Aero_Tailgate.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
       <mesh geometry={nodes.Aero_Wing_Supports.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-      <mesh geometry={nodes.Badge_Rear_Logo.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+      <mesh geometry={nodes.Badge_Rear_Lettering.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
       <mesh geometry={nodes.Chassis_Paint.geometry} material={materials.Material_Chassis_Paint} />
-      <mesh geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Cabin_Static} />
       <mesh geometry={nodes.Wing_Endplates.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-      <mesh geometry={nodes.Hood_Aero_Vents_dynamic.geometry} material={materials.Material_Radiator_Static} />
+      <mesh geometry={nodes.Hood_Aero_Vents_Static.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
       <mesh geometry={nodes.Hood_Badge_Logo.geometry} material={materials.Exterior_Badges} />
       <mesh geometry={nodes.Hood_Carbon_Center.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
       <mesh geometry={nodes.Hood_Paint.geometry} material={materials.Material_Chassis_Paint} />
-      <mesh geometry={nodes.Hood_Vents_Static.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
+      <mesh geometry={nodes.Hood_Radiator_Static.geometry} material={materials.Material_Radiator_Static} />
       <mesh geometry={nodes.Headlight_Emissive.geometry} material={materials.Material_Headlight_Emissive} />
-      <mesh geometry={nodes.HeadLight_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.HeadLight_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.HeadLight_Housing_Static.geometry} material={materials.Material_Plastic_Smooth_Static} />
       <mesh geometry={nodes.Signal_Front_Emissive.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-      <mesh geometry={nodes.Signal_Front_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Signal_Front_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Signal_Side_Emissive.geometry} material={materials.Material_Signal_Emissive} />
-      <mesh geometry={nodes.Signal_Side_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Signal_Side_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Licence_Plate_Emissive.geometry} material={materials.Material_LicensePlateLight_Emissive} />
-      <mesh geometry={nodes.License_Plate_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.License_Plate_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Rear_Reflactors_Red.geometry} material={materials.Material_Reflector_Red_Static} />
       <mesh geometry={nodes.Tailgate_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive} />
-      <mesh geometry={nodes.Tailgate_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Tailgate_Glass.geometry} material={materials.Material_Glass_Cabin_Static} />
       <mesh geometry={nodes.Taillight_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive} />
       <mesh geometry={nodes.Taillight_Housing_Static_AntiChrome.geometry} material={materials.Material_Taillight_Housing_Static} />
       <mesh geometry={nodes.Taillight_Housing_Static_PlasticSmooth.geometry} material={materials.Material_Plastic_Smooth_Static} />
-      <mesh geometry={nodes.Taillight_Main_Glass.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Taillight_Main_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
       <mesh geometry={nodes.Taillight_Strip_Emissive.geometry} material={materials.Material_Taillight_Emissive} />
       <mesh geometry={nodes.Wing_Flap_Active.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002.geometry} material={materials.Material_Radiator_Static} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002_1.geometry} material={materials.Material_Structure_Lucid_Static} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0002_2.geometry} material={materials.Material_Structure_Opaque_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0.geometry} material={materials.Material_RubberTrim_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_1.geometry} material={materials.Material_RubberTrim2_Staitc} />
-      <mesh geometry={nodes.TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_2.geometry} material={materials.Material_Glass_Black_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_chrome_end_TwiXeR_992_chrome003_0_3.geometry} material={materials.Material_Carbon_Trim_Static} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_1.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic} />
-      <mesh geometry={nodes.TwiXeR_992_gt3rs_fender_R_TwiXeR_992_metal_radiator002_0_2.geometry} material={materials.Material_Glass_Static} />
+      <mesh geometry={nodes.Chassis_Underbody_Static_1.geometry} material={materials.Material_Radiator_Static} />
+      <mesh geometry={nodes.Chassis_Underbody_Static_2.geometry} material={materials.Material_Structure_Lucid_Static} />
+      <mesh geometry={nodes.Chassis_Underbody_Static_3.geometry} material={materials.Material_Structure_Opaque_Static} />
+      <mesh geometry={nodes.Chassis_Window_Trims_Static_1.geometry} material={materials.Material_RubberTrim_Static} />
+      <mesh geometry={nodes.Chassis_Window_Trims_Static_2.geometry} material={materials.Material_RubberTrim2_Staitc} />
+      <mesh geometry={nodes.Chassis_Window_Trims_Static_3.geometry} material={materials.Material_Glass_Black_Static} />
+      <mesh geometry={nodes.Chassis_Window_Trims_Static_4.geometry} material={materials.Material_Carbon_Trim_Static} />
+      <mesh geometry={nodes.Exterior_Badges_1.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+      <mesh geometry={nodes.Exterior_Badges_2.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic} />
+      <mesh geometry={nodes.Exterior_Badges_3.geometry} material={materials.Material_Glass_Lights_Static} />
       <group position={[0.343, 0.76, 0.165]}>
         <group position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]}>
-          <mesh geometry={nodes.TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0.geometry} material={materials.TwiXeR_992_symbols_6} />
-          <mesh geometry={nodes.TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0_1.geometry} material={materials.TwiXeR_992_Interior_D} />
-          <mesh geometry={nodes.TwiXeR_992_steer_3_TwiXeR_992_symbols_6_0_2.geometry} material={materials.TwiXeR_992_ID06_stitch_001} />
+          <mesh geometry={nodes.Interior_SteeringWheel_Buttons_Static_1.geometry} material={materials.Material_SteeringWheel_Icons_Static} />
+          <mesh geometry={nodes.Interior_SteeringWheel_Buttons_Static_2.geometry} material={materials.Material_SteeringWheel_Buttons_Static} />
+          <mesh geometry={nodes.Interior_SteeringWheel_Buttons_Static_3.geometry} material={materials.Material_Logo_Static} />
         </group>
         <mesh geometry={nodes.Interior_SteeringWheel_Grip.geometry} material={materials.Material_Wheel_Leather_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
         <mesh geometry={nodes.Interior_SteeringWheel_Stitching_Dynamic.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
@@ -439,46 +430,42 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
       <mesh geometry={nodes.Interior_Tacho_Needle.geometry} material={materials.Material_Interior_Metal_Static} />
       <mesh geometry={nodes.Seats_Leather_Primary.geometry} material={materials.Material_Leather_Primary} />
       <mesh geometry={nodes.Seats_Leather_Secondary.geometry} material={materials.Material_Leather_Secondary} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rubbertrim004_0261.geometry} material={materials.Material_Carbon_Trim_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rubbertrim004_0261_1.geometry} material={materials.Material_Carbon_Trim_Lighter_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_carpet001_0.geometry} material={materials.Material_Interior_Structure_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_carpet001_0_1.geometry} material={materials.Material_Interior_Carpet_Static} />
-      <mesh geometry={nodes.TwiXeR_992_dash_9000_TwiXeR_992_rubbertrim011_0004.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-      <mesh geometry={nodes.TwiXeR_992_dash_9000_TwiXeR_992_rubbertrim011_0004_1.geometry} material={materials.Material_Interior_Plastic_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001.geometry} material={materials.Material_Interior_Structure_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_1.geometry} material={materials.Material_Mirror_Glass_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_rivet_001_747474FF001_0001_2.geometry} material={materials.Material_Glass_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0.geometry} material={materials.Material_Interior_Metal_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0_1.geometry} material={materials.Material_Interior_Clock_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_int_chrome003_0_2.geometry} material={materials.Material_Interior_Vent_Static} />
-      <mesh geometry={nodes.TwiXeR_992_dash_9000_TwiXeR_992_gps_screen003_0.geometry} material={materials.Material_Interior_Screen_Digital} />
-      <mesh geometry={nodes.TwiXeR_992_dash_9000_TwiXeR_992_gps_screen003_0_1.geometry} material={materials.Material_Interior_Screen_GPS_Digital} />
-      <mesh geometry={nodes.TwiXeR_992_shifter_knob_M_TwiXeR_992_symbols_3001_0.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-      <mesh geometry={nodes.TwiXeR_992_shifter_knob_M_TwiXeR_992_symbols_3001_0_1.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-      <mesh geometry={nodes.TwiXeR_992_signalstalk_TwiXeR_992_symbols004_0.geometry} material={materials.Material_Interior_Plastic_Static} />
-      <mesh geometry={nodes.TwiXeR_992_signalstalk_TwiXeR_992_symbols004_0_1.geometry} material={materials.Material_Interior_Metal_Static} />
-      <mesh geometry={nodes.TwiXeR_992_signalstalk_TwiXeR_992_symbols004_0_2.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0.geometry} material={materials.Material_Interior_Metal_Black_Lucid_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_1.geometry} material={materials['TwiXeR_992_ID04_plastic_textured_001_060606FF.001']} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_2.geometry} material={materials.Material_Carbon_Trim_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_3.geometry} material={materials['TwiXeR_992_ID08_fabric_002.001']} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_4.geometry} material={materials['TwiXeR_992_speakers.001']} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_5.geometry} material={materials['TwiXeR_992_ID05_leather_coarse_mglvents_a.003']} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_6.geometry} material={materials['TwiXeR_992_plastic.004']} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_7.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_8.geometry} material={materials['TwiXeR_992_ID04_plastic_textured_001shifterassy_a.003']} />
-      <mesh geometry={nodes.TwiXeR_992_body_gt3rs_TwiXeR_992_plastic_1001_0_9.geometry} material={materials['TwiXeR_992_ID03_stitch_001vents_a.004']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0.geometry} material={materials['TwiXeR_992_int_chrome.007']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_1.geometry} material={materials.Material_Interior_Metal_Static} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_2.geometry} material={materials['TwiXeR_992_ID05_leather_coarse_mgl_FFFFFFFF.001']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_3.geometry} material={materials['TwiXeR_992_ID08_fabric_002_B60000FF.001']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FR_TwiXeR_992_int_chrome007_0_4.geometry} material={materials['TwiXeR_992_gauges_9000.001']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FL_TwiXeR_992_plastic004_0.geometry} material={materials['TwiXeR_992_plastic.004']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FL_TwiXeR_992_plastic004_0_1.geometry} material={materials['TwiXeR_992_ID08_fabric_002_B60000FF.001']} />
-      <mesh geometry={nodes.TwiXeR_992_seat_FL_TwiXeR_992_plastic004_0_2.geometry} material={materials['TwiXeR_992_gauges_9000.001']} />
+      <mesh geometry={nodes.Interior_Carbon_Trims_1.geometry} material={materials.Material_Carbon_Trim_Static} />
+      <mesh geometry={nodes.Interior_Carbon_Trims_2.geometry} material={materials.Material_Carbon_Trim_Lighter_Static} />
+      <mesh geometry={nodes.Interior_Carpet_Static_1.geometry} material={materials.Material_Interior_Structure_Static} />
+      <mesh geometry={nodes.Interior_Carpet_Static_2.geometry} material={materials.Material_Interior_Carpet_Static} />
+      <mesh geometry={nodes.Interior_Dash_Trim_Dynamic_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+      <mesh geometry={nodes.Interior_Dash_Trim_Dynamic_2.geometry} material={materials.Material_Interior_Plastic_Static} />
+      <mesh geometry={nodes.Interior_Glass_Static_1.geometry} material={materials.Material_Interior_Structure_Static} />
+      <mesh geometry={nodes.Interior_Glass_Static_2.geometry} material={materials.Material_Mirror_Glass_Static} />
+      <mesh geometry={nodes.Interior_Glass_Static_3.geometry} material={materials.Material_Glass_Lights_Static} />
+      <mesh geometry={nodes.Interior_Metal_Accents_1.geometry} material={materials.Material_Interior_Metal_Static} />
+      <mesh geometry={nodes.Interior_Metal_Accents_2.geometry} material={materials.Material_Interior_Clock_Static} />
+      <mesh geometry={nodes.Interior_Metal_Accents_3.geometry} material={materials.Material_Interior_Vent_Static} />
+      <mesh geometry={nodes.Interior_Screens_Digital_1.geometry} material={materials.Material_Interior_Screen_Digital} />
+      <mesh geometry={nodes.Interior_Screens_Digital_2.geometry} material={materials.Material_Interior_Screen_GPS_Digital} />
+      <mesh geometry={nodes.Interior_Shifter_Base_Static_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+      <mesh geometry={nodes.Interior_Shifter_Base_Static_2.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+      <mesh geometry={nodes.Interior_SteeringColumn_Stalks_1.geometry} material={materials.Material_Interior_Plastic_Static} />
+      <mesh geometry={nodes.Interior_SteeringColumn_Stalks_2.geometry} material={materials.Material_Interior_Metal_Static} />
+      <mesh geometry={nodes.Interior_SteeringColumn_Stalks_3.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_1.geometry} material={materials.Material_Interior_Metal_Black_Lucid_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_2.geometry} material={materials.Material_Interior_Plastic_Lucid_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_3.geometry} material={materials.Material_Carbon_Trim_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_4.geometry} material={materials.Material_Warning_Triangle_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_5.geometry} material={materials.Material_Speakers_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_6.geometry} material={materials.Material_Behind_Vents_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_7.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+      <mesh geometry={nodes.Interior_Tub_Static_8.geometry} material={materials.Material_Interior_Metallic_Structure_Static} />
+      <mesh geometry={nodes.Seats_Metal_Mechanics.geometry} material={materials.Material_Slide_Seat_Static} />
+      <mesh geometry={nodes.Seats_Metal_Mechanics_1.geometry} material={materials.Material_Interior_Metal_Static} />
+      <mesh geometry={nodes.Seats_Metal_Mechanics_2.geometry} material={materials.Material_SeatBelt_Buckle_Static} />
+      <mesh geometry={nodes.Seats_Metal_Mechanics_3.geometry} material={materials.Material_SeatBelt_Release_Button_Static} />
+      <mesh geometry={nodes.Seats_Metal_Mechanics_4.geometry} material={materials.Material_Buckle_Housing_Static} />
+      <mesh geometry={nodes.Seats_Metal_Mechanics_5.geometry} material={materials.Material_Seat_Plastic_Static} />
       <mesh geometry={nodes.Exterior_ExhaustTips_Dynamic.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic} />
-      <mesh geometry={nodes.TwiXeR_992_coolantlines_TwiXeR_992001_0.geometry} material={materials.Material_Structure_Lucid_Static} />
-      <mesh geometry={nodes.TwiXeR_992_coolantlines_TwiXeR_992001_0_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+      <mesh geometry={nodes.Chassis_Powertrain_Static_1.geometry} material={materials.Material_Structure_Lucid_Static} />
+      <mesh geometry={nodes.Chassis_Powertrain_Static_2.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
       <mesh geometry={nodes.Chassis_Suspension_Static.geometry} material={materials.Material_Structure_Lucid_Static} />
     </group>
   )

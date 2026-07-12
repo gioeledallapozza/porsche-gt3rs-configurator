@@ -1,69 +1,101 @@
 import React, { useEffect, useMemo } from 'react';
-import type { MeshStandardMaterial } from 'three';
+import * as THREE from 'three';
 import { invalidate } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { useConfiguratorStore } from '@/store/configuratorStore';
 import Gt3rsModel from '@/scene/vehicle/models/Gt3rsModel.tsx';
+import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
+import { applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
+import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
+import { 
+  configureHeadlightDRL, 
+  configureTaillightEmissive, 
+  configureSignalEmissive, 
+  configureLicensePlateLight 
+} from '@/scene/materials/presets/lights';
+import Gt3rsMutator from './Gt3rsMutator'; // Import the new logic component
 
-
-
-// Memoize the Gt3rsModel component to prevent unnecessary re-renders
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
 
 interface Gt3rsControllerProps {
   modelPath: string;
 }
 
+/* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
-  const { materials } = useGLTF(modelPath); //Extract materials from the GLTF model
+  //Assets loading
+  const { materials } = useGLTF(modelPath); 
+  //To define which carbon texture to load
+  const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
+  const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');
 
-  // Memoize materials 
-  const mats = useMemo(() => ({
-    paint: materials.Material_Chassis_Paint as MeshStandardMaterial,
-    caliper: materials.Material_Caliper_Dynamic as MeshStandardMaterial,
-    rim: materials.Material_Rim_Primary as MeshStandardMaterial,
-    stitching: materials.Material_Interior_Stitching_Dynamic as MeshStandardMaterial,
-  }), [materials]);
+  // TEXTURES SETUPS
+  useMemo(() => {
+    if (carbonNormal && carbonRoughness) {
+      carbonNormal.wrapS = carbonNormal.wrapT = THREE.RepeatWrapping;
+      carbonRoughness.wrapS = carbonRoughness.wrapT = THREE.RepeatWrapping;
+      carbonNormal.colorSpace = THREE.LinearSRGBColorSpace;
+      carbonRoughness.colorSpace = THREE.LinearSRGBColorSpace;
+    }
+  }, [carbonNormal, carbonRoughness]);
 
-  // Status Management
- useEffect(() => {
-    if (!mats.paint) return;
+  // STATIC MATERIAL INITIALIZATION
+  const mats = useMemo(() => {
+    const extractedMaterials = {
+      // Standard
+      paint: materials.Material_Chassis_Paint as THREE.MeshPhysicalMaterial,
+      glassCabin: materials.Material_Glass_Cabin_Static as THREE.MeshPhysicalMaterial,
+      glassLights: materials.Material_Glass_Lights_Static as THREE.MeshPhysicalMaterial,
+      carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
+      exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
+      exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
 
-    // Inject the current state into the materials
-    const state = useConfiguratorStore.getState();
-    mats.paint.color.set(state.carColor);
-    //mats.caliper.color.set(state.caliperColor);
-    invalidate();
+      // Emissives
+      headlightEmissive: materials.Material_Headlight_Emissive as THREE.MeshStandardMaterial,
+      taillightBrakeEmissive: materials.Material_Taillight_Brake_Emissive as THREE.MeshStandardMaterial,
+      taillightEmissive: materials.Material_Taillight_Emissive as THREE.MeshStandardMaterial,
+      signalEmissive: materials.Material_Signal_Emissive as THREE.MeshStandardMaterial,
+      licensePlateLight: materials.Material_LicensePlateLight_Emissive as THREE.MeshStandardMaterial,
+    };
 
-    // Subscribe to store changes
-    const unsubscribe = useConfiguratorStore.subscribe((currentState, prevState) => {
-      let needsRender = false;
+    // Glass
+    configureCabinGlass(extractedMaterials.glassCabin);
+    configureLightsGlass(extractedMaterials.glassLights);
 
-      if (currentState.carColor !== prevState.carColor) {
-        mats.paint.color.set(currentState.carColor);
-        needsRender = true;
-      }
-      
-      // Setup for future extensions
-      /*
-      if (currentState.caliperColor !== prevState.caliperColor) {
-        mats.caliper.color.set(currentState.caliperColor);
-        needsRender = true;
-      }
-      
-      if (currentState.stitchingColor !== prevState.stitchingColor) {
-        mats.stitching.color.set(currentState.stitchingColor);
-        needsRender = true;
-      }
-      */
+    // Emissive
+    configureHeadlightDRL(extractedMaterials.headlightEmissive);
+    configureTaillightEmissive(extractedMaterials.taillightBrakeEmissive);
+    configureTaillightEmissive(extractedMaterials.taillightEmissive);
+    configureSignalEmissive(extractedMaterials.signalEmissive);
+    configureLicensePlateLight(extractedMaterials.licensePlateLight);
 
-      if (needsRender) {
-        invalidate();
-      }
-    });
+    // PURGE BLENDER TEXTURES
+    if (extractedMaterials.exteriorWeissach.map) {
+      extractedMaterials.exteriorWeissach.map = null;
+      extractedMaterials.exteriorWeissach.needsUpdate = true; 
+    }
 
-    return unsubscribe; //CLeanup
-  }, [mats]);
+    return extractedMaterials;
+  }, [materials]);
 
-  return <MemoizedGt3rsModel url={modelPath}/>; //Return the GT3RS model
+  // ASYNCHRONOUS STATUC SETUP  (Cannot be runned in the useMemo because the textures need to be loaded)
+  useEffect(() => {
+    if (carbonNormal && carbonRoughness) {
+      applyCarbonFiber(mats.carbonTrimStatic, {
+        normalMap: carbonNormal,
+        roughnessMap: carbonRoughness,
+      });
+      invalidate();
+    }
+  }, [mats, carbonNormal, carbonRoughness]); //Will be called once the textures are ready
+
+  // Orchestration
+  return (
+    <>
+      <Gt3rsMutator 
+        mats={mats} 
+        textures={{ carbonNormal, carbonRoughness }} 
+      />
+      <MemoizedGt3rsModel url={modelPath} />
+    </>
+  );
 }

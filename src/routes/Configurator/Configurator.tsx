@@ -1,17 +1,37 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import * as THREE from 'three'
 import { Perf } from 'r3f-perf';
-import { Canvas } from '@react-three/fiber';
-import { Html, OrbitControls } from '@react-three/drei';
-import { vehicleRegistry } from '../../config/vehicles';
+import { Canvas, invalidate } from '@react-three/fiber';
+import { CameraControls, ContactShadows, Environment, Html } from '@react-three/drei';
+import { vehicleRegistry } from '@/config/vehicles';
+import Vehicle from '@/scene/vehicle/Vehicle';
 import styles from './Configurator.module.css';
-import Vehicle from '../../scene/vehicle/Vehicle';
-import ExteriorColorPicker from './components/ExteriorColorPicker';
+
+//Smart Sections
+import ExteriorColorSection from './components/sections/ExteriorColorSection.tsx';
+import AeroPackageSection from './components/sections/AeroPackageSection.tsx';
 
 const Configurator: React.FC = () => {
 
   const { vehicleId } = useParams<{ vehicleId: string }>(); //Get the vehicleID from the URL params. In the router we specified :vehicleID as a dynamic segment
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
+  const cameraControlsRef = useRef<React.ElementRef<typeof CameraControls>>(null);
+
+  //Setup invalidation for frameloop=demand
+  useEffect(() => {
+    const controls = cameraControlsRef.current;
+    if (!controls) return;
+
+    // Invalidate scene forcing update
+    const onUpdate = () => invalidate();
+    
+    controls.addEventListener('update', onUpdate);
+
+    return () => {
+      controls.removeEventListener('update', onUpdate);
+    };
+  }, []);
 
   if (!config) {
     return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
@@ -28,17 +48,24 @@ const Configurator: React.FC = () => {
           gl={{ 
             antialias: true, 
             preserveDrawingBuffer: false,
-            powerPreference: "high-performance"
+            powerPreference: "high-performance",
+            toneMapping: THREE.ACESFilmicToneMapping, // Fornisce un roll-off morbido sui bianchi
+            toneMappingExposure: 0.85
           }}
           camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
         >
+          <color attach="background" args={['#161616']} />
           {/* Only for development purposes */}
           <Perf position="top-left" minimal={false} /> 
 
           {/* TO SUBSTITUTE WITH HIGH QUALITY HDR MAP */}
-          <ambientLight intensity={1.5} /> 
-          <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-          <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#8888ff" />
+          <Suspense>
+            <Environment 
+              files="/hdri/studio_small_08_1k.hdr" 
+              background={false}
+              environmentIntensity={0.6}
+            />
+          </Suspense>
 
           <Suspense fallback={
             <Html center>
@@ -47,29 +74,44 @@ const Configurator: React.FC = () => {
               </div>
             </Html>
           }>
-            {/* Iniezione della prop nel Router */}
+            <ContactShadows 
+              position={[0, -0.01, 0]} 
+              resolution={1024} 
+              scale={ [3.5, 5.5] } 
+              blur={3.5} 
+              opacity={0.8} 
+              far={2}
+              color="#000000"
+              frames={1} 
+            />
             <Vehicle vehicleId={config.id} />
           </Suspense>
 
-          {/* makeDefault is a must for ondemand canvas */}
-          <OrbitControls 
+          {/* Camera control for better integraton with moving camera */}
+          <CameraControls 
+            ref={cameraControlsRef}
             makeDefault 
-            enablePan={false} 
-            enableDamping={true}
-            minDistance={3} 
-            maxDistance={10} 
-            maxPolarAngle={Math.PI / 2 - 0.05} // Always over the ground
-            rotateSpeed={0.4}
-            zoomSpeed={0.6}
+            minDistance={3.5} 
+            maxDistance={8} 
+            maxPolarAngle={Math.PI / 2 - 0.05}
+            azimuthRotateSpeed={0.25}
+            polarRotateSpeed={0.25}
+            smoothTime={0.35}
+            draggingSmoothTime={0.20}
           />
+
         </Canvas>
       </div>
 
-      {/* Configurator UI pannel */}
-     <aside className={styles.uiPanel}>
-        <ExteriorColorPicker paintOptions={config.paintOptions} />
+    {/* Configurator UI pannel */}
+    <aside className={styles.uiPanel}>
+        {/* Isolated Subscriptions: Zero impact on Canvas performance */}
+        <ExteriorColorSection options={config.paintOptions} />
+        
+        {config.aeroOptions && (
+          <AeroPackageSection options={config.aeroOptions} />
+        )}
 
-        {/* IN FUTURE one component for each possible sections */}
         <div className={styles.accordionSection}>
           <h3 className={styles.panelTitle} style={{ opacity: 0.5 }}>
             Wheels and Rims <span>▼</span>

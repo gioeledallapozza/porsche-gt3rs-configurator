@@ -16,9 +16,6 @@ interface VehicleProps {
 }
 
 const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
-
-  console.log(`[Vehicle Router] Rendering vehicle with ID: ${vehicleId}`);
-
   const config = vehicleRegistry[vehicleId];
   const Controller = controllerMap[vehicleId];
 
@@ -26,9 +23,10 @@ const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
     console.warn(`[Vehicle Router] Configuration or Controller not found for: ${vehicleId}`);
     return null;
   }
+
   return (
-    <group position={[0, -0.5, 0]}>
-      <Controller modelPath={config.modelPath} />
+    <group position={[0, 0, 0]}>
+        <Controller key={vehicleId} modelPath={config.modelPath} />
     </group>
   );
 };
