@@ -14,6 +14,7 @@ export const applyCarbonFiber = (
   material.normalMap = textures.normalMap;
   material.roughnessMap = textures.roughnessMap;
   material.roughness = 1.0; 
+  material.metalness = 0.0;
   material.clearcoat = 1.0;
   material.clearcoatRoughness = 0.05;
   material.needsUpdate = true;

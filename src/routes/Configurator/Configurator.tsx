@@ -1,8 +1,8 @@
-import React, { Suspense, useState, useCallback, useRef } from 'react';
+import React, { Suspense, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Perf } from 'r3f-perf';
-import { Canvas } from '@react-three/fiber';
-import { Environment, Html, OrbitControls } from '@react-three/drei';
+import { Canvas, invalidate } from '@react-three/fiber';
+import { CameraControls, ContactShadows, Environment, Html } from '@react-three/drei';
 import { vehicleRegistry } from '@/config/vehicles';
 import Vehicle from '@/scene/vehicle/Vehicle';
 import styles from './Configurator.module.css';
@@ -15,56 +15,27 @@ const Configurator: React.FC = () => {
 
   const { vehicleId } = useParams<{ vehicleId: string }>(); //Get the vehicleID from the URL params. In the router we specified :vehicleID as a dynamic segment
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
-
-  const [contextLost, setContextLost] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const handleWebGlContextLost = useCallback(() => {
-    console.warn('WebGL context was lost, attempting recovery...');
-    setContextLost(true);
-  }, []);
-
-  const handleWebGlContextRestored = useCallback(() => {
-    console.log('WebGL context restored');
-    setContextLost(false);
-  }, []);
+  const cameraControlsRef = useRef<any>(null);
 
   if (!config) {
     return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
   }
 
-  if (contextLost) {
-    return (
-      <div className={`${styles.configuratorContainer} animate-entry`}>
-        <div className={styles.canvasWrapper}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            color: '#fff',
-            gap: '1rem'
-          }}>
-            <div>WebGL Context Lost - Reloading...</div>
-            <button
-              onClick={() => window.location.reload()}
-              style={{
-                padding: '0.5rem 1rem',
-                background: '#ff6b6b',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              Reload Page
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
+  //Setup invalidation for frameloop=demand
+  useEffect(() => {
+    const controls = cameraControlsRef.current;
+    if (!controls) return;
+
+    // Invalidate scene forcing update
+    const onUpdate = () => invalidate();
+    
+    controls.addEventListener('update', onUpdate);
+
+    return () => {
+      controls.removeEventListener('update', onUpdate);
+    };
+  }, []);
 
   return (
     <div className={`${styles.configuratorContainer} animate-entry`}>
@@ -81,20 +52,18 @@ const Configurator: React.FC = () => {
           }}
           camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
         >
+          <color attach="background" args={['#161616']} />
           {/* Only for development purposes */}
           <Perf position="top-left" minimal={false} /> 
 
           {/* TO SUBSTITUTE WITH HIGH QUALITY HDR MAP */}
           <Suspense>
-            <Environment preset="studio" environmentIntensity={1.0} background/>
+            <Environment 
+              files="/hdri/studio_small_08_1k.hdr" 
+              background={false}
+              environmentIntensity={0.6}
+            />
           </Suspense>
-          {/* <ambientLight intensity={1.5} /> 
-          <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-          <directionalLight position={[-10, 5, -5]} intensity={0.5} color="#8888ff" /> */}
-
-          {/* <Environment preset="studio" />  */}
-          {/* Aggiunge realismo a terra senza pesanti luci dinamiche */}
-          {/* <ContactShadows resolution={1024} scale={20} blur={2} opacity={0.5} far={5} /> */}
 
           <Suspense fallback={
             <Html center>
@@ -103,21 +72,32 @@ const Configurator: React.FC = () => {
               </div>
             </Html>
           }>
-            {/* Iniezione della prop nel Router */}
+            <ContactShadows 
+              position={[0, -0.01, 0]} 
+              resolution={1024} 
+              scale={ [3.5, 5.5] } 
+              blur={3.5} 
+              opacity={0.8} 
+              far={2}
+              color="#000000"
+              frames={1} 
+            />
             <Vehicle vehicleId={config.id} />
           </Suspense>
 
-          {/* makeDefault is a must for ondemand canvas */}
-          <OrbitControls 
+          {/* Camera control for better integraton with moving camera */}
+          <CameraControls 
+            ref={cameraControlsRef}
             makeDefault 
-            enablePan={false} 
-            enableDamping={true}
-            minDistance={3} 
-            maxDistance={10} 
-            maxPolarAngle={Math.PI / 2 - 0.05} // Always over the ground
-            rotateSpeed={0.4}
-            zoomSpeed={0.6}
+            minDistance={3.5} 
+            maxDistance={8} 
+            maxPolarAngle={Math.PI / 2 - 0.05}
+            azimuthRotateSpeed={0.25}
+            polarRotateSpeed={0.25}
+            smoothTime={0.35}
+            draggingSmoothTime={0.20}
           />
+
         </Canvas>
       </div>
 

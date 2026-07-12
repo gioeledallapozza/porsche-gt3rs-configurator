@@ -26,7 +26,7 @@ const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
   }
 
   return (
-    <group position={[0, -0.5, 0]}>
+    <group position={[0, 0, 0]}>
         <Controller key={vehicleId} modelPath={config.modelPath} />
     </group>
   );

@@ -24,9 +24,9 @@ function copyPaintProps(target: any, source: any) {
   if (typeof source.clearcoat === 'number') target.clearcoat = source.clearcoat;
   if (typeof source.clearcoatRoughness === 'number') target.clearcoatRoughness = source.clearcoatRoughness;
 
-  if (source.map) target.map = source.map;
-  if (source.normalMap) target.normalMap = source.normalMap;
-  if (source.roughnessMap) target.roughnessMap = source.roughnessMap;
+  target.map = source.map || null;
+  target.normalMap = source.normalMap || null;
+  target.roughnessMap = source.roughnessMap || null;
 
   // Guard vector copies
   if (source.normalScale && target.normalScale && typeof target.normalScale.copy === 'function') {
@@ -78,6 +78,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureLightsGlass(extractedMaterials.glassLights);
     // applyBlackPlastic(extractedMaterials.exteriorLowerAero); //Not necessary iin blender the colors are already ok
 
+
     // PURGE BLENDER GARBAGE DATA ONCE
     // We destroy the baked image map from Blender. True WebGL carbon only needs normals.
     if (extractedMaterials.exteriorWeissach.map) {
@@ -96,7 +97,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     return extractedMaterials;
   }, [materials]);
 
-// APPLY CARBON WHEN DOWNLOAD FINISHES
+  // APPLY CARBON WHEN DOWNLOAD FINISHES
   useEffect(() => {
     if (!carbonNormal || !carbonRoughness) return; // Aspetta le texture
 
@@ -146,12 +147,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
           });
         } else {
           // Base material
-          mats.exteriorWeissach.color.set(currentState.carColor);
-          mats.exteriorWeissach.normalMap = null;
-          mats.exteriorWeissach.roughnessMap = null;
-          mats.exteriorWeissach.roughness = mats.paint.roughness;
-          mats.exteriorWeissach.clearcoat = 1.0;
-          mats.exteriorWeissach.needsUpdate = true;
+          copyPaintProps(mats.exteriorWeissach, mats.paint);
         }
         needsRender = true;
       }
