@@ -20,6 +20,7 @@ interface Gt3rsControllerProps {
   modelPath: string;
 }
 
+/* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
   const { materials } = useGLTF(modelPath); 

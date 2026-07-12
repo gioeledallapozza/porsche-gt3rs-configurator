@@ -1,6 +1,5 @@
 import { vehicleRegistry } from '@/config/vehicles';
-import { useGLTF } from '@react-three/drei';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface ControllerProps {
   modelPath: string;

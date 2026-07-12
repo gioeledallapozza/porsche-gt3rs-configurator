@@ -16,12 +16,7 @@ const Configurator: React.FC = () => {
 
   const { vehicleId } = useParams<{ vehicleId: string }>(); //Get the vehicleID from the URL params. In the router we specified :vehicleID as a dynamic segment
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
-  const cameraControlsRef = useRef<any>(null);
-
-  if (!config) {
-    return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
-  }
-
+  const cameraControlsRef = useRef<React.ElementRef<typeof CameraControls>>(null);
 
   //Setup invalidation for frameloop=demand
   useEffect(() => {
@@ -37,6 +32,10 @@ const Configurator: React.FC = () => {
       controls.removeEventListener('update', onUpdate);
     };
   }, []);
+
+  if (!config) {
+    return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
+  }
 
   return (
     <div className={`${styles.configuratorContainer} animate-entry`}>
