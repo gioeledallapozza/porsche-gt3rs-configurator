@@ -1,5 +1,6 @@
 import React, { Suspense, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import * as THREE from 'three'
 import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
 import { CameraControls, ContactShadows, Environment, Html } from '@react-three/drei';
@@ -48,7 +49,9 @@ const Configurator: React.FC = () => {
           gl={{ 
             antialias: true, 
             preserveDrawingBuffer: false,
-            powerPreference: "high-performance"
+            powerPreference: "high-performance",
+            toneMapping: THREE.ACESFilmicToneMapping, // Fornisce un roll-off morbido sui bianchi
+            toneMappingExposure: 0.85
           }}
           camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
         >

@@ -2,163 +2,99 @@ import React, { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { invalidate } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { useConfiguratorStore } from '@/store/configuratorStore';
 import Gt3rsModel from '@/scene/vehicle/models/Gt3rsModel.tsx';
-import { applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
 import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
+import { applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
 import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
+import { 
+  configureHeadlightDRL, 
+  configureTaillightEmissive, 
+  configureSignalEmissive, 
+  configureLicensePlateLight 
+} from '@/scene/materials/presets/lights';
+import Gt3rsMutator from './Gt3rsMutator'; // Import the new logic component
 
-
-
-// Memoize the Gt3rsModel component to prevent unnecessary re-renders
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
-
-// Safely copy only paint-related properties from one material to another.
-// This avoids MeshMaterial.copy() trying to copy nested vectors that may be undefined.
-function copyPaintProps(target: any, source: any) {
-  if (!target || !source) return;
-
-  if (target.color && source.color) target.color.copy(source.color);
-  if (typeof source.metalness === 'number') target.metalness = source.metalness;
-  if (typeof source.roughness === 'number') target.roughness = source.roughness;
-  if (typeof source.clearcoat === 'number') target.clearcoat = source.clearcoat;
-  if (typeof source.clearcoatRoughness === 'number') target.clearcoatRoughness = source.clearcoatRoughness;
-
-  target.map = source.map || null;
-  target.normalMap = source.normalMap || null;
-  target.roughnessMap = source.roughnessMap || null;
-
-  // Guard vector copies
-  if (source.normalScale && target.normalScale && typeof target.normalScale.copy === 'function') {
-    target.normalScale.copy(source.normalScale);
-  }
-
-  target.needsUpdate = true;
-}
 
 interface Gt3rsControllerProps {
   modelPath: string;
 }
 
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
-  const { materials } = useGLTF(modelPath); //Extract materials from the GLTF model
-
-  // useKTX2 automatically integrates with Suspense and the KTX2Loader
+  //Assets loading
+  const { materials } = useGLTF(modelPath); 
+  //To define which carbon texture to load
   const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
   const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');
 
+  // TEXTURES SETUPS
   useMemo(() => {
-    // Only apply wrapping if the textures are successfully loaded
     if (carbonNormal && carbonRoughness) {
       carbonNormal.wrapS = carbonNormal.wrapT = THREE.RepeatWrapping;
       carbonRoughness.wrapS = carbonRoughness.wrapT = THREE.RepeatWrapping;
-      
-      // Ensure color space is strictly linear for data textures (Normal/Roughness)
       carbonNormal.colorSpace = THREE.LinearSRGBColorSpace;
       carbonRoughness.colorSpace = THREE.LinearSRGBColorSpace;
     }
   }, [carbonNormal, carbonRoughness]);
 
-  // Memoize materials 
+  // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
     const extractedMaterials = {
+      // Standard
       paint: materials.Material_Chassis_Paint as THREE.MeshPhysicalMaterial,
       glassCabin: materials.Material_Glass_Cabin_Static as THREE.MeshPhysicalMaterial,
       glassLights: materials.Material_Glass_Lights_Static as THREE.MeshPhysicalMaterial,
       carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
       exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
       exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
+
+      // Emissives
+      headlightEmissive: materials.Material_Headlight_Emissive as THREE.MeshStandardMaterial,
+      taillightBrakeEmissive: materials.Material_Taillight_Brake_Emissive as THREE.MeshStandardMaterial,
+      taillightEmissive: materials.Material_Taillight_Emissive as THREE.MeshStandardMaterial,
+      signalEmissive: materials.Material_Signal_Emissive as THREE.MeshStandardMaterial,
+      licensePlateLight: materials.Material_LicensePlateLight_Emissive as THREE.MeshStandardMaterial,
     };
 
-    const initialState = useConfiguratorStore.getState();
-    extractedMaterials.paint.color.set(initialState.carColor);
-
-    //STATIC SETUP
+    // Glass
     configureCabinGlass(extractedMaterials.glassCabin);
     configureLightsGlass(extractedMaterials.glassLights);
-    // applyBlackPlastic(extractedMaterials.exteriorLowerAero); //Not necessary iin blender the colors are already ok
 
+    // Emissive
+    configureHeadlightDRL(extractedMaterials.headlightEmissive);
+    configureTaillightEmissive(extractedMaterials.taillightBrakeEmissive);
+    configureTaillightEmissive(extractedMaterials.taillightEmissive);
+    configureSignalEmissive(extractedMaterials.signalEmissive);
+    configureLicensePlateLight(extractedMaterials.licensePlateLight);
 
-    // PURGE BLENDER GARBAGE DATA ONCE
-    // We destroy the baked image map from Blender. True WebGL carbon only needs normals.
+    // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
       extractedMaterials.exteriorWeissach.map = null;
-      // CRITICAL: Force shader recompilation immediately to avoid future lag
       extractedMaterials.exteriorWeissach.needsUpdate = true; 
-    }
-
-    // INITIAL WEISSACH INJECTION
-    if (initialState.aeroPackage !== 'weissach') {
-      // DEEP COPY: Perfectly clone all paint properties (metalness, roughness, etc.)
-      // Use a safe copy helper to avoid Three.js copying undefined vector properties
-      copyPaintProps(extractedMaterials.exteriorWeissach, extractedMaterials.paint);
     }
 
     return extractedMaterials;
   }, [materials]);
 
-  // APPLY CARBON WHEN DOWNLOAD FINISHES
+  // ASYNCHRONOUS STATUC SETUP  (Cannot be runned in the useMemo because the textures need to be loaded)
   useEffect(() => {
-    if (!carbonNormal || !carbonRoughness) return; // Aspetta le texture
-
-    // Il trim statico è sempre in carbonio
-    applyCarbonFiber(mats.carbonTrimStatic, {
-      normalMap: carbonNormal,
-      roughnessMap: carbonRoughness,
-    });
-
-    // Controlla se il pacchetto Weissach è attivo per applicarlo
-    const currentState = useConfiguratorStore.getState();
-    if (currentState.aeroPackage === 'weissach') {
-      applyCarbonFiber(mats.exteriorWeissach, {
+    if (carbonNormal && carbonRoughness) {
+      applyCarbonFiber(mats.carbonTrimStatic, {
         normalMap: carbonNormal,
         roughnessMap: carbonRoughness,
       });
+      invalidate();
     }
+  }, [mats, carbonNormal, carbonRoughness]); //Will be called once the textures are ready
 
-    invalidate();
-  }, [mats, carbonNormal, carbonRoughness]);  
-
-  
-// REALTIME MUTATIONS LISTENER
-  useEffect(() => {
-    const unsubscribe = useConfiguratorStore.subscribe((currentState, prevState) => {
-      let needsRender = false;
-
-      // Se cambia il colore vernice
-      if (currentState.carColor !== prevState.carColor) {
-        mats.paint.color.set(currentState.carColor);
-        mats.paint.needsUpdate = true;
-        
-        // Sincronizza anche le parti Weissach se non sono in carbonio
-        if (currentState.aeroPackage !== 'weissach') {
-          mats.exteriorWeissach.color.set(currentState.carColor);
-          mats.exteriorWeissach.needsUpdate = true;
-        }
-        needsRender = true;
-      }
-
-      // If aero changed
-      if (currentState.aeroPackage !== prevState.aeroPackage) {
-        if (currentState.aeroPackage === 'weissach' && carbonNormal && carbonRoughness) {
-          applyCarbonFiber(mats.exteriorWeissach, { 
-            normalMap: carbonNormal, 
-            roughnessMap: carbonRoughness 
-          });
-        } else {
-          // Base material
-          copyPaintProps(mats.exteriorWeissach, mats.paint);
-        }
-        needsRender = true;
-      }
-
-      if (needsRender) {
-        invalidate();
-      }
-    });
-
-    return unsubscribe;
-  }, [mats, carbonNormal, carbonRoughness]);
-
-  return <MemoizedGt3rsModel url={modelPath}/>; //Return the GT3RS model
+  // Orchestration
+  return (
+    <>
+      <Gt3rsMutator 
+        mats={mats} 
+        textures={{ carbonNormal, carbonRoughness }} 
+      />
+      <MemoizedGt3rsModel url={modelPath} />
+    </>
+  );
 }
