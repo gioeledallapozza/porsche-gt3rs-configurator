@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import * as THREE from 'three';
-import { invalidate } from '@react-three/fiber';
+import { invalidate, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import Gt3rsModel from '@/scene/vehicle/models/Gt3rsModel.tsx';
 import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
@@ -24,19 +24,44 @@ interface Gt3rsControllerProps {
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
   const { materials } = useGLTF(modelPath); 
+  const { gl } = useThree();
   //To define which carbon texture to load
   const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
   const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');
+  const forgedNormal = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2');
+  const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
+  const flakeNormal = useKtx2Disposal('/textures/materials/flakes/flakes_v3_normal_2k.ktx2');
 
   // TEXTURES SETUPS
   useMemo(() => {
+   // Twill Carbon
     if (carbonNormal && carbonRoughness) {
       carbonNormal.wrapS = carbonNormal.wrapT = THREE.RepeatWrapping;
       carbonRoughness.wrapS = carbonRoughness.wrapT = THREE.RepeatWrapping;
       carbonNormal.colorSpace = THREE.LinearSRGBColorSpace;
       carbonRoughness.colorSpace = THREE.LinearSRGBColorSpace;
     }
-  }, [carbonNormal, carbonRoughness]);
+    // Forged Carbon
+    if (forgedNormal && forgedRoughness) {
+      forgedNormal.wrapS = forgedNormal.wrapT = THREE.RepeatWrapping;
+      forgedRoughness.wrapS = forgedRoughness.wrapT = THREE.RepeatWrapping;
+    
+      // forgedNormal.repeat.set(8, 8);
+      // forgedRoughness.repeat.set(8, 8);
+      
+      forgedNormal.colorSpace = THREE.LinearSRGBColorSpace;
+      forgedRoughness.colorSpace = THREE.LinearSRGBColorSpace;
+    }
+    // Flakes 
+    if (flakeNormal) {
+      flakeNormal.wrapS = flakeNormal.wrapT = THREE.RepeatWrapping;
+      flakeNormal.repeat.set(80, 80);
+      flakeNormal.colorSpace = THREE.LinearSRGBColorSpace;
+
+      flakeNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
+      flakeNormal.minFilter = THREE.LinearMipMapLinearFilter;
+    }
+  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, flakeNormal]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
@@ -67,7 +92,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureTaillightEmissive(extractedMaterials.taillightEmissive);
     configureSignalEmissive(extractedMaterials.signalEmissive);
     configureLicensePlateLight(extractedMaterials.licensePlateLight);
-
+    
     // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
       extractedMaterials.exteriorWeissach.map = null;
@@ -93,7 +118,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     <>
       <Gt3rsMutator 
         mats={mats} 
-        textures={{ carbonNormal, carbonRoughness }} 
+        textures={{ carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, flakeNormal }}
       />
       <MemoizedGt3rsModel url={modelPath} />
     </>

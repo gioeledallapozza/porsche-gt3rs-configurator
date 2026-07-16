@@ -1,22 +1,24 @@
 import * as THREE from 'three';
 
-// 1. CABIN GLASS (Privacy & Glare)
-// Uses Alpha Blending: No optical distortion, perfect sorting, stable against empty backgrounds.
+// 1. CABIN GLASS
 export const configureCabinGlass = (material: THREE.MeshPhysicalMaterial): void => {
-  material.color.setHex(0x050505);
-  material.transmission = 0.0; // Disabled to prevent Screen-Space Refraction bugs
-  material.opacity = 0.8;      // 0.8 creates a premium dark privacy tint
-  
+  material.color.setHex(0x555555);
+  material.transmission = 1.0; 
+  material.opacity = 1.0;  
+
   material.metalness = 0.0; 
   material.roughness = 0.0; 
+  material.thickness = 0.05;
   
-  // High clearcoat and envMap to boost Fresnel reflections 
   material.clearcoat = 1.0;
   material.clearcoatRoughness = 0.0;
-  material.envMapIntensity = 2.5; 
-  
+
+
+  material.envMapIntensity = 0.8; //DOESN'T WORk
+
+
   material.transparent = true;
-  material.depthWrite = false; 
+  material.depthWrite = true; 
   material.needsUpdate = true;
 };
 

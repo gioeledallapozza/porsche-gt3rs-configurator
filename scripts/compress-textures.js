@@ -6,8 +6,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const RAW_DIR = path.resolve(__dirname, '../_raw_assets/textures/carbon_fiber'); //to change for other textures
-const OUT_DIR = path.resolve(__dirname, '../public/textures/materials/carbon'); //to change for other textures
+const RAW_DIR = path.resolve(__dirname, '../_raw_assets/textures/flakes'); //to change for other textures
+const OUT_DIR = path.resolve(__dirname, '../public/textures/materials/flakes'); //to change for other textures
 
 if (!fs.existsSync(OUT_DIR)) {
   fs.mkdirSync(OUT_DIR, { recursive: true });

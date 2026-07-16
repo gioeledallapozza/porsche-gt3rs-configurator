@@ -11,6 +11,9 @@ export function copyPaintProps(target: THREE.MeshPhysicalMaterial, source: THREE
   if (typeof source.clearcoat === 'number') target.clearcoat = source.clearcoat;
   if (typeof source.clearcoatRoughness === 'number') target.clearcoatRoughness = source.clearcoatRoughness;
 
+  target.sheen = source.sheen ?? 0.0;
+  if (source.sheenColor && target.sheenColor) target.sheenColor.copy(source.sheenColor);
+
   target.map = source.map || null;
   target.normalMap = source.normalMap || null;
   target.roughnessMap = source.roughnessMap || null;
