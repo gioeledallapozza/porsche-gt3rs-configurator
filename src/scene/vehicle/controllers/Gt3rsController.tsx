@@ -25,6 +25,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
   const { materials } = useGLTF(modelPath); 
   const { gl } = useThree();
+  
   //To define which carbon texture to load
   const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
   const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');

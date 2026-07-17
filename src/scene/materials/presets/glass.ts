@@ -10,11 +10,12 @@ export const configureCabinGlass = (material: THREE.MeshPhysicalMaterial): void 
   material.roughness = 0.0; 
   material.thickness = 0.05;
   
-  material.clearcoat = 1.0;
+  material.clearcoat = 0.0;
   material.clearcoatRoughness = 0.0;
+  console.log(material.envMap)
 
 
-  material.envMapIntensity = 0.8; //DOESN'T WORk
+  material.envMapIntensity = 0.0; //DOESN'T WORk
 
 
   material.transparent = true;
@@ -29,7 +30,6 @@ export const configureLightsGlass = (material: THREE.MeshPhysicalMaterial): void
   material.transmission = 1.0;     
   material.opacity = 1.0; 
   
-  // FIX: Set IOR to 1.0 (Air) to eliminate the "magnifying glass" distortion on curved meshes
   material.ior = 1.0; 
   material.thickness = 0.1; 
   
@@ -38,9 +38,6 @@ export const configureLightsGlass = (material: THREE.MeshPhysicalMaterial): void
   
   material.clearcoat = 1.0;
   material.clearcoatRoughness = 0.0;
-  
-  // Boosted slightly to ensure the glass still catches HDR reflections despite IOR 1.0
-  material.envMapIntensity = 2.0; 
   
   material.transparent = true;
   material.depthWrite = false;

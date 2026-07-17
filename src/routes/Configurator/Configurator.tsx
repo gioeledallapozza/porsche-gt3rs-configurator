@@ -3,9 +3,11 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, ContactShadows, Environment, Html } from '@react-three/drei';
+import { CameraControls, Html } from '@react-three/drei';
 import { vehicleRegistry } from '@/config/vehicles';
 import Vehicle from '@/scene/vehicle/Vehicle';
+import VirtualStudio from '@/scene/environment/VirtualStudio.tsx';
+import StudioLighting from '@/scene/environment/StudioLighting.tsx';
 import styles from './Configurator.module.css';
 
 //Smart Sections
@@ -43,47 +45,31 @@ const Configurator: React.FC = () => {
       {/* Canvas WebGL 3D Scene */}
       <div className={styles.canvasWrapper}>
         <Canvas
+          shadows={{ type: THREE.PCFShadowMap }}
           frameloop="demand" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
             antialias: true, 
             preserveDrawingBuffer: false,
             powerPreference: "high-performance",
-            toneMapping: THREE.ACESFilmicToneMapping, // Fornisce un roll-off morbido sui bianchi
-            toneMappingExposure: 0.85
+            toneMapping: THREE.ACESFilmicToneMapping,
+            toneMappingExposure: 1.0,
+            alpha: true,
           }}
           camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
         >
-          <color attach="background" args={['#161616']} />
           {/* Only for development purposes */}
-          <Perf position="top-left" minimal={false} /> 
+          <Perf position="top-left" minimal={false} />
 
-          {/* TO SUBSTITUTE WITH HIGH QUALITY HDR MAP */}
-          <Suspense>
-            <Environment 
-              files="/hdri/studio_small_08_1k.hdr" 
-              background={false}
-              environmentIntensity={0.6}
-            />
-          </Suspense>
 
           <Suspense fallback={
             <Html center>
-              <div className={styles.vehicleLoader}>
-                Loading vehicle assets...
-              </div>
+              <div className={styles.vehicleLoader}>Loading 3D Assets...</div>
             </Html>
           }>
-            <ContactShadows 
-              position={[0, -0.01, 0]} 
-              resolution={1024} 
-              scale={ [3.5, 5.5] } 
-              blur={3.5} 
-              opacity={0.8} 
-              far={2}
-              color="#000000"
-              frames={1} 
-            />
+            <VirtualStudio />  {/* EnvMap */}
+            <StudioLighting /> {/* Dynamic shadows */}
+
             <Vehicle vehicleId={config.id} />
           </Suspense>
 
@@ -112,6 +98,7 @@ const Configurator: React.FC = () => {
           <AeroPackageSection options={config.aeroOptions} />
         )}
 
+        {/* TO CHANGE AND INTEGRATE */}
         <div className={styles.accordionSection}>
           <h3 className={styles.panelTitle} style={{ opacity: 0.5 }}>
             Wheels and Rims <span>▼</span>
