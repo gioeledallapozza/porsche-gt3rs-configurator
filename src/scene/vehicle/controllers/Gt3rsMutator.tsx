@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { invalidate } from '@react-three/fiber';
+import { invalidate, useThree } from '@react-three/fiber';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
 import { copyPaintProps } from '@/scene/materials/utils/materialHelpers';
@@ -26,11 +26,13 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   const paintMat = mats.paint as THREE.MeshPhysicalMaterial;
   const weissachMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
 
+    const { scene } = useThree();
+
   // CAR COLOR CHANGE
   useEffect(() => {
     if (!paintMat) return;
 
-    const METALLIC_COLORS = ['#111111', '#2f3b33', '#101835'];//TO CHANEG
+    const METALLIC_COLORS = ['#111111', '#2f3b33', '#101835'];//TO CHANGE DO NOT HARDCODE THIS
     const isMetallic = METALLIC_COLORS.includes(carColor.toLowerCase()); 
 
     if (isMetallic && !textures.flakeNormal) return;

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, Html } from '@react-three/drei';
+import { CameraControls, Html, SoftShadows } from '@react-three/drei';
 import { vehicleRegistry } from '@/config/vehicles';
 import Vehicle from '@/scene/vehicle/Vehicle';
 import VirtualStudio from '@/scene/environment/VirtualStudio.tsx';
@@ -49,8 +49,7 @@ const Configurator: React.FC = () => {
           frameloop="demand" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
-            antialias: true, 
-            preserveDrawingBuffer: false,
+            antialias: false, 
             powerPreference: "high-performance",
             toneMapping: THREE.ACESFilmicToneMapping,
             toneMappingExposure: 1.0,
@@ -61,6 +60,7 @@ const Configurator: React.FC = () => {
           {/* Only for development purposes */}
           <Perf position="top-left" minimal={false} />
 
+          <SoftShadows focus={0.5} samples={16} size={12}/>
 
           <Suspense fallback={
             <Html center>

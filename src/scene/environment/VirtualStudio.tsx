@@ -3,36 +3,50 @@ import { Environment, Lightformer } from '@react-three/drei';
 
 const VirtualStudio: React.FC = () => {
   return (
-   <Environment frames={1} resolution={1024} background={false}>
-      {/* Ceiling softbox (Key Light) - Creates the continuous reflection on the hood and roof */}
+    <Environment resolution={2048} background={false} >
+      
+      {/* ROOM BASE */}
       <Lightformer 
-        intensity={3} 
+        form="sphere" 
+        intensity={0.1} 
+        color="#111" 
+        scale={100} 
+      />
+
+      {/* TOP SOFTBOX */}
+      <Lightformer 
+        form="rect" 
+        intensity={2.0} 
+        position={[0, 5, 0]} 
         rotation-x={Math.PI / 2} 
-        position={[0, 5, -2]} 
-        scale={[12, 10, 1]} 
+        scale={[10, 10, 1]} 
       />
-      
-      {/* Side softboxes – Define the doors and broad shoulders of the GT3 RS */}
+
+      {/* SIDE BLADES */}
       <Lightformer 
-        intensity={1.5} 
+        form="rect" 
+        intensity={3.0} 
+        position={[-4, 1.5, 0]} 
         rotation-y={Math.PI / 2} 
-        position={[-6, 1, 0]} 
-        scale={[20, 2, 1]} 
+        scale={[15, 1.5, 1]} 
       />
       <Lightformer 
+        form="rect" 
         intensity={1.5} 
+        position={[4, 1.5, 0]} 
         rotation-y={-Math.PI / 2} 
-        position={[6, 1, 0]} 
-        scale={[20, 2, 1]} 
+        scale={[15, 1.5, 1]} 
+      />
+
+      {/* FRONT KICK */}
+      <Lightformer 
+        form="circle" 
+        intensity={2.0} 
+        position={[0, 1.5, 6]}
+        rotation-y={Math.PI} 
+        scale={[5, 5, 1]} 
       />
       
-      {/* Front fill light - Illuminates the front air intakes and the splitter */}
-      <Lightformer 
-        intensity={2} 
-        rotation-y={Math.PI} 
-        position={[0, 1, 8]} 
-        scale={[10, 2, 1]} 
-      />
     </Environment>
   );
 };

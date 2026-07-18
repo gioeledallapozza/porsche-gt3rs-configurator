@@ -22,5 +22,8 @@ export function copyPaintProps(target: THREE.MeshPhysicalMaterial, source: THREE
     target.normalScale.copy(source.normalScale);
   }
 
+  target.envMap = source.envMap || null;
+  if (typeof source.envMapIntensity === 'number') target.envMapIntensity = source.envMapIntensity;
+
   target.needsUpdate = true;
 }

@@ -4,6 +4,7 @@ import { invalidate, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import Gt3rsModel from '@/scene/vehicle/models/Gt3rsModel.tsx';
 import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
+import { applyBlackPlastic } from '@/scene/materials/presets/plastic';
 import { applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
 import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
 import { 
@@ -24,7 +25,7 @@ interface Gt3rsControllerProps {
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
   const { materials } = useGLTF(modelPath); 
-  const { gl } = useThree();
+  const { scene, gl } = useThree();
   
   //To define which carbon texture to load
   const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
@@ -46,9 +47,6 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     if (forgedNormal && forgedRoughness) {
       forgedNormal.wrapS = forgedNormal.wrapT = THREE.RepeatWrapping;
       forgedRoughness.wrapS = forgedRoughness.wrapT = THREE.RepeatWrapping;
-    
-      // forgedNormal.repeat.set(8, 8);
-      // forgedRoughness.repeat.set(8, 8);
       
       forgedNormal.colorSpace = THREE.LinearSRGBColorSpace;
       forgedRoughness.colorSpace = THREE.LinearSRGBColorSpace;
@@ -93,6 +91,13 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureTaillightEmissive(extractedMaterials.taillightEmissive);
     configureSignalEmissive(extractedMaterials.signalEmissive);
     configureLicensePlateLight(extractedMaterials.licensePlateLight);
+
+    // Plastic
+    applyBlackPlastic(extractedMaterials.exteriorLowerAero)
+
+    console.log("Vetro DepthWrite:", extractedMaterials.glassCabin.depthWrite);
+    console.log("Vetro Opacity:", extractedMaterials.glassCabin.opacity);
+    console.log("Vetro Side:", extractedMaterials.glassCabin.side);
     
     // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
@@ -113,6 +118,23 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       invalidate();
     }
   }, [mats, carbonNormal, carbonRoughness]); //Will be called once the textures are ready
+
+  // EXPLICIT INJECTION OF ENVMAP (the useMemo load the materials before the envmap is loaded)
+  useEffect(() => {
+    
+    if (!scene.environment) return;
+
+    //Iterate through all materials
+    Object.values(mats).forEach((mat) => {
+      // If the material support the envMap and is null update it
+      if ('envMap' in mat && mat.envMap === null) {
+        mat.envMap = scene.environment;
+        mat.needsUpdate = true;
+      }
+    });
+
+    invalidate();
+  }, [mats, scene.environment]);
 
   // Orchestration
   return (

@@ -1,42 +1,45 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useHelper } from '@react-three/drei';
+import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { useFrame } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 
 const StudioLighting: React.FC = () => {
-  
-  // 1. Decommentato lo stato correttamente
-  const lightRef = useRef<THREE.SpotLight>(null!);
-  const [shadowCam, setShadowCam] = useState<THREE.Camera | null>(null);
+  const dirLightRef = useRef<THREE.DirectionalLight>(null!);
+  const { scene } = useThree();
 
-  // Forza l'aggiornamento finché la camera d'ombra non è pronta
-  useFrame(() => {
-    if (!shadowCam && lightRef.current?.shadow?.camera) {
-      setShadowCam(lightRef.current.shadow.camera);
+  useEffect(() => {
+    if (dirLightRef.current) {
+    
+      dirLightRef.current.updateMatrixWorld();
+      
+      const shadowHelper = new THREE.CameraHelper(dirLightRef.current.shadow.camera);
+      scene.add(shadowHelper);
+
+      // invalidate();
+
+      return () => {
+        scene.remove(shadowHelper);
+        shadowHelper.dispose();
+      };
     }
-  });
+  }, [scene]);
 
-  useHelper(lightRef, THREE.SpotLightHelper, 'cyan');
-  useHelper(shadowCam as any, THREE.CameraHelper);
   return (
     <group>
-      <ambientLight intensity={0.5} />
-     <spotLight
-        ref={lightRef}
-        position={[2, 15, 2]} // Leggermente spostata per creare una proiezione diagonale
-        angle={0.6}
-        penumbra={1}
+      <directionalLight
+        ref={dirLightRef}
         castShadow
-        intensity={2}
-        shadow-mapSize={[2048, 2048]}
+        position={[5, 8, 3]} // Luce angolata per scolpire le forme
+        intensity={2.5} // Valore PBR bilanciato
+        shadow-mapSize={[4096, 4096]}
         shadow-bias={-0.0001}
-        shadow-normalBias={0.02} // Ridotto leggermente
-        shadow-camera-near={5}
-        shadow-camera-far={25}
-        shadow-camera-fov={20}
-      />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
-        <planeGeometry args={[30, 30]} />
+        shadow-normalBias={0.02} // Fondamentale per evitare shadow acne sulle curve
+      >
+        {/* La DirectionalLight richiede una camera ortografica per le ombre. Calibrala stretta sull'auto */}
+        <orthographicCamera attach="shadow-camera" args={[-3, 3, 3, -3, 0.5, 12]} />
+      </directionalLight>
+
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]} receiveShadow> 
+        <planeGeometry args={[30, 30]} /> 
         <shadowMaterial transparent opacity={0.6} color="#000000" />
       </mesh>
     </group>
