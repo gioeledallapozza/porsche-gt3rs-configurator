@@ -26,15 +26,14 @@ const StudioLighting: React.FC = () => {
   return (
     <group>
       <directionalLight
-        ref={dirLightRef}
+        // ref={dirLightRef} // ONLY FOR DEBUG
         castShadow
-        position={[5, 8, 3]} // Luce angolata per scolpire le forme
-        intensity={2.5} // Valore PBR bilanciato
+        position={[5, 8, 3]}
+        intensity={2.5} 
         shadow-mapSize={[4096, 4096]}
         shadow-bias={-0.0001}
-        shadow-normalBias={0.02} // Fondamentale per evitare shadow acne sulle curve
+        shadow-normalBias={0.02} 
       >
-        {/* La DirectionalLight richiede una camera ortografica per le ombre. Calibrala stretta sull'auto */}
         <orthographicCamera attach="shadow-camera" args={[-3, 3, 3, -3, 0.5, 12]} />
       </directionalLight>
 

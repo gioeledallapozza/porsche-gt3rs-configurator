@@ -29,15 +29,12 @@ files.forEach(file => {
     console.log(`Compressione: ${baseName}${ext} ...`);
     
    try {
-      if (file.includes('normal')) {
-        //--assign_oetf linear FORCE the space color for data
-        execSync(`toktx --t2 --assign_oetf linear --encode uastc --uastc_quality 4 --zcmp 22 --normal_mode "${outFile}" "${inFile}"`);
+     if (file.includes('normal')) {
+        execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode uastc --uastc_quality 4 --zcmp 22 --normal_mode "${outFile}" "${inFile}"`);
       } else if (file.includes('roughness') || file.includes('metalness')) {
-        // --assign_oetf linear FORCE the space color for data
-        execSync(`toktx --t2 --assign_oetf linear --encode etc1s --clevel 5 "${outFile}" "${inFile}"`);
+        execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode etc1s --clevel 5 "${outFile}" "${inFile}"`);
       } else {
-        // Albedo reamins sRGB
-        execSync(`toktx --t2 --encode etc1s --clevel 5 "${outFile}" "${inFile}"`);
+        execSync(`toktx --t2 --genmipmap --encode etc1s --clevel 5 "${outFile}" "${inFile}"`);
       }
     } catch (error) {
       console.error(`Error during compression of ${baseName}${ext}: ${error.message}`);

@@ -6,24 +6,32 @@ export function copyPaintProps(target: THREE.MeshPhysicalMaterial, source: THREE
   if (!target || !source) return;
 
   if (target.color && source.color) target.color.copy(source.color);
-  if (typeof source.metalness === 'number') target.metalness = source.metalness;
-  if (typeof source.roughness === 'number') target.roughness = source.roughness;
-  if (typeof source.clearcoat === 'number') target.clearcoat = source.clearcoat;
-  if (typeof source.clearcoatRoughness === 'number') target.clearcoatRoughness = source.clearcoatRoughness;
-
-  target.sheen = source.sheen ?? 0.0;
-  if (source.sheenColor && target.sheenColor) target.sheenColor.copy(source.sheenColor);
+  target.metalness = source.metalness;
+  target.roughness = source.roughness;
+  target.ior = source.ior;
 
   target.map = source.map || null;
   target.normalMap = source.normalMap || null;
-  target.roughnessMap = source.roughnessMap || null;
-
-  if (source.normalScale && target.normalScale && typeof target.normalScale.copy === 'function') {
+  console.log(source.normalMap)
+  console.log(target.normalMap)
+  if (source.normalScale && target.normalScale) {
     target.normalScale.copy(source.normalScale);
   }
+  target.roughnessMap = source.roughnessMap || null;
+
+  target.clearcoat = source.clearcoat;
+  target.clearcoatRoughness = source.clearcoatRoughness;
+  target.clearcoatNormalMap = source.clearcoatNormalMap || null;
+  if (source.clearcoatNormalScale && target.clearcoatNormalScale) {
+    target.clearcoatNormalScale.copy(source.clearcoatNormalScale);
+  }
+
+  target.sheen = source.sheen;
+  target.sheenRoughness = source.sheenRoughness;
+  if (source.sheenColor && target.sheenColor) target.sheenColor.copy(source.sheenColor);
 
   target.envMap = source.envMap || null;
-  if (typeof source.envMapIntensity === 'number') target.envMapIntensity = source.envMapIntensity;
+  target.envMapIntensity = source.envMapIntensity;
 
   target.needsUpdate = true;
 }

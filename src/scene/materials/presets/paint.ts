@@ -28,27 +28,26 @@ export const applyMetallicPaint = (
   isGentianBlue: boolean = false
 ): void => {
   material.color.set(hexColor);
-  
-  // Injection of flakes
+
   material.normalMap = flakeNormalMap;
   
-  //Scale 
-  material.normalScale.set(0.015, 0.015);
-  material.roughnessMap = null;
+  material.normalScale.set(0.004, 0.004);
   
-  material.roughness = 0.35; 
-  material.metalness = 0.6;
-  material.envMapIntensity = 1.2;
+  material.roughnessMap = null;
+
+  material.roughness = 0.45; 
+  material.metalness = 0.6; 
 
   material.clearcoat = 1.0;
-  material.clearcoatNormalMap = null;
-  material.clearcoatRoughness = 0.015;
+  material.clearcoatNormalMap = null; 
+  material.clearcoatRoughness = 0.0;
+  
+  material.ior = 1.5; 
 
-  // Flop Effect for gential blue HARDCODED TO CHANGE ONLY FOR TEST
   if (isGentianBlue) {
     material.sheen = 1.0;
     material.sheenRoughness = 0.5;
-    material.sheenColor.set('#4a0080'); // Purple tint under light
+    material.sheenColor.set('#4a0080'); 
   } else {
     material.sheen = 0.0;
   }

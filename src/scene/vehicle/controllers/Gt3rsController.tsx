@@ -40,27 +40,53 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     if (carbonNormal && carbonRoughness) {
       carbonNormal.wrapS = carbonNormal.wrapT = THREE.RepeatWrapping;
       carbonRoughness.wrapS = carbonRoughness.wrapT = THREE.RepeatWrapping;
-      carbonNormal.colorSpace = THREE.LinearSRGBColorSpace;
-      carbonRoughness.colorSpace = THREE.LinearSRGBColorSpace;
+
+      carbonNormal.minFilter = THREE.LinearMipMapLinearFilter;
+      carbonRoughness.minFilter = THREE.LinearMipMapLinearFilter;
+
+      carbonNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
+      carbonRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
+
+      carbonNormal.colorSpace = THREE.NoColorSpace;
+      carbonRoughness.colorSpace = THREE.NoColorSpace;
     }
     // Forged Carbon
     if (forgedNormal && forgedRoughness) {
       forgedNormal.wrapS = forgedNormal.wrapT = THREE.RepeatWrapping;
       forgedRoughness.wrapS = forgedRoughness.wrapT = THREE.RepeatWrapping;
+
+      forgedNormal.minFilter = THREE.LinearMipMapLinearFilter;
+      forgedRoughness.minFilter = THREE.LinearMipMapLinearFilter;
+
+      forgedNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
+      forgedRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
       
-      forgedNormal.colorSpace = THREE.LinearSRGBColorSpace;
-      forgedRoughness.colorSpace = THREE.LinearSRGBColorSpace;
+      forgedNormal.colorSpace = THREE.NoColorSpace;
+      forgedRoughness.colorSpace = THREE.NoColorSpace;
     }
     // Flakes 
     if (flakeNormal) {
-      flakeNormal.wrapS = flakeNormal.wrapT = THREE.RepeatWrapping;
-      flakeNormal.repeat.set(80, 80);
-      flakeNormal.colorSpace = THREE.LinearSRGBColorSpace;
+      flakeNormal.wrapS = flakeNormal.wrapT = THREE.RepeatWrapping;+
+      flakeNormal.repeat.set(150, 150); //Rember to change also weissachFlakeNormal to the right repetition SCALED
 
       flakeNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
       flakeNormal.minFilter = THREE.LinearMipMapLinearFilter;
+
+      flakeNormal.colorSpace = THREE.NoColorSpace;
     }
   }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, flakeNormal]);
+
+  //SETUP FOR WEISSACH FLAKES
+  const weissachFlakeNormal = useMemo(() => {
+    if (!flakeNormal) return null;
+    const clone = flakeNormal.clone();
+    
+    //Recude the repetition because of the UV of the model
+    clone.repeat.set(3, 3); 
+    clone.needsUpdate = true;
+    
+    return clone;
+  }, [flakeNormal]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
@@ -94,10 +120,6 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
 
     // Plastic
     applyBlackPlastic(extractedMaterials.exteriorLowerAero)
-
-    console.log("Vetro DepthWrite:", extractedMaterials.glassCabin.depthWrite);
-    console.log("Vetro Opacity:", extractedMaterials.glassCabin.opacity);
-    console.log("Vetro Side:", extractedMaterials.glassCabin.side);
     
     // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
@@ -141,7 +163,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     <>
       <Gt3rsMutator 
         mats={mats} 
-        textures={{ carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, flakeNormal }}
+        textures={{ carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, flakeNormal, weissachFlakeNormal }}
       />
       <MemoizedGt3rsModel url={modelPath} />
     </>

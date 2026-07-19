@@ -9,16 +9,21 @@ export const applyCarbonFiber = (
   material: THREE.MeshPhysicalMaterial,
   textures: CarbonTextures
 ): void => {
-  material.color.setHex(0x181818);
-  material.normalMap = textures.normalMap;
-  material.normalScale.set(0.05, 0.05);
-  material.roughnessMap = textures.roughnessMap;
+  material.color.setHex(0x050505);
 
-  material.roughness = 0.6; 
-  material.metalness = 0.1;
+  material.normalMap = textures.normalMap;
+  material.normalScale.set(0.3, 0.3);
+  
+  material.roughnessMap = textures.roughnessMap;
+  material.roughness = 1.0; 
+  material.metalness = 0.6; 
 
   material.clearcoat = 1.0;
-  material.clearcoatRoughness = 0.015;
+  material.clearcoatRoughness = 0.0; 
+  // material.ior = 1.5;
+  
+  material.clearcoatNormalMap = null; 
+  material.clearcoatNormalScale.set(1, 1);
 
   material.sheen = 0.0;
   material.needsUpdate = true;
@@ -28,16 +33,24 @@ export const applyForgedCarbon = (
   material: THREE.MeshPhysicalMaterial, 
   textures: CarbonTextures
 ): void => {
-  material.color.setHex(0x181818);
+
+  material.color.setHex(0x050505); 
+
   material.normalMap = textures.normalMap;
-  material.roughnessMap = textures.roughnessMap;
+  material.normalScale.set(0.6, 0.6); 
   
-  material.normalScale.set(0.1, 0.1);
-  material.roughness = 0.5; 
-  material.metalness = 0.1;
+  material.roughnessMap = textures.roughnessMap;
+  material.roughness = 1.0; 
+  
+  material.metalness = 0.6; 
 
   material.clearcoat = 1.0;
-  material.clearcoatRoughness = 0.015;
+  material.clearcoatRoughness = 0.0;
+  
+  material.clearcoatNormalMap = null;
+  material.clearcoatNormalScale.set(1, 1);
+  
+  // material.ior = 1.5;
   material.sheen = 0.0;
   material.needsUpdate = true;
 };

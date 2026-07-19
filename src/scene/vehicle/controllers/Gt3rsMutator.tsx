@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { invalidate, useThree } from '@react-three/fiber';
+import { invalidate } from '@react-three/fiber';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
 import { copyPaintProps } from '@/scene/materials/utils/materialHelpers';
 import { applyMetallicPaint, applySolidPaint } from '@/scene/materials/presets/paint';
+import { gt3rsConfig } from '@/config/vehicles/gt3rs.config';
 
 interface Gt3rsMutatorProps {
   mats: Record<string, THREE.MeshPhysicalMaterial | THREE.MeshStandardMaterial>;
@@ -14,6 +15,7 @@ interface Gt3rsMutatorProps {
     forgedNormal: THREE.Texture | null;
     forgedRoughness: THREE.Texture | null;
     flakeNormal: THREE.Texture | null;
+    weissachFlakeNormal: THREE.Texture | null;
   };
 }
 
@@ -26,19 +28,18 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   const paintMat = mats.paint as THREE.MeshPhysicalMaterial;
   const weissachMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
 
-    const { scene } = useThree();
-
   // CAR COLOR CHANGE
   useEffect(() => {
     if (!paintMat) return;
 
-    const METALLIC_COLORS = ['#111111', '#2f3b33', '#101835'];//TO CHANGE DO NOT HARDCODE THIS
-    const isMetallic = METALLIC_COLORS.includes(carColor.toLowerCase()); 
-
-    if (isMetallic && !textures.flakeNormal) return;
+    //Determinate type of paint
+    const activeColorConfig = gt3rsConfig.paintOptions.find(
+      (opt) => opt.hex.toLowerCase() === carColor.toLowerCase()
+    );
+    const isMetallic = activeColorConfig?.finish === 'metallic';
 
     if (isMetallic && textures.flakeNormal) {
-      const isGentianBlue = carColor.toLowerCase() === '#101835';
+      const isGentianBlue = activeColorConfig.name === 'Gentian Blue';
       applyMetallicPaint(paintMat, carColor, textures.flakeNormal, isGentianBlue);
     } else {
       applySolidPaint(paintMat, carColor);
@@ -50,7 +51,7 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
     }
 
     invalidate();
-  }, [carColor, aeroPackage, paintMat, weissachMat]);
+  }, [carColor, aeroPackage, paintMat, weissachMat, textures.flakeNormal]);
 
 
   // AERODYNAMIC PACKAGE CHANGE
@@ -71,6 +72,11 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
     }
     else if (aeroPackage === 'standard') {
       copyPaintProps(weissachMat, paintMat);
+      
+      if (paintMat.normalMap === textures.flakeNormal && textures.weissachFlakeNormal) {
+        weissachMat.normalMap = textures.weissachFlakeNormal;
+        weissachMat.needsUpdate = true;
+      }
     }
     
     invalidate();

@@ -49,7 +49,7 @@ const Configurator: React.FC = () => {
           frameloop="demand" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
-            antialias: false, 
+            antialias: true, 
             powerPreference: "high-performance",
             toneMapping: THREE.ACESFilmicToneMapping,
             toneMappingExposure: 1.0,
