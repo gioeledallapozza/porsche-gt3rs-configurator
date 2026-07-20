@@ -26,6 +26,11 @@ export const applyCarbonFiber = (
   material.clearcoatNormalScale.set(1, 1);
 
   material.sheen = 0.0;
+  material.iridescence = 0.0;
+
+  material.onBeforeCompile = () => {};
+  material.customProgramCacheKey = () => 'carbon_twill';
+
   material.needsUpdate = true;
 };
 
@@ -52,6 +57,11 @@ export const applyForgedCarbon = (
   
   // material.ior = 1.5;
   material.sheen = 0.0;
+  material.iridescence = 0.0;
+
+  material.onBeforeCompile = () => {};
+  material.customProgramCacheKey = () => 'carbon_forged';
+
   material.needsUpdate = true;
 };
 

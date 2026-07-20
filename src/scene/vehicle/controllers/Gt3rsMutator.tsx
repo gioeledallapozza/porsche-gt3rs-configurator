@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import * as THREE from 'three';
 import { invalidate } from '@react-three/fiber';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
-import { copyPaintProps } from '@/scene/materials/utils/materialHelpers';
-import { applyMetallicPaint, applySolidPaint } from '@/scene/materials/presets/paint';
+import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
 import { gt3rsConfig } from '@/config/vehicles/gt3rs.config';
 
 interface Gt3rsMutatorProps {
@@ -14,12 +13,9 @@ interface Gt3rsMutatorProps {
     carbonRoughness: THREE.Texture | null;
     forgedNormal: THREE.Texture | null;
     forgedRoughness: THREE.Texture | null;
-    flakeNormal: THREE.Texture | null;
-    weissachFlakeNormal: THREE.Texture | null;
   };
 }
 
-/* eslint-disable react-hooks/immutability */
 export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   // Extract state specifically (component only re-evaluates when these specific slices change)
   const carColor = useConfiguratorStore((state) => state.carColor);
@@ -28,30 +24,39 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   const paintMat = mats.paint as THREE.MeshPhysicalMaterial;
   const weissachMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
 
+  //CORE LOGIC: apply paint on a material
+ const applyPaintToMaterial = useCallback((material: THREE.MeshPhysicalMaterial) => {
+    const activeColorConfig = gt3rsConfig.paintOptions.find(
+      (opt) => opt.hex.toLowerCase() === carColor.toLowerCase()
+    );
+
+    if (!activeColorConfig) return;
+
+    switch (activeColorConfig.finish) {
+      case 'solid':
+        applySolidPaint(material, activeColorConfig.hex);
+        break;
+      case 'metallic':
+        applyMetallicPaint(material, activeColorConfig.hex);
+        break;
+      case 'special':
+        applySpecialPaint(material, activeColorConfig); 
+        break;
+    }
+  }, [carColor]);
+
   // CAR COLOR CHANGE
   useEffect(() => {
     if (!paintMat) return;
 
-    //Determinate type of paint
-    const activeColorConfig = gt3rsConfig.paintOptions.find(
-      (opt) => opt.hex.toLowerCase() === carColor.toLowerCase()
-    );
-    const isMetallic = activeColorConfig?.finish === 'metallic';
+    applyPaintToMaterial(paintMat);
 
-    if (isMetallic && textures.flakeNormal) {
-      const isGentianBlue = activeColorConfig.name === 'Gentian Blue';
-      applyMetallicPaint(paintMat, carColor, textures.flakeNormal, isGentianBlue);
-    } else {
-      applySolidPaint(paintMat, carColor);
-    }
-
-    // Sync Weissach parts if they are currently painted
     if (aeroPackage === 'standard') {
-      copyPaintProps(weissachMat, paintMat);
+      applyPaintToMaterial(weissachMat);
     }
 
     invalidate();
-  }, [carColor, aeroPackage, paintMat, weissachMat, textures.flakeNormal]);
+  }, [carColor, aeroPackage, paintMat, weissachMat, textures, applyPaintToMaterial]);
 
 
   // AERODYNAMIC PACKAGE CHANGE
@@ -71,16 +76,11 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
       });
     }
     else if (aeroPackage === 'standard') {
-      copyPaintProps(weissachMat, paintMat);
-      
-      if (paintMat.normalMap === textures.flakeNormal && textures.weissachFlakeNormal) {
-        weissachMat.normalMap = textures.weissachFlakeNormal;
-        weissachMat.needsUpdate = true;
-      }
-    }
+      applyPaintToMaterial(weissachMat);
+    } 
     
     invalidate();
-  }, [aeroPackage, paintMat, weissachMat, textures]);
+  }, [aeroPackage, carColor, paintMat, weissachMat, textures, applyPaintToMaterial]);
 
 
   // Future EVENTS can be easily added here (e.g. Calipers, Wheels) without bloating logic

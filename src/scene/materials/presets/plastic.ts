@@ -11,5 +11,6 @@ export const applyBlackPlastic = (material: THREE.MeshPhysicalMaterial): void =>
   material.clearcoat = 0.1;
   material.clearcoatRoughness = 0.8;
   material.sheen = 0.0;
+  material.iridescence = 0.0;
   material.needsUpdate = true;
 };

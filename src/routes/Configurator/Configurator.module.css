@@ -69,6 +69,19 @@
   cursor: pointer;
 }
 
+.subPanelTitle {
+  font-size: 0.70rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 1rem 0 0.8rem 0;
+}
+
+.colorGroup {
+  margin-bottom: 1.5rem;
+}
+
 .colorPickerGrid {
   display: flex;
   gap: 1.2rem;

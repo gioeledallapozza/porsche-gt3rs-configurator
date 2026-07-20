@@ -12,8 +12,6 @@ export function copyPaintProps(target: THREE.MeshPhysicalMaterial, source: THREE
 
   target.map = source.map || null;
   target.normalMap = source.normalMap || null;
-  console.log(source.normalMap)
-  console.log(target.normalMap)
   if (source.normalScale && target.normalScale) {
     target.normalScale.copy(source.normalScale);
   }

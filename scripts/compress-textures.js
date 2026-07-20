@@ -31,6 +31,7 @@ files.forEach(file => {
    try {
      if (file.includes('normal')) {
         execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode uastc --uastc_quality 4 --zcmp 22 --normal_mode "${outFile}" "${inFile}"`);
+        { stdio: 'inherit' }
       } else if (file.includes('roughness') || file.includes('metalness')) {
         execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode etc1s --clevel 5 "${outFile}" "${inFile}"`);
       } else {

@@ -1,9 +1,11 @@
 import React, { Suspense, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
-import { Perf } from 'r3f-perf';
+// import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
 import { CameraControls, Html, SoftShadows } from '@react-three/drei';
+// import { EffectComposer } from '@react-three/postprocessing';
+// import { SSAO } from '@react-three/postprocessing';
 import { vehicleRegistry } from '@/config/vehicles';
 import Vehicle from '@/scene/vehicle/Vehicle';
 import VirtualStudio from '@/scene/environment/VirtualStudio.tsx';
@@ -13,6 +15,7 @@ import styles from './Configurator.module.css';
 //Smart Sections
 import ExteriorColorSection from './components/sections/ExteriorColorSection.tsx';
 import AeroPackageSection from './components/sections/AeroPackageSection.tsx';
+
 
 const Configurator: React.FC = () => {
 
@@ -58,7 +61,7 @@ const Configurator: React.FC = () => {
           camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
         >
           {/* Only for development purposes */}
-          <Perf position="top-left" minimal={false} />
+          {/* <Perf position="top-left" minimal={false} /> */}
 
           <SoftShadows focus={0.5} samples={16} size={12}/>
 
@@ -86,6 +89,15 @@ const Configurator: React.FC = () => {
             draggingSmoothTime={0.20}
           />
 
+          {/* <EffectComposer enableNormalPass={true}>
+            <SSAO 
+                radius={0.3} 
+                intensity={1.5} 
+                luminanceInfluence={0.4} 
+                color={new THREE.Color('black')}
+                bias={0.03} 
+            />
+          </EffectComposer> */}
         </Canvas>
       </div>
 

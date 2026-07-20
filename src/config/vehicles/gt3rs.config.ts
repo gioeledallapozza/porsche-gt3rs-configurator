@@ -10,7 +10,8 @@ export const gt3rsConfig: VehicleConfig = {
     { name: 'Solid Black', hex: '#000000', finish: 'solid' },
     { name: 'Jet Black Metallic', hex: '#111111', finish: 'metallic' },
     { name: 'Oak Green Neo', hex: '#2f3b33', finish: 'metallic' },
-    { name: 'Gentian Blue', hex: '#101835', finish: 'metallic' }
+    { name: 'Gentian Blue', hex: '#101835', finish: 'metallic' },
+    { name: 'Python Green Chromaflair', hex: '#f0f00b', finish: 'special' }
   ],
   aeroOptions: [
     { id: 'standard', label: 'Standard (Painted Body Color)' },
