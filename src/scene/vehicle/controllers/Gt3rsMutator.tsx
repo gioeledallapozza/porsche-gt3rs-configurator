@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import * as THREE from 'three';
 import { invalidate } from '@react-three/fiber';
 import { useConfiguratorStore } from '@/store/configuratorStore';
-import { applyCarbonFiber } from '@/scene/materials/presets/carbonFiber';
-import { copyPaintProps } from '@/scene/materials/utils/materialHelpers';
+import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
+import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
+import { gt3rsConfig } from '@/config/vehicles/gt3rs.config';
 
 interface Gt3rsMutatorProps {
   mats: Record<string, THREE.MeshPhysicalMaterial | THREE.MeshStandardMaterial>;
   textures: {
     carbonNormal: THREE.Texture | null;
     carbonRoughness: THREE.Texture | null;
+    forgedNormal: THREE.Texture | null;
+    forgedRoughness: THREE.Texture | null;
   };
 }
 
-/* eslint-disable react-hooks/immutability */
 export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   // Extract state specifically (component only re-evaluates when these specific slices change)
   const carColor = useConfiguratorStore((state) => state.carColor);
@@ -22,38 +24,63 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   const paintMat = mats.paint as THREE.MeshPhysicalMaterial;
   const weissachMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
 
+  //CORE LOGIC: apply paint on a material
+ const applyPaintToMaterial = useCallback((material: THREE.MeshPhysicalMaterial) => {
+    const activeColorConfig = gt3rsConfig.paintOptions.find(
+      (opt) => opt.hex.toLowerCase() === carColor.toLowerCase()
+    );
+
+    if (!activeColorConfig) return;
+
+    switch (activeColorConfig.finish) {
+      case 'solid':
+        applySolidPaint(material, activeColorConfig.hex);
+        break;
+      case 'metallic':
+        applyMetallicPaint(material, activeColorConfig.hex);
+        break;
+      case 'special':
+        applySpecialPaint(material, activeColorConfig); 
+        break;
+    }
+  }, [carColor]);
+
   // CAR COLOR CHANGE
   useEffect(() => {
     if (!paintMat) return;
 
-    paintMat.color.set(carColor);
-    paintMat.needsUpdate = true;
+    applyPaintToMaterial(paintMat);
 
-    // Sync Weissach parts if they are currently painted
-    if (aeroPackage !== 'weissach') {
-      weissachMat.color.set(carColor);
-      weissachMat.needsUpdate = true;
+    if (aeroPackage === 'standard') {
+      applyPaintToMaterial(weissachMat);
     }
-    
+
     invalidate();
-  }, [carColor, aeroPackage, paintMat, weissachMat]);
+  }, [carColor, aeroPackage, paintMat, weissachMat, textures, applyPaintToMaterial]);
 
 
   // AERODYNAMIC PACKAGE CHANGE
   useEffect(() => {
     if (!weissachMat || !textures.carbonNormal || !textures.carbonRoughness) return;
 
-    if (aeroPackage === 'weissach') {
+   if (aeroPackage === 'weissach' && textures.carbonNormal && textures.carbonRoughness) {
       applyCarbonFiber(weissachMat, { 
         normalMap: textures.carbonNormal, 
         roughnessMap: textures.carbonRoughness 
       });
-    } else {
-      copyPaintProps(weissachMat, paintMat);
+    } 
+    else if (aeroPackage === 'weissach_forged' && textures.forgedNormal && textures.forgedRoughness) {
+      applyForgedCarbon(weissachMat, {
+        normalMap: textures.forgedNormal,
+        roughnessMap: textures.forgedRoughness
+      });
     }
+    else if (aeroPackage === 'standard') {
+      applyPaintToMaterial(weissachMat);
+    } 
     
     invalidate();
-  }, [aeroPackage, paintMat, weissachMat, textures]);
+  }, [aeroPackage, carColor, paintMat, weissachMat, textures, applyPaintToMaterial]);
 
 
   // Future EVENTS can be easily added here (e.g. Calipers, Wheels) without bloating logic

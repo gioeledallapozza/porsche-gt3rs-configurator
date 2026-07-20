@@ -12,7 +12,7 @@ echo "3. Removing temporary files..."
 rm public/models/gt3rs/temp.glb
 
 echo "4. Generating React component via gltfjsx..."
-npx gltfjsx public/models/gt3rs/scene-opt.glb --types
+npx gltfjsx public/models/gt3rs/scene-opt.glb --shadows --types
 
 echo "5. Executing post-processing script..."
 node scripts/patch-model.js

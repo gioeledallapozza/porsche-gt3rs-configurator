@@ -1,6 +1,9 @@
+export type PaintFinish = 'solid' | 'metallic' | 'special';
+
 export interface PaintOption {
   name: string;
   hex: string;
+  finish: PaintFinish;
 }
 
 export interface PackageOption {

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Texture } from 'three';
+import { useEffect } from 'react';
+import { Texture, WebGLRenderer } from 'three';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import { useThree } from '@react-three/fiber';
 
@@ -7,66 +7,64 @@ import { useThree } from '@react-three/fiber';
 // Loading a KTX2Loader is expensive
 let ktx2LoaderInstance: KTX2Loader | null = null;
 
+//Global cache to handle the SUSPENSE of REACT
+const textureCache = new Map<string, Texture | Promise<Texture>>();
+
+// Factory function: isolate global mutation from the body hook
+const getKTX2Loader = (gl: WebGLRenderer): KTX2Loader => {
+  if (!ktx2LoaderInstance) {
+    ktx2LoaderInstance = new KTX2Loader();
+    ktx2LoaderInstance.setTranscoderPath('/basis/');
+    ktx2LoaderInstance.detectSupport(gl);
+  }
+  return ktx2LoaderInstance;
+};
+
 // INPUT: url of the KTX2 texture to load
 // OUTPUT: the loaded texture or null if not yet loaded or if an error occurred
-export const useKtx2Disposal = (url: string): Texture | null => {
-
-  const [texture, setTexture] = useState<Texture | null>(null);
+export const useKtx2Disposal = (url: string): Texture => {
   
   // Get the WebGL renderer
   const gl = useThree((state) => state.gl);
-  
-  //Ref to track the current texture in use in the cycle of the component
-  const currentTextureRef = useRef<Texture | null>(null);
 
+  const loader = getKTX2Loader(gl);
+
+  const cached = textureCache.get(url);
+
+  //If there is not in cache create the promise and suspense
+ if (!cached) {
+    const promise = new Promise<Texture>((resolve, reject) => {
+      loader.load(
+        url,
+        (loadedTexture) => {
+          textureCache.set(url, loadedTexture);
+          resolve(loadedTexture);
+        },
+        undefined,
+        (error) => {
+          textureCache.delete(url);
+          console.error(`[useKtx2Disposal] Pipeline Failed on URL: ${url}`, error);
+          reject(error);
+        }
+      );
+    });
+    textureCache.set(url, promise);
+    throw promise; 
+  }
+
+  //If is still loading throw promise
+  if (cached instanceof Promise) {
+    throw cached;
+  }
+ 
   useEffect(() => {
-    // Initialization of the KTX2Loader lazy
-    if (!ktx2LoaderInstance) {
-      ktx2LoaderInstance = new KTX2Loader();
-      ktx2LoaderInstance.setTranscoderPath('/basis/');
-      // Reveal the hardware extensions supported by the user's GPU (ASTC, BC7, etc.)
-      ktx2LoaderInstance.detectSupport(gl);
-    }
-
-    let isMounted = true;
-
-    //Asynchronously load the KTX2 texture
-    ktx2LoaderInstance.load(
-      url,
-      (loadedTexture) => {
-        // If the component is unmounted before the texture is loaded, we dispose of it immediately
-        if (!isMounted) {
-          loadedTexture.dispose();
-          return;
-        }
-
-        // Dispose the previous texture if it exists to free up GPU memory
-        if (currentTextureRef.current) {
-          currentTextureRef.current.dispose();
-        }
-
-        // Update the ref and state with the newly loaded texture
-        currentTextureRef.current = loadedTexture;
-        setTexture(loadedTexture);
-      },
-      undefined,
-      (error) => {
-        console.error(`[useKtx2Disposal] KTX2 Pipeline Failed on URL: ${url}`, error);
-      }
-    );
-
-    // CLEANUP: executed when the component is unmounted or when the URL changes
     return () => {
-      isMounted = false; 
-      
-      // Clean memory
-      if (currentTextureRef.current) {
-        currentTextureRef.current.dispose();
-        currentTextureRef.current = null;
+      if (cached && !(cached instanceof Promise)) {
+        cached.dispose();
+        textureCache.delete(url);
       }
-      setTexture(null);
     };
-  }, [url, gl]); //Only when url or gl changes.
+  }, [url, cached]);
 
-  return texture;
+  return cached as Texture;
 };

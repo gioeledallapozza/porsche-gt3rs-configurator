@@ -1,22 +1,26 @@
 import * as THREE from 'three';
 
-// 1. CABIN GLASS (Privacy & Glare)
-// Uses Alpha Blending: No optical distortion, perfect sorting, stable against empty backgrounds.
+// CABIN GLASS
+// No trasmission for WebGL limitation. Because behind the window there is no opaque object
+// it fallbacks to env map and return a white color (the CSS background is grey)
 export const configureCabinGlass = (material: THREE.MeshPhysicalMaterial): void => {
-  material.color.setHex(0x050505);
-  material.transmission = 0.0; // Disabled to prevent Screen-Space Refraction bugs
-  material.opacity = 0.8;      // 0.8 creates a premium dark privacy tint
+  material.transmission = 0.0; 
   
-  material.metalness = 0.0; 
+  material.transparent = true; 
+  material.opacity = 0.9; //Adjust for darken/lighter windows
+  material.color.setHex(0x000000); 
+  
+  material.depthWrite = true; //It hides the render of the glass behind another glass but looks natural 
+
   material.roughness = 0.0; 
-  
-  // High clearcoat and envMap to boost Fresnel reflections 
+  material.metalness = 0.1;
+
   material.clearcoat = 1.0;
   material.clearcoatRoughness = 0.0;
-  material.envMapIntensity = 2.5; 
+  material.envMapIntensity = 1.5;
+
+  material.side = THREE.DoubleSide; 
   
-  material.transparent = true;
-  material.depthWrite = false; 
   material.needsUpdate = true;
 };
 
@@ -27,18 +31,15 @@ export const configureLightsGlass = (material: THREE.MeshPhysicalMaterial): void
   material.transmission = 1.0;     
   material.opacity = 1.0; 
   
-  // FIX: Set IOR to 1.0 (Air) to eliminate the "magnifying glass" distortion on curved meshes
-  material.ior = 1.0; 
-  material.thickness = 0.1; 
+  material.ior = 1.58;
+  material.thickness = 0.05;
   
   material.metalness = 0.0; 
   material.roughness = 0.0; 
   
   material.clearcoat = 1.0;
   material.clearcoatRoughness = 0.0;
-  
-  // Boosted slightly to ensure the glass still catches HDR reflections despite IOR 1.0
-  material.envMapIntensity = 2.0; 
+  material.envMapIntensity = 1.0;
   
   material.transparent = true;
   material.depthWrite = false;

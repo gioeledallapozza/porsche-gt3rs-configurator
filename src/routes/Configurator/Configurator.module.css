@@ -4,6 +4,7 @@
   width: 100%;
   height: 100dvh; 
   background-color: var(--bg-primary);
+  background: radial-gradient(circle at 50% 50%, #2a2a2a 0%, #050505 100%); /* Background */
   overflow: hidden;
 }
 
@@ -17,6 +18,7 @@
   min-width: 0;
   min-height: 0;
   overflow: hidden;
+  background: transparent;
 }
 .vehicleLoader {
   color: white;
@@ -65,6 +67,19 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+}
+
+.subPanelTitle {
+  font-size: 0.70rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 1rem 0 0.8rem 0;
+}
+
+.colorGroup {
+  margin-bottom: 1.5rem;
 }
 
 .colorPickerGrid {
