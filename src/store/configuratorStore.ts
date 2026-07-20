@@ -9,6 +9,11 @@ interface ConfiguratorState {
   caliperColor: string;
   activeCameraPreset: string;
   aeroPackage: string;
+
+  //Animations
+  doorsOpen: boolean;
+  hoodOpen: boolean;
+  steeringTurned: boolean;
   
   // Actions
   setCarColor: (hex: string) => void;
@@ -16,6 +21,11 @@ interface ConfiguratorState {
   setCaliperColor: (hex: string) => void;
   setActiveCameraPreset: (id: string) => void;
   setAeroPackage: (id: string) => void;
+
+  // Actions Animations
+  toggleDoors: () => void;
+  toggleHood: () => void;
+  toggleSteering: () => void;
 }
 
 export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
@@ -25,9 +35,17 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   activeCameraPreset: 'hero_view',
   aeroPackage: 'standard',
 
+  doorsOpen: false,
+  hoodOpen: false,
+  steeringTurned: false,
+
   setCarColor: (hex) => set({ carColor: hex }),
   setWheelColor: (hex) => set({ wheelColor: hex }),
   setCaliperColor: (hex) => set({ caliperColor: hex }),
   setActiveCameraPreset: (id) => set({ activeCameraPreset: id }),
   setAeroPackage: (id) => set({ aeroPackage: id }),
+
+  toggleDoors: () => set((state) => ({ doorsOpen: !state.doorsOpen })),
+  toggleHood: () => set((state) => ({ hoodOpen: !state.hoodOpen })),
+  toggleSteering: () => set((state) => ({ steeringTurned: !state.steeringTurned })),
 }));

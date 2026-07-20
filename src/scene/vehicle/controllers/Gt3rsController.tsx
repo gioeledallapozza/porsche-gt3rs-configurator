@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { invalidate, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -17,6 +17,8 @@ import Gt3rsMutator from './Gt3rsMutator'; // Import the new logic component
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
 import { gt3rsConfig } from '@/config/vehicles/gt3rs.config.ts';
+import Gt3rsAnimator from './Gt3rsAnimator';
+import Gt3rsHotspots from './Gt3rsHotspots';
 import { applyAlloyFinish } from '@/scene/materials/presets/metals';
 import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
 
@@ -29,8 +31,9 @@ interface Gt3rsControllerProps {
 /* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
-  const { materials } = useGLTF(modelPath); 
+  const { materials, nodes } = useGLTF(modelPath); 
   const { scene, gl } = useThree();
+  const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
   
   //To define which carbon texture to load
   const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
@@ -38,6 +41,16 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const forgedNormal = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2');
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
   //const flakeNormal = useKtx2Disposal('/textures/materials/flakes/flakes_v5_normal_2k.ktx2');
+
+  // Search correct nodes
+  useLayoutEffect(() => {
+  if (!nodes) return;
+  ['Node_Door_L', 'Node_Door_R', 'Node_Hood', 'Spin_Node_FL', 'Spin_Node_FR'].forEach(name => {
+    scene.traverse((obj) => {
+      if (obj.name === name) groupRefs.current[name] = obj;
+    });
+  });
+}, [nodes, scene]);
 
   // TEXTURES SETUPS
   useMemo(() => {
@@ -192,6 +205,8 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
         mats={mats} 
         textures={{ carbonNormal, carbonRoughness, forgedNormal, forgedRoughness }}
       />
+      <Gt3rsAnimator groupRefs={groupRefs} />
+      <Gt3rsHotspots />
       <MemoizedGt3rsModel url={modelPath} />
     </>
   );

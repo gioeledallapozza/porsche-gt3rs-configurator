@@ -25,6 +25,7 @@ export const gt3rsConfig: VehicleConfig = {
   caliperOptions: [
     { id: 'red', name: 'Guards Red (Steel Brakes)', hex: '#d32f2f' },
     { id: 'yellow', name: 'Speed Yellow (PCCB)', hex: '#f0d722' },
+    { id: 'green', name: 'Acid Green (Hybrid)', hex: '#87d30f' },
     { id: 'black', name: 'High Gloss Black', hex: '#111111' }
   ]
 };
