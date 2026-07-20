@@ -15,6 +15,8 @@ import styles from './Configurator.module.css';
 //Smart Sections
 import ExteriorColorSection from './components/sections/ExteriorColorSection.tsx';
 import AeroPackageSection from './components/sections/AeroPackageSection.tsx';
+import WheelColorSection from './components/sections/WheelColorSection.tsx';
+import CaliperColorSection from './components/sections/CaliperColorSection.tsx';
 
 
 const Configurator: React.FC = () => {
@@ -110,12 +112,13 @@ const Configurator: React.FC = () => {
           <AeroPackageSection options={config.aeroOptions} />
         )}
 
-        {/* TO CHANGE AND INTEGRATE */}
-        <div className={styles.accordionSection}>
-          <h3 className={styles.panelTitle} style={{ opacity: 0.5 }}>
-            Wheels and Rims <span>▼</span>
-          </h3>
-        </div>
+        {config.wheelOption && (
+          <WheelColorSection options={config.wheelOption} />
+        )}
+
+        {config.caliperOptions && (
+          <CaliperColorSection options={config.caliperOptions} />
+        )}
       </aside>
     </div>
   );

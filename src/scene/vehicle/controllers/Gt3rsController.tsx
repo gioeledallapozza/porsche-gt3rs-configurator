@@ -17,6 +17,8 @@ import Gt3rsMutator from './Gt3rsMutator'; // Import the new logic component
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
 import { gt3rsConfig } from '@/config/vehicles/gt3rs.config.ts';
+import { applyAlloyFinish } from '@/scene/materials/presets/metals';
+import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
 
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
 
@@ -87,6 +89,9 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
       exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
       exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
+      rimPrimary: materials.Material_Rim_Primary as THREE.MeshPhysicalMaterial,
+      rimCenter: materials.Material_Rim_Centerlock as THREE.MeshPhysicalMaterial,
+      caliper: materials.Material_Caliper_Dynamic as THREE.MeshPhysicalMaterial,
 
       // Emissives
       headlightEmissive: materials.Material_Headlight_Emissive as THREE.MeshStandardMaterial,
@@ -116,12 +121,19 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       extractedMaterials.exteriorWeissach.needsUpdate = true; 
     }
 
+    // Standard
     applyCarbonFiber(extractedMaterials.carbonTrimStatic, {
       normalMap: carbonNormal,
       roughnessMap: carbonRoughness,
     });
 
-    const { carColor, aeroPackage } = useConfiguratorStore.getState(); //Get initial configuration
+    const { carColor, aeroPackage, wheelColor, caliperColor } = useConfiguratorStore.getState(); //Get initial configuration
+    
+    //Deafult wheel color
+    applyAlloyFinish(extractedMaterials.rimPrimary, wheelColor);
+    applyAlloyFinish(extractedMaterials.rimCenter, wheelColor);
+    applyCaliperPaint(extractedMaterials.caliper, caliperColor);
+
     const activeColorConfig = gt3rsConfig.paintOptions.find(
       (opt) => opt.hex.toLowerCase() === carColor.toLowerCase()
     );
@@ -155,18 +167,6 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
 
     return extractedMaterials;
   }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
-
-  // ASYNCHRONOUS STATUC SETUP  (Cannot be runned in the useMemo because the textures need to be loaded)
-  // useEffect(() => {
-  //   if (carbonNormal && carbonRoughness) {
-  //     applyCarbonFiber(mats.carbonTrimStatic, {
-  //       normalMap: carbonNormal,
-  //       roughnessMap: carbonRoughness,
-  //     });
-
-  //     invalidate();
-  //   }
-  // }, [mats, carbonNormal, carbonRoughness]); //Will be called once the textures are ready
 
   // EXPLICIT INJECTION OF ENVMAP (the useMemo load the materials before the envmap is loaded)
   useEffect(() => {

@@ -17,5 +17,14 @@ export const gt3rsConfig: VehicleConfig = {
     { id: 'standard', label: 'Standard (Painted Body Color)' },
     { id: 'weissach', label: 'Weissach Package (Twill Carbon)' },
     { id: 'weissach_forged', label: 'Weissach Package (Forged Carbon)' }
+  ],
+  wheelOption: [
+    { id: 'silver', name: 'Standard Silver Alloy', hex: '#d0d2d3' },
+    { id: 'gold', name: 'Satin Aurum', hex: '#9a8763' }
+  ],
+  caliperOptions: [
+    { id: 'red', name: 'Guards Red (Steel Brakes)', hex: '#d32f2f' },
+    { id: 'yellow', name: 'Speed Yellow (PCCB)', hex: '#f0d722' },
+    { id: 'black', name: 'High Gloss Black', hex: '#111111' }
   ]
 };

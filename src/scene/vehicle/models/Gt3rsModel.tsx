@@ -182,12 +182,12 @@ type GLTFResult = GLTF & {
   materials: {
     Material_Disc_Static: THREE.MeshStandardMaterial
     Material_Structure_Lucid_Static: THREE.MeshStandardMaterial
-    Material_Rim_Centerlock: THREE.MeshStandardMaterial
-    Material_Rim_Primary: THREE.MeshStandardMaterial
+    Material_Rim_Centerlock: THREE.MeshPhysicalMaterial
+    Material_Rim_Primary: THREE.MeshPhysicalMaterial
     Material_Tire_Static: THREE.MeshStandardMaterial
     Material_Wheels_Bolts_Static: THREE.MeshStandardMaterial
     Material_Radiator_Static: THREE.MeshStandardMaterial
-    Material_Caliper_Dynamic: THREE.MeshStandardMaterial
+    Material_Caliper_Dynamic: THREE.MeshPhysicalMaterial
     Material_Interior_Stitching_Dynamic: THREE.MeshStandardMaterial
     Material_Glass_Cabin_Static: THREE.MeshPhysicalMaterial
     Material_Interior_LightGrey_Plastic_Static: THREE.MeshStandardMaterial
