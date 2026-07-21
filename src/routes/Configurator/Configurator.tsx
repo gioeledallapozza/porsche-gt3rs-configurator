@@ -88,7 +88,7 @@ const Configurator: React.FC = () => {
             azimuthRotateSpeed={0.25}
             polarRotateSpeed={0.25}
             smoothTime={0.35}
-            draggingSmoothTime={0.20}
+            draggingSmoothTime={0.40}
           />
 
           {/* <EffectComposer enableNormalPass={true}>

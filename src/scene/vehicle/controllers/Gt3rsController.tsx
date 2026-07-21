@@ -31,7 +31,7 @@ interface Gt3rsControllerProps {
 /* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
-  const { materials, nodes } = useGLTF(modelPath); 
+  const { materials, nodes } = useGLTF(modelPath);
   const { scene, gl } = useThree();
   const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
   
@@ -45,7 +45,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   // Search correct nodes
   useLayoutEffect(() => {
   if (!nodes) return;
-  ['Node_Door_L', 'Node_Door_R', 'Node_Hood', 'Spin_Node_FL', 'Spin_Node_FR'].forEach(name => {
+  ['Node_Door_L', 'Node_Door_R', 'Node_Hood', 'Wheel_Node_FL', 'Wheel_Node_FR'].forEach(name => {
     scene.traverse((obj) => {
       if (obj.name === name) groupRefs.current[name] = obj;
     });
