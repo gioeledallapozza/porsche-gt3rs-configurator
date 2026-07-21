@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { invalidate, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -17,6 +17,10 @@ import Gt3rsMutator from './Gt3rsMutator'; // Import the new logic component
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
 import { gt3rsConfig } from '@/config/vehicles/gt3rs.config.ts';
+import Gt3rsAnimator from './Gt3rsAnimator';
+import Gt3rsHotspots from './Gt3rsHotspots';
+import { applyAlloyFinish } from '@/scene/materials/presets/metals';
+import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
 
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
 
@@ -27,8 +31,9 @@ interface Gt3rsControllerProps {
 /* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
-  const { materials } = useGLTF(modelPath); 
+  const { materials, nodes } = useGLTF(modelPath);
   const { scene, gl } = useThree();
+  const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
   
   //To define which carbon texture to load
   const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
@@ -36,6 +41,16 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const forgedNormal = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2');
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
   //const flakeNormal = useKtx2Disposal('/textures/materials/flakes/flakes_v5_normal_2k.ktx2');
+
+  // Search correct nodes
+  useLayoutEffect(() => {
+  if (!nodes) return;
+  ['Node_Door_L', 'Node_Door_R', 'Node_Hood', 'Wheel_Node_FL', 'Wheel_Node_FR'].forEach(name => {
+    scene.traverse((obj) => {
+      if (obj.name === name) groupRefs.current[name] = obj;
+    });
+  });
+}, [nodes, scene]);
 
   // TEXTURES SETUPS
   useMemo(() => {
@@ -87,6 +102,9 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
       exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
       exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
+      rimPrimary: materials.Material_Rim_Primary as THREE.MeshPhysicalMaterial,
+      rimCenter: materials.Material_Rim_Centerlock as THREE.MeshPhysicalMaterial,
+      caliper: materials.Material_Caliper_Dynamic as THREE.MeshPhysicalMaterial,
 
       // Emissives
       headlightEmissive: materials.Material_Headlight_Emissive as THREE.MeshStandardMaterial,
@@ -116,12 +134,19 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       extractedMaterials.exteriorWeissach.needsUpdate = true; 
     }
 
+    // Standard
     applyCarbonFiber(extractedMaterials.carbonTrimStatic, {
       normalMap: carbonNormal,
       roughnessMap: carbonRoughness,
     });
 
-    const { carColor, aeroPackage } = useConfiguratorStore.getState(); //Get initial configuration
+    const { carColor, aeroPackage, wheelColor, caliperColor } = useConfiguratorStore.getState(); //Get initial configuration
+    
+    //Deafult wheel color
+    applyAlloyFinish(extractedMaterials.rimPrimary, wheelColor);
+    applyAlloyFinish(extractedMaterials.rimCenter, wheelColor);
+    applyCaliperPaint(extractedMaterials.caliper, caliperColor);
+
     const activeColorConfig = gt3rsConfig.paintOptions.find(
       (opt) => opt.hex.toLowerCase() === carColor.toLowerCase()
     );
@@ -156,18 +181,6 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     return extractedMaterials;
   }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
 
-  // ASYNCHRONOUS STATUC SETUP  (Cannot be runned in the useMemo because the textures need to be loaded)
-  // useEffect(() => {
-  //   if (carbonNormal && carbonRoughness) {
-  //     applyCarbonFiber(mats.carbonTrimStatic, {
-  //       normalMap: carbonNormal,
-  //       roughnessMap: carbonRoughness,
-  //     });
-
-  //     invalidate();
-  //   }
-  // }, [mats, carbonNormal, carbonRoughness]); //Will be called once the textures are ready
-
   // EXPLICIT INJECTION OF ENVMAP (the useMemo load the materials before the envmap is loaded)
   useEffect(() => {
     
@@ -185,13 +198,21 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     invalidate();
   }, [mats, scene.environment]);
 
+
+  // Memoize textures to prevent infinite reference changes and battery drain
+  const texturePack = useMemo(() => ({
+    carbonNormal,
+    carbonRoughness,
+    forgedNormal,
+    forgedRoughness
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness]);
+
   // Orchestration
   return (
     <>
-      <Gt3rsMutator 
-        mats={mats} 
-        textures={{ carbonNormal, carbonRoughness, forgedNormal, forgedRoughness }}
-      />
+      <Gt3rsMutator mats={mats} textures={texturePack}/>
+      <Gt3rsAnimator groupRefs={groupRefs} />
+      <Gt3rsHotspots />
       <MemoizedGt3rsModel url={modelPath} />
     </>
   );

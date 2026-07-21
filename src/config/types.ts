@@ -12,9 +12,23 @@ export interface PackageOption {
   description?: string;
 }
 
+export interface WheelOption {
+  id: string;
+  name: string;
+  hex: string;
+}
+
+export interface CaliperOption {
+  id: string;
+  name: string;
+  hex: string;
+}
+
 export interface VehicleConfig {
   id: string;
   modelPath: string;
   paintOptions: PaintOption[];
   aeroOptions: PackageOption[];
+  wheelOption: WheelOption[];
+  caliperOptions: CaliperOption[];
 }

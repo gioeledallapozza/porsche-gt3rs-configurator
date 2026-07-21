@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 // import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, Html, SoftShadows } from '@react-three/drei';
+import { CameraControls, Html } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SSAO } from '@react-three/postprocessing';
 import { vehicleRegistry } from '@/config/vehicles';
@@ -15,6 +15,8 @@ import styles from './Configurator.module.css';
 //Smart Sections
 import ExteriorColorSection from './components/sections/ExteriorColorSection.tsx';
 import AeroPackageSection from './components/sections/AeroPackageSection.tsx';
+import WheelColorSection from './components/sections/WheelColorSection.tsx';
+import CaliperColorSection from './components/sections/CaliperColorSection.tsx';
 
 
 const Configurator: React.FC = () => {
@@ -48,7 +50,7 @@ const Configurator: React.FC = () => {
       {/* Canvas WebGL 3D Scene */}
       <div className={styles.canvasWrapper}>
         <Canvas
-          shadows={{ type: THREE.PCFShadowMap }}
+          shadows={{ type: THREE.PCFSoftShadowMap }}
           frameloop="demand" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
@@ -62,8 +64,6 @@ const Configurator: React.FC = () => {
         >
           {/* Only for development purposes */}
           {/* <Perf position="top-left" minimal={false} /> */}
-
-          <SoftShadows focus={0.5} samples={16} size={12}/>
 
           <Suspense fallback={
             <Html center>
@@ -86,7 +86,7 @@ const Configurator: React.FC = () => {
             azimuthRotateSpeed={0.25}
             polarRotateSpeed={0.25}
             smoothTime={0.35}
-            draggingSmoothTime={0.20}
+            draggingSmoothTime={0.40}
           />
 
           {/* <EffectComposer enableNormalPass={true}>
@@ -110,12 +110,13 @@ const Configurator: React.FC = () => {
           <AeroPackageSection options={config.aeroOptions} />
         )}
 
-        {/* TO CHANGE AND INTEGRATE */}
-        <div className={styles.accordionSection}>
-          <h3 className={styles.panelTitle} style={{ opacity: 0.5 }}>
-            Wheels and Rims <span>▼</span>
-          </h3>
-        </div>
+        {config.wheelOption && (
+          <WheelColorSection options={config.wheelOption} />
+        )}
+
+        {config.caliperOptions && (
+          <CaliperColorSection options={config.caliperOptions} />
+        )}
       </aside>
     </div>
   );

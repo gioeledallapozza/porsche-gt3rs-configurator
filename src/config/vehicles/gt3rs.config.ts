@@ -8,6 +8,7 @@ export const gt3rsConfig: VehicleConfig = {
     { name: 'Shark Blue', hex: '#0277bd', finish: 'solid' },
     { name: 'Chalk', hex: '#e0e0e0', finish: 'solid' },
     { name: 'Solid Black', hex: '#000000', finish: 'solid' },
+    { name: 'Racing Yellow', hex: '#f7d117', finish: 'solid' },
     { name: 'Jet Black Metallic', hex: '#111111', finish: 'metallic' },
     { name: 'Oak Green Neo', hex: '#2f3b33', finish: 'metallic' },
     { name: 'Gentian Blue', hex: '#101835', finish: 'metallic' },
@@ -17,5 +18,15 @@ export const gt3rsConfig: VehicleConfig = {
     { id: 'standard', label: 'Standard (Painted Body Color)' },
     { id: 'weissach', label: 'Weissach Package (Twill Carbon)' },
     { id: 'weissach_forged', label: 'Weissach Package (Forged Carbon)' }
+  ],
+  wheelOption: [
+    { id: 'silver', name: 'Standard Silver Alloy', hex: '#d0d2d3' },
+    { id: 'gold', name: 'Satin Aurum', hex: '#9a8763' }
+  ],
+  caliperOptions: [
+    { id: 'red', name: 'Guards Red (Steel Brakes)', hex: '#d32f2f' },
+    { id: 'yellow', name: 'Speed Yellow (PCCB)', hex: '#f0d722' },
+    { id: 'green', name: 'Acid Green (Hybrid)', hex: '#87d30f' },
+    { id: 'black', name: 'High Gloss Black', hex: '#111111' }
   ]
 };
