@@ -164,22 +164,40 @@
 @media (max-width: 768px) {
   .configuratorContainer {
     flex-direction: column;
-    overflow-y: auto; 
+    /* STRICT: Inherits 100dvh and overflow: hidden from desktop. 
+       The page itself MUST NOT scroll. */
   }
 
-  .canvasWrapper {
-    width: 100vw;
-    height: 50dvh;
-    position: sticky;
-    top: 0;
+  /* Pin canvas to the top */
+ .canvasWrapper {
+    width: 100%;
+    height: 45dvh;
+    /* STRICT: Flex shrink 0, Flex grow 0, Basis 45dvh. 
+       Locks the canvas exactly to the top 45% of the screen. */
+    flex: 0 0 45dvh; 
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Allow UI Panel to expand and scroll beneath */
+  .uiPanel {
+    width: 100%;
+    height: 55dvh;
+    /* STRICT: Flex grows to fill the remaining 55% of the screen */
+    flex: 1 1 auto; 
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* STRICT: Internal scrolling only. Accordions will scroll within this panel 
+       and will never overlap the canvas. */
+    overflow-y: auto; 
+    padding: 1.5rem;
     z-index: 1;
   }
 
-  .uiPanel {
-    width: 100vw;
-    height: auto;
-    min-height: 50dvh;
-    border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  /* Adjust color picker sizes slightly for touch */
+  .colorButton {
+    width: 44px; /* Slightly larger for easier tapping */
+    height: 44px;
   }
 }

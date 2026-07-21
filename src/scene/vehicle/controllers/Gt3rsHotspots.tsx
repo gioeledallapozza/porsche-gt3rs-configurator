@@ -94,8 +94,10 @@ export default function Gt3rsHotspots() {
       {/* Render the HTML ONLY when we are sure the Ref is ready. */}
       {isReady && (
         <>
+          {/* STRICT FIX: Pass 'undefined' to occlude when moving to completely kill CPU raycasting overhead */}
+
           {/* LEFT DOOR */}
-          <Html position={[0.9, 0.6, 0.2]} center occlude={colliders}>
+          <Html position={[0.9, 0.6, 0.2]} center occlude={isVisible ? colliders : undefined}>
             <div 
               style={getHotspotStyle(isVisible)} 
               onClick={(e) => handleClick(e, toggleDoors)}
@@ -105,7 +107,7 @@ export default function Gt3rsHotspots() {
           </Html>
 
           {/* RIGHT DOOR */}
-          <Html position={[-0.9, 0.6, 0.2]} center occlude={colliders}>
+          <Html position={[-0.9, 0.6, 0.2]} center occlude={isVisible ? colliders : undefined}>
             <div 
               style={getHotspotStyle(isVisible)} 
               onClick={(e) => handleClick(e, toggleDoors)}
@@ -115,7 +117,7 @@ export default function Gt3rsHotspots() {
           </Html>
           
           {/* HOOD */}
-          <Html position={[0, 0.7, 1.8]} center occlude={colliders}>
+          <Html position={[0, 0.7, 1.8]} center occlude={isVisible ? colliders : undefined}>
             <div 
               style={getHotspotStyle(isVisible)} 
               onClick={(e) => handleClick(e, toggleHood)}
@@ -125,7 +127,7 @@ export default function Gt3rsHotspots() {
           </Html>
 
           {/* WHEEL Left-Front */}
-          <Html position={[-0.9, 0.4, 1.2]} center occlude={colliders}>
+          <Html position={[-0.9, 0.4, 1.2]} center occlude={isVisible ? colliders : undefined}>
             <div 
               style={getHotspotStyle(isVisible)} 
               onClick={(e) => handleClick(e, toggleSteering)}
@@ -135,7 +137,7 @@ export default function Gt3rsHotspots() {
           </Html>
 
           {/* WHEEL Right-Front */}
-          <Html position={[0.9, 0.4, 1.2]} center occlude={colliders}>
+          <Html position={[0.9, 0.4, 1.2]} center occlude={isVisible ? colliders : undefined}>
             <div 
               style={getHotspotStyle(isVisible)} 
               onClick={(e) => handleClick(e, toggleSteering)}

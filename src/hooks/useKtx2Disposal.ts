@@ -7,8 +7,14 @@ import { useThree } from '@react-three/fiber';
 // Loading a KTX2Loader is expensive
 let ktx2LoaderInstance: KTX2Loader | null = null;
 
+// Chace entry must track active references to prevent premature disposal
+interface CacheEntry {
+  resource: Texture | Promise<Texture>;
+  refCount: number;
+}
+
 //Global cache to handle the SUSPENSE of REACT
-const textureCache = new Map<string, Texture | Promise<Texture>>();
+const textureCache = new Map<string, CacheEntry>();
 
 // Factory function: isolate global mutation from the body hook
 const getKTX2Loader = (gl: WebGLRenderer): KTX2Loader => {
@@ -29,15 +35,18 @@ export const useKtx2Disposal = (url: string): Texture => {
 
   const loader = getKTX2Loader(gl);
 
-  const cached = textureCache.get(url);
+  let entry = textureCache.get(url);
 
   //If there is not in cache create the promise and suspense
- if (!cached) {
+  if (!entry) {
     const promise = new Promise<Texture>((resolve, reject) => {
       loader.load(
         url,
         (loadedTexture) => {
-          textureCache.set(url, loadedTexture);
+          const currentEntry = textureCache.get(url);
+          if (currentEntry) {
+            textureCache.set(url, { resource: loadedTexture, refCount: currentEntry.refCount });
+          }
           resolve(loadedTexture);
         },
         undefined,
@@ -48,23 +57,37 @@ export const useKtx2Disposal = (url: string): Texture => {
         }
       );
     });
-    textureCache.set(url, promise);
-    throw promise; 
+
+    entry = { resource: promise, refCount: 0 };
+    textureCache.set(url, entry);
+    throw promise;
   }
 
   //If is still loading throw promise
-  if (cached instanceof Promise) {
-    throw cached;
+  if (entry.resource instanceof Promise) {
+    throw entry.resource;
   }
  
+  // mount/unmount phase 
   useEffect(() => {
+    const currentEntry = textureCache.get(url);
+    if (currentEntry) {
+      currentEntry.refCount += 1; // Increment on mount
+    }
+
     return () => {
-      if (cached && !(cached instanceof Promise)) {
-        cached.dispose();
-        textureCache.delete(url);
+      const cleanupEntry = textureCache.get(url);
+      if (cleanupEntry) {
+        cleanupEntry.refCount -= 1; // Decrement on unmount
+        
+        // Only dispose when no components are using this texture
+        if (cleanupEntry.refCount <= 0 && !(cleanupEntry.resource instanceof Promise)) {
+          cleanupEntry.resource.dispose();
+          textureCache.delete(url);
+        }
       }
     };
-  }, [url, cached]);
+  }, [url]);
 
-  return cached as Texture;
+  return entry.resource as Texture;
 };
