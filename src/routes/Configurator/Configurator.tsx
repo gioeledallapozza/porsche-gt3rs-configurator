@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 // import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, Html, SoftShadows } from '@react-three/drei';
+import { CameraControls, Html } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SSAO } from '@react-three/postprocessing';
 import { vehicleRegistry } from '@/config/vehicles';
@@ -50,7 +50,7 @@ const Configurator: React.FC = () => {
       {/* Canvas WebGL 3D Scene */}
       <div className={styles.canvasWrapper}>
         <Canvas
-          shadows={{ type: THREE.PCFShadowMap }}
+          shadows={{ type: THREE.PCFSoftShadowMap }}
           frameloop="demand" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
@@ -64,8 +64,6 @@ const Configurator: React.FC = () => {
         >
           {/* Only for development purposes */}
           {/* <Perf position="top-left" minimal={false} /> */}
-
-          <SoftShadows focus={0.5} samples={16} size={12}/>
 
           <Suspense fallback={
             <Html center>

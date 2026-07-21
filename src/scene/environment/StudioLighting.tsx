@@ -30,11 +30,11 @@ const StudioLighting: React.FC = () => {
         castShadow
         position={[5, 8, 3]}
         intensity={2.5} 
-        shadow-mapSize={[4096, 4096]}
+        shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0001}
         shadow-normalBias={0.02} 
       >
-        <orthographicCamera attach="shadow-camera" args={[-3, 3, 3, -3, 0.5, 12]} />
+        <orthographicCamera attach="shadow-camera" args={[-2.5, 2.5, 2.5, -2.5, 0.5, 12]} />
       </directionalLight>
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]} receiveShadow> 

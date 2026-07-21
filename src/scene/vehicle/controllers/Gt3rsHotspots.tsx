@@ -27,7 +27,6 @@ export default function Gt3rsHotspots() {
       node.updateMatrixWorld(true); 
       setIsReady(true); 
       invalidate(); 
-      console.log("[Raycaster Target]: PROXY MONTATO E PRONTO");
     }
   }, []);
 

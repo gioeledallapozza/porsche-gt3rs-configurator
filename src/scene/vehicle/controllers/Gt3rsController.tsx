@@ -198,13 +198,19 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     invalidate();
   }, [mats, scene.environment]);
 
+
+  // Memoize textures to prevent infinite reference changes and battery drain
+  const texturePack = useMemo(() => ({
+    carbonNormal,
+    carbonRoughness,
+    forgedNormal,
+    forgedRoughness
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness]);
+
   // Orchestration
   return (
     <>
-      <Gt3rsMutator 
-        mats={mats} 
-        textures={{ carbonNormal, carbonRoughness, forgedNormal, forgedRoughness }}
-      />
+      <Gt3rsMutator mats={mats} textures={texturePack}/>
       <Gt3rsAnimator groupRefs={groupRefs} />
       <Gt3rsHotspots />
       <MemoizedGt3rsModel url={modelPath} />

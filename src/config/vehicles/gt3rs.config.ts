@@ -8,6 +8,7 @@ export const gt3rsConfig: VehicleConfig = {
     { name: 'Shark Blue', hex: '#0277bd', finish: 'solid' },
     { name: 'Chalk', hex: '#e0e0e0', finish: 'solid' },
     { name: 'Solid Black', hex: '#000000', finish: 'solid' },
+    { name: 'Racing Yellow', hex: '#f7d117', finish: 'solid' },
     { name: 'Jet Black Metallic', hex: '#111111', finish: 'metallic' },
     { name: 'Oak Green Neo', hex: '#2f3b33', finish: 'metallic' },
     { name: 'Gentian Blue', hex: '#101835', finish: 'metallic' },
