@@ -2,25 +2,29 @@ import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { invalidate, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
+import { useConfiguratorStore } from '@/store/configuratorStore';
+import { gt3rsConfig } from '@/config/vehicles/gt3rs.config.ts';
+import Gt3rsMutator from './Gt3rsMutator'; 
+import Gt3rsAnimator from './Gt3rsAnimator';
+import Gt3rsHotspots from './Gt3rsHotspots';
 import Gt3rsModel from '@/scene/vehicle/models/Gt3rsModel.tsx';
+import LevaLiveSubscriber from './LevaLiveSubscriber';
+
+//MATERIALS SETUP
 import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
 import { applyBlackPlastic } from '@/scene/materials/presets/plastic';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
-import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
 import { 
   configureHeadlightDRL, 
   configureTaillightEmissive, 
   configureSignalEmissive, 
   configureLicensePlateLight 
 } from '@/scene/materials/presets/lights';
-import Gt3rsMutator from './Gt3rsMutator'; // Import the new logic component
-import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
-import { gt3rsConfig } from '@/config/vehicles/gt3rs.config.ts';
-import Gt3rsAnimator from './Gt3rsAnimator';
-import Gt3rsHotspots from './Gt3rsHotspots';
 import { applyAlloyFinish } from '@/scene/materials/presets/metals';
 import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
+import { applyRubberFinish } from '@/scene/materials/presets/rubber';
 
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
 
@@ -105,6 +109,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       rimPrimary: materials.Material_Rim_Primary as THREE.MeshPhysicalMaterial,
       rimCenter: materials.Material_Rim_Centerlock as THREE.MeshPhysicalMaterial,
       caliper: materials.Material_Caliper_Dynamic as THREE.MeshPhysicalMaterial,
+      tire: materials.Material_Tire_Static as THREE.MeshStandardMaterial, //To convert to physical material? MAybe not
 
       // Emissives
       headlightEmissive: materials.Material_Headlight_Emissive as THREE.MeshStandardMaterial,
@@ -125,8 +130,9 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureSignalEmissive(extractedMaterials.signalEmissive);
     configureLicensePlateLight(extractedMaterials.licensePlateLight);
 
-    // Plastic
+    // Plastic & rubber
     applyBlackPlastic(extractedMaterials.exteriorLowerAero)
+    applyRubberFinish(extractedMaterials.tire);
     
     // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
@@ -211,6 +217,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   return (
     <>
       <Gt3rsMutator mats={mats} textures={texturePack}/>
+      <LevaLiveSubscriber mats={mats} />
       <Gt3rsAnimator groupRefs={groupRefs} />
       <Gt3rsHotspots />
       <MemoizedGt3rsModel url={modelPath} />

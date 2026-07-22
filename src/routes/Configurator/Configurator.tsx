@@ -17,6 +17,7 @@ import ExteriorColorSection from './components/sections/ExteriorColorSection.tsx
 import AeroPackageSection from './components/sections/AeroPackageSection.tsx';
 import WheelColorSection from './components/sections/WheelColorSection.tsx';
 import CaliperColorSection from './components/sections/CaliperColorSection.tsx';
+import { LevaControllers } from '@/components/LevaControllers.tsx';
 
 
 const Configurator: React.FC = () => {
@@ -46,7 +47,6 @@ const Configurator: React.FC = () => {
 
   return (
     <div className={`${styles.configuratorContainer} animate-entry`}>
-
       {/* Canvas WebGL 3D Scene */}
       <div className={styles.canvasWrapper}>
         <Canvas
@@ -60,7 +60,7 @@ const Configurator: React.FC = () => {
             toneMappingExposure: 1.0,
             alpha: true,
           }}
-          camera={{ position: [3.5, 1.5, 4.5], fov: 35 }}
+          camera={{ position: [3.5, 1.5, 4.5], fov: 15 }}
         >
           {/* Only for development purposes */}
           {/* <Perf position="top-left" minimal={false} /> */}
@@ -98,6 +98,8 @@ const Configurator: React.FC = () => {
                 bias={0.03} 
             />
           </EffectComposer> */}
+
+          <LevaControllers />
         </Canvas>
       </div>
 

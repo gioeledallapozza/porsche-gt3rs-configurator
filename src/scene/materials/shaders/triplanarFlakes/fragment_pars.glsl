@@ -2,6 +2,7 @@
 varying vec3 vObjPos;
 varying vec3 vObjNormal;
 uniform float uFlakeScale;
+uniform float uFlakeIntensity;
 
 //Calculate how much of each projection (X,Y,Z) should be visible in a determinated pixel
 vec3 getTriplanarWeights(vec3 normal) {

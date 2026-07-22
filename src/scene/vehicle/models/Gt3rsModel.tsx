@@ -273,12 +273,12 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               <mesh name="Caliper_Paint_FL" castShadow receiveShadow geometry={nodes.Caliper_Paint_FL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.02, 0.001, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
             </group>
             <group name="Wheel_Node_FR" position={[0.773, 0.317, 1.168]}>
-              <group name="Spin_Node_FR" position={[0.009, -0.019, 0.007]} rotation={[-Math.PI / 2, 0, 0]} scale={1.208}>
-                <mesh name="Disc_FR" castShadow receiveShadow geometry={nodes.Disc_FR.geometry} material={materials.Material_Disc_Static} position={[0.01, 0.133, 0.005]} rotation={[Math.PI, -0.035, Math.PI]} scale={[1.039, 0.891, 0.891]} />
-                <mesh name="Hub_FR" castShadow receiveShadow geometry={nodes.Hub_FR.geometry} material={materials.Material_Structure_Lucid_Static} position={[-0.647, 0.029, 0.004]} scale={0.828} />
-                <mesh name="Rim_Center_FR" castShadow receiveShadow geometry={nodes.Rim_Center_FR.geometry} material={materials.Material_Rim_Centerlock} position={[0.101, 0.01, 0]} />
-                <mesh name="Rim_Outer_FR" castShadow receiveShadow geometry={nodes.Rim_Outer_FR.geometry} material={materials.Material_Rim_Primary} position={[0.101, 0.01, 0]} />
-                <mesh name="Tire_FR" castShadow receiveShadow geometry={nodes.Tire_FR.geometry} material={materials.Material_Tire_Static} position={[-0.01, 0.005, 0.006]} scale={[1.171, 0.961, 0.961]} />
+              <group name="Spin_Node_FR" position={[0.009, -0.019, 0.007]} rotation={[-Math.PI, 0, 0]}>
+                <mesh name="Disc_FR" castShadow receiveShadow geometry={nodes.Disc_FR.geometry} material={materials.Material_Disc_Static} position={[0.012, -0.007, 0.161]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
+                <mesh name="Hub_FR" castShadow receiveShadow geometry={nodes.Hub_FR.geometry} material={materials.Material_Structure_Lucid_Static} position={[-0.782, -0.005, 0.035]} rotation={[Math.PI / 2, 0, 0]} />
+                <mesh name="Rim_Center_FR" castShadow receiveShadow geometry={nodes.Rim_Center_FR.geometry} material={materials.Material_Rim_Centerlock} position={[0.121, 0, 0.012]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
+                <mesh name="Rim_Outer_FR" castShadow receiveShadow geometry={nodes.Rim_Outer_FR.geometry} material={materials.Material_Rim_Primary} position={[0.121, 0, 0.012]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
+                <mesh name="Tire_FR" castShadow receiveShadow geometry={nodes.Tire_FR.geometry} material={materials.Material_Tire_Static} position={[-0.011, -0.007, 0.006]} rotation={[Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]} />
               </group>
               <group name="Brake_Static_FR" position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
                 <mesh name="Brake_Static_FR_1" castShadow receiveShadow geometry={nodes.Brake_Static_FR_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
@@ -287,12 +287,12 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               <mesh name="Caliper_Paint_FR" castShadow receiveShadow geometry={nodes.Caliper_Paint_FR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
             </group>
             <group name="Wheel_Node_RL" position={[-0.769, 0.303, -1.293]}>
-              <group name="Spin_Node_RL" position={[-0.007, 0.002, 0.009]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}>
-                <mesh name="Disc_RL" castShadow receiveShadow geometry={nodes.Disc_RL.geometry} material={materials.Material_Disc_Static} position={[-0.013, 0.147, -0.001]} />
-                <mesh name="Hub_RL" castShadow receiveShadow geometry={nodes.Hub_RL.geometry} material={materials.Material_Structure_Lucid_Static} position={[0.618, 0.019, 0.061]} rotation={[0, -0.036, -Math.PI]} scale={[-0.797, -0.929, -0.929]} />
-                <mesh name="Rim_Center_RL" castShadow receiveShadow geometry={nodes.Rim_Center_RL.geometry} material={materials.Material_Rim_Centerlock} position={[-0.1, 0.008, 0.002]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[0.963, 1.122, 1.122]} />
-                <mesh name="Rim_Outer_RL" castShadow receiveShadow geometry={nodes.Rim_Outer_RL.geometry} material={materials.Material_Rim_Primary} position={[-0.1, 0.008, 0.002]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[0.963, 1.122, 1.122]} />
-                <mesh name="Tire_RL" castShadow receiveShadow geometry={nodes.Tire_RL.geometry} material={materials.Material_Tire_Static} position={[0.006, 0.003, 0]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[1.128, 1.079, 1.079]} />
+              <group name="Spin_Node_RL" position={[-0.007, 0.002, 0.009]} rotation={[-Math.PI, 0, 0]}>
+                <mesh name="Disc_RL" castShadow receiveShadow geometry={nodes.Disc_RL.geometry} material={materials.Material_Disc_Static} position={[-0.016, 0, 0.158]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
+                <mesh name="Hub_RL" castShadow receiveShadow geometry={nodes.Hub_RL.geometry} material={materials.Material_Structure_Lucid_Static} position={[0.777, 0.038, 0.021]} rotation={[Math.PI / 2, 0, 0]} />
+                <mesh name="Rim_Center_RL" castShadow receiveShadow geometry={nodes.Rim_Center_RL.geometry} material={materials.Material_Rim_Centerlock} position={[-0.125, 0.007, 0.009]} rotation={[-Math.PI / 2, 0, 0]} scale={-1.208} />
+                <mesh name="Rim_Outer_RL" castShadow receiveShadow geometry={nodes.Rim_Outer_RL.geometry} material={materials.Material_Rim_Primary} position={[-0.125, 0.007, 0.009]} rotation={[-Math.PI / 2, 0, 0]} scale={-1.208} />
+                <mesh name="Tire_RL" castShadow receiveShadow geometry={nodes.Tire_RL.geometry} material={materials.Material_Tire_Static} position={[0.007, 0, 0.003]} rotation={[-Math.PI / 2, 0, 0]} scale={[-1.414, -1.161, -1.161]} />
               </group>
               <group name="Brake_Static_RL" position={[-0.024, 0.002, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}>
                 <mesh name="Brake_Static_RL_1" castShadow receiveShadow geometry={nodes.Brake_Static_RL_1.geometry} material={materials.Material_Radiator_Static} />
@@ -301,12 +301,12 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               <mesh name="Caliper_Paint_RL" castShadow receiveShadow geometry={nodes.Caliper_Paint_RL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.024, 0.002, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
             </group>
             <group name="Wheel_Node_RR" position={[0.777, 0.298, -1.287]}>
-              <group name="Spin_Node_RR" position={[-0.003, 0.001, -0.008]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
-                <mesh name="Disc_RR" castShadow receiveShadow geometry={nodes.Disc_RR.geometry} material={materials.Material_Disc_Static} position={[-0.016, 0.136, -0.005]} />
-                <mesh name="Hub_RR" castShadow receiveShadow geometry={nodes.Hub_RR.geometry} material={materials.Material_Structure_Lucid_Static} position={[0.615, 0.009, 0.057]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[0.797, 0.929, 0.929]} />
-                <mesh name="Rim_Center_RR" castShadow receiveShadow geometry={nodes.Rim_Center_RR.geometry} material={materials.Material_Rim_Centerlock} position={[-0.103, -0.002, -0.002]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[0.963, 1.122, 1.122]} />
-                <mesh name="Rim_Outer_RR" castShadow receiveShadow geometry={nodes.Rim_Outer_RR.geometry} material={materials.Material_Rim_Primary} position={[-0.103, -0.002, -0.002]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[0.963, 1.122, 1.122]} />
-                <mesh name="Tire_RR" castShadow receiveShadow geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static} position={[0.003, -0.007, -0.004]} rotation={[-Math.PI, 0.036, -Math.PI]} scale={[1.128, 1.079, 1.079]} />
+              <group name="Spin_Node_RR" position={[-0.003, 0.001, -0.008]} rotation={[-Math.PI, 0, 0]}>
+                <mesh name="Disc_RR" castShadow receiveShadow geometry={nodes.Disc_RR.geometry} material={materials.Material_Disc_Static} position={[0.02, -0.005, 0.147]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
+                <mesh name="Hub_RR" castShadow receiveShadow geometry={nodes.Hub_RR.geometry} material={materials.Material_Structure_Lucid_Static} position={[-0.773, 0.034, 0.01]} rotation={[Math.PI / 2, 0, 0]} />
+                <mesh name="Rim_Center_RR" castShadow receiveShadow geometry={nodes.Rim_Center_RR.geometry} material={materials.Material_Rim_Centerlock} position={[0.13, 0.002, -0.002]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
+                <mesh name="Rim_Outer_RR" castShadow receiveShadow geometry={nodes.Rim_Outer_RR.geometry} material={materials.Material_Rim_Primary} position={[0.13, 0.002, -0.002]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
+                <mesh name="Tire_RR" castShadow receiveShadow geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static} position={[-0.003, -0.005, -0.008]} rotation={[Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]} />
               </group>
               <group name="Brake_Static_RR" position={[0.017, 0.006, -0.155]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
                 <mesh name="Brake_Static_RR_1" castShadow receiveShadow geometry={nodes.Brake_Static_RR_1.geometry} material={materials.Material_Wheels_Bolts_Static} />

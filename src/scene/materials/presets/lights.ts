@@ -1,47 +1,66 @@
+import { useLevaStore } from '@/store/levaStore';
 import * as THREE from 'three';
 
 // Front Daytime Running Lights (DRL) - Pure electric white
 export const configureHeadlightDRL = (material: THREE.MeshStandardMaterial): void => {
-  material.color.setHex(0xffffff);
-  material.emissive.setHex(0xffffff);
-  material.emissiveIntensity = 1.0;
+  const tweaks = useLevaStore.getState().headlight;
+
+  material.color.set(tweaks.color);
+  material.emissive.set(tweaks.emissive);
+  material.emissiveIntensity = tweaks.emissiveIntensity;
 
   material.toneMapped = false; 
 
-  material.roughness = 1.0;
-  material.metalness = 0.0;
+  material.roughness = tweaks.roughness;
+  material.metalness = tweaks.metalness;
+  material.envMapIntensity = tweaks.envMapIntensity;
   material.needsUpdate = true;
 };
 
 // Rear Taillights - Porsche Signature Red
 export const configureTaillightEmissive = (material: THREE.MeshStandardMaterial): void => {
-  material.color.setHex(0xd30000);
-  material.emissive.setHex(0xff0000); 
-  material.emissiveIntensity = 2.5; 
+  const tweaks = useLevaStore.getState().taillight;
+
+  material.color.set(tweaks.color);
+  material.emissive.set(tweaks.emissive); 
+  material.emissiveIntensity = tweaks.emissiveIntensity; 
+  
   material.toneMapped = false; 
-  material.roughness = 1.0;
-  material.metalness = 0.0;
+  
+  material.roughness = tweaks.roughness;
+  material.metalness = tweaks.metalness;
+  material.envMapIntensity = tweaks.envMapIntensity;
   material.needsUpdate = true;
 };
 
 // Turn Signals - Amber/Orange
 export const configureSignalEmissive = (material: THREE.MeshStandardMaterial): void => {
-  material.color.setHex(0xff9900);
-  material.emissive.setHex(0xff6600);
-  material.emissiveIntensity = 2.0;
+  const tweaks = useLevaStore.getState().signal;
+
+  material.color.set(tweaks.color);
+  material.emissive.set(tweaks.emissive);
+  material.emissiveIntensity = tweaks.emissiveIntensity;
+  
   material.toneMapped = false;
-  material.roughness = 1.0;
-  material.metalness = 0.0;
+  
+  material.roughness = tweaks.roughness;
+  material.metalness = tweaks.metalness;
+  material.envMapIntensity = tweaks.envMapIntensity;
   material.needsUpdate = true;
 };
 
 // License Plate LEDs - Cool white
 export const configureLicensePlateLight = (material: THREE.MeshStandardMaterial): void => {
-  material.color.setHex(0xedf2ff);
-  material.emissive.setHex(0xedf2ff);
-  material.emissiveIntensity = 1.5;
+  const tweaks = useLevaStore.getState().licensePlate;
+
+  material.color.set(tweaks.color);
+  material.emissive.set(tweaks.emissive);
+  material.emissiveIntensity = tweaks.emissiveIntensity;
+  
   material.toneMapped = false;
-  material.roughness = 1.0;
-  material.metalness = 0.0;
+  
+  material.roughness = tweaks.roughness;
+  material.metalness = tweaks.metalness;
+  material.envMapIntensity = tweaks.envMapIntensity;
   material.needsUpdate = true;
 };

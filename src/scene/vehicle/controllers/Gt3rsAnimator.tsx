@@ -14,7 +14,7 @@ export default function Gt3rsAnimator({ groupRefs }: Gt3rsAnimatorProps) {
   // DOORS
   useSpring({
     doorVal: doorsOpen ? 1.0 : 0,
-    config: { mass: 1.2, tension: 100, friction: 20 },
+    config: { mass: 1.2, tension: 40, friction: 14 },
     onChange: ({ value }) => {
       const nodes = groupRefs.current;
       if (nodes.Node_Door_L) nodes.Node_Door_L.rotation.y = -value.doorVal;
@@ -27,7 +27,7 @@ export default function Gt3rsAnimator({ groupRefs }: Gt3rsAnimatorProps) {
   // HOOD
  useSpring({
     hoodVal: hoodOpen ? 0.65 : 0,
-    config: { mass: 1.5, tension: 120, friction: 22 },
+    config: { mass: 1.5, tension: 80, friction: 22 },
     onChange: ({ value }) => {
       const nodes = groupRefs.current;
       if (nodes.Node_Hood) nodes.Node_Hood.rotation.x = -value.hoodVal;
@@ -38,7 +38,7 @@ export default function Gt3rsAnimator({ groupRefs }: Gt3rsAnimatorProps) {
   // STEERING
   useSpring({
     steerVal: steeringTurned ? 0.45 : 0,
-    config: { mass: 1, tension: 180, friction: 24 },
+    config: { mass: 1, tension: 150, friction: 24 },
     onChange: ({ value }) => {
       const nodes = groupRefs.current;
       if (nodes.Wheel_Node_FL) nodes.Wheel_Node_FL.rotation.y = -value.steerVal;
