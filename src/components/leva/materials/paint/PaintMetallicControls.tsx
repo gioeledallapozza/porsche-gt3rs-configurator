@@ -15,7 +15,7 @@ export const PaintMetallicControls: React.FC = () => {
           metalness: { value: state.paintMetallic.metalness, min: 0, max: 1, step: 0.01 },
           roughness: { value: state.paintMetallic.roughness, min: 0, max: 1, step: 0.01 },
           flakeScale: { value: state.paintMetallic.flakeScale, min: 10, max: 1000, step: 1 },
-          flakeIntensity: { value: state.paintMetallic.flakeIntensity, min: 0.1, max: 10, step: 0.1 },
+          flakeIntensity: { value: state.paintMetallic.flakeIntensity, min: 0.01, max: 10, step: 0.01 },
         }, { collapsed: true }),
       }, { collapsed: true }),
     }, { collapsed: true }),

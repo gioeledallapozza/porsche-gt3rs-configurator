@@ -32,16 +32,16 @@ export default function LevaLiveSubscriber({ mats }: Props) {
         mat.metalness = val.metalness;
         mat.roughness = val.roughness;
         
-        if (mat.userData && mat.userData.shaderUniforms) {
+        if (mat.userData && mat.userData.shader && mat.userData.shader.uniforms) {
           if (val.flakeScale !== undefined) {
-             mat.userData.shaderUniforms.uFlakeScale.value = val.flakeScale;
+             mat.userData.shader.uniforms.uFlakeScale.value = val.flakeScale;
           }
           if (val.flakeIntensity !== undefined) {
-             mat.userData.shaderUniforms.uFlakeIntensity.value = val.flakeIntensity;
+             mat.userData.shader.uniforms.uFlakeIntensity.value = val.flakeIntensity;
           }
         }
         
-        mat.needsUpdate = false; 
+        // mat.needsUpdate = false;  //let three.js handle it automatically
       };
 
       updateMat(pMat);
@@ -132,6 +132,37 @@ export default function LevaLiveSubscriber({ mats }: Props) {
       }
     );
 
+    const unsubGlassCabin = useLevaStore.subscribe(
+      (state) => state.glassCabin,
+      (val) => {
+        const gMat = mats.glassCabin as THREE.MeshPhysicalMaterial;
+        if (!gMat) return;
+        gMat.opacity = val.opacity;
+        gMat.roughness = val.roughness;
+        gMat.metalness = val.metalness;
+        gMat.clearcoat = val.clearcoat;
+        gMat.clearcoatRoughness = val.clearcoatRoughness;
+        gMat.envMapIntensity = val.envMapIntensity;
+      }
+    );
+
+    const unsubGlassLights = useLevaStore.subscribe(
+      (state) => state.glassLights,
+      (val) => {
+        const lMat = mats.glassLights as THREE.MeshPhysicalMaterial;
+        if (!lMat) return;
+        lMat.transmission = val.transmission;
+        lMat.opacity = val.opacity;
+        lMat.ior = val.ior;
+        lMat.thickness = val.thickness;
+        lMat.roughness = val.roughness;
+        lMat.metalness = val.metalness;
+        lMat.clearcoat = val.clearcoat;
+        lMat.clearcoatRoughness = val.clearcoatRoughness;
+        lMat.envMapIntensity = val.envMapIntensity;
+      }
+    );
+
     const unsubCarbonTwill = useLevaStore.subscribe(
       (state) => state.carbonTwill,
       (val) => {
@@ -139,18 +170,22 @@ export default function LevaLiveSubscriber({ mats }: Props) {
         const wMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
 
         if (cMat) {
+          cMat.color.set(val.color);
           cMat.clearcoat = val.clearcoat;
           cMat.clearcoatRoughness = val.clearcoatRoughness;
           cMat.metalness = val.metalness;
           cMat.roughness = val.roughness;
+          cMat.envMapIntensity = val.envMapIntensity;
           if (cMat.normalScale) cMat.normalScale.set(val.normalScale, val.normalScale);
         }
 
         if (wMat && useConfiguratorStore.getState().aeroPackage === 'weissach') {
+          wMat.color.set(val.color);
           wMat.clearcoat = val.clearcoat;
           wMat.clearcoatRoughness = val.clearcoatRoughness;
           wMat.metalness = val.metalness;
           wMat.roughness = val.roughness;
+          wMat.envMapIntensity = val.envMapIntensity;
           if (wMat.normalScale) wMat.normalScale.set(val.normalScale, val.normalScale);
         }
       }
@@ -162,10 +197,12 @@ export default function LevaLiveSubscriber({ mats }: Props) {
         const wMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
 
         if (wMat && useConfiguratorStore.getState().aeroPackage === 'weissach_forged') {
+          wMat.color.set(val.color);
           wMat.clearcoat = val.clearcoat;
           wMat.clearcoatRoughness = val.clearcoatRoughness;
           wMat.metalness = val.metalness;
           wMat.roughness = val.roughness;
+          wMat.envMapIntensity = val.envMapIntensity;
           if (wMat.normalScale) wMat.normalScale.set(val.normalScale, val.normalScale);
         }
       }
@@ -221,15 +258,17 @@ export default function LevaLiveSubscriber({ mats }: Props) {
       unsubPaintSolid();
       unsubPaintMetallic();
       unsubPaintSpecial();
-      unsubHeadlight();
-      unsubTaillight();
-      unsubSignal();
-      unsubLicensePlate();
       unsubCarbonTwill();
       unsubCarbonForged();
       unsubMetal();
       unsubRubber();
       unsubCaliper();
+      unsubHeadlight();
+      unsubTaillight();
+      unsubSignal();
+      unsubLicensePlate();
+      unsubGlassCabin();
+      unsubGlassLights();
     };
   }, [mats]);
 

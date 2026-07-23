@@ -89,6 +89,8 @@ export const applyMetallicPaint = (
     
     shader.fragmentShader = shader.fragmentShader.replace('#include <common>', fragmentPars);
     shader.fragmentShader = shader.fragmentShader.replace('#include <normal_fragment_maps>', fragmentMain);
+
+    material.userData.shader = shader;
   };
 
   material.needsUpdate = true;

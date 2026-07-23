@@ -10,11 +10,13 @@ export const CarbonTwillControls: React.FC = () => {
     Materials: folder({
       Carbon: folder({
         Twill: folder({
+          color: { value: state.carbonTwill.color },
           clearcoat: { value: state.carbonTwill.clearcoat, min: 0, max: 1, step: 0.01 },
           clearcoatRoughness: { value: state.carbonTwill.clearcoatRoughness, min: 0, max: 1, step: 0.01 },
           metalness: { value: state.carbonTwill.metalness, min: 0, max: 1, step: 0.01 },
           roughness: { value: state.carbonTwill.roughness, min: 0, max: 1, step: 0.01 },
           normalScale: { value: state.carbonTwill.normalScale, min: 0, max: 2, step: 0.01 },
+          envMapIntensity: { value: state.carbonTwill.envMapIntensity, min: 0, max: 5, step: 0.01 },
         }, { collapsed: true }),
       }, { collapsed: true }),
     }, { collapsed: true }),

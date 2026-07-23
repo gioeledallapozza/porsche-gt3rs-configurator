@@ -6,7 +6,7 @@ const VirtualStudio: React.FC = () => {
   const environment = useLevaStore((state) => state.environment);
   
   return (
-    <Environment resolution={2048} background={false}>
+    <Environment resolution={1024} background={false}>
       
       {/* <color attach="background" args={['#0f26f1']} /> */}
 

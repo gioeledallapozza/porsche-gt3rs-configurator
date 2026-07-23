@@ -71,7 +71,7 @@ export const CameraSettings: React.FC = () => {
         step: 0.1,
         onChange: (value) => setTweaks('camera', { targetZ: value as number }),
       },
-    }),
+    }, { collapsed: true }),
     Post: folder({
       exposure: {
         value: postState.exposure,
@@ -85,7 +85,7 @@ export const CameraSettings: React.FC = () => {
         options: toneMappingOptions,
         onChange: (value) => setTweaks('post', { toneMapping: value as THREE.ToneMapping }),
       },
-    }),
+    }, { collapsed: true }),
   });
 
   useEffect(() => {
