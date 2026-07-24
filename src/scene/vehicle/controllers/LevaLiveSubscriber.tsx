@@ -8,6 +8,15 @@ interface Props {
   mats: Record<string, THREE.Material>;
 }
 
+interface PaintParams {
+  clearcoat: number;
+  clearcoatRoughness: number;
+  metalness: number;
+  roughness: number;
+  flakeScale?: number;
+  flakeIntensity?: number;
+}
+
 export default function LevaLiveSubscriber({ mats }: Props) {
   
   useEffect(() => {
@@ -18,7 +27,7 @@ export default function LevaLiveSubscriber({ mats }: Props) {
       )?.finish;
     };
 
-    const updatePaintMaterial = (val: any, finish: string) => {
+    const updatePaintMaterial = (val: PaintParams, finish: string) => {
       const pMat = mats.paint as THREE.MeshPhysicalMaterial;
       const wMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
       const activeFinish = getActiveFinish();

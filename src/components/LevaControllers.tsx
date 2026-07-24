@@ -3,7 +3,7 @@ import { CameraSettings } from '@/components/leva/camera/CameraSettings.tsx';
 import { MaterialControls } from '@/components/leva/materials/MaterialControls.tsx';
 import { EnvironmentControls } from '@/components/leva/EnvironmentControls';
 
-export const LevaControllers: React.FC = () => {
+const LevaControllers: React.FC = () => {
   return (
     <>    
       <EnvironmentControls />
@@ -12,3 +12,5 @@ export const LevaControllers: React.FC = () => {
     </>
   );
 };
+
+export default LevaControllers;

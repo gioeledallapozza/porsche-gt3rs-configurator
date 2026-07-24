@@ -12,13 +12,21 @@ const toneMappingOptions = {
   ACESFilmic: THREE.ACESFilmicToneMapping,
 };
 
+interface CameraControlsType {
+  setPosition?: (x: number, y: number, z: number, transition?: boolean | number) => void;
+  setTarget?: (x: number, y: number, z: number, transition?: boolean | number) => void;
+  setLookAt?: (px: number, py: number, pz: number, tx: number, ty: number, tz: number, transition?: boolean | number) => void;
+  update: (delta: number) => void;
+}
+
+/* eslint-disable react-hooks/immutability */
 export const CameraSettings: React.FC = () => {
   const setTweaks = useLevaStore((state) => state.setTweaks);
   const cameraState = useLevaStore((state) => state.camera);
   const postState = useLevaStore((state) => state.post);
   const camera = useThree((state) => state.camera as THREE.PerspectiveCamera);
   const gl = useThree((state) => state.gl);
-  const controls = useThree((state) => state.controls as any | null);
+  const controls = useThree((state) => state.controls as CameraControlsType | null);
 
   useControls({
     Camera: folder({
