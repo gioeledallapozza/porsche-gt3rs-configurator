@@ -8,7 +8,7 @@
 
     //Multiply for weight
     vec3 triplanarTangentN = nX * blendWeights.x + nY * blendWeights.y + nZ * blendWeights.z;
-    triplanarTangentN.xy *= normalScale;
+    triplanarTangentN.xy *= (normalScale * uFlakeIntensity);
     triplanarTangentN = normalize(triplanarTangentN);
 
     // Construct a view-dependent TBN matrix for the sparkling effect.

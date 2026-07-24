@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { FlakesTexture } from 'three-stdlib';
+import { useLevaStore } from '@/store/levaStore';
 
 //Shaders
 import vertexPars from '../shaders/triplanarFlakes/vertex_pars.glsl';
@@ -24,19 +25,21 @@ function getFlakesTexture(): THREE.CanvasTexture {
 }
 // PASTEL PAINT
 export const applySolidPaint = (material: THREE.MeshPhysicalMaterial, hexColor: string): void => {
+  const tweaks = useLevaStore.getState().paintSolid;
+
   material.color.set(hexColor);
   material.normalMap = null;
   material.roughnessMap = null;
   
-  material.roughness = 0.1;
-  material.metalness = 0.0; 
+  material.roughness = tweaks.roughness;
+  material.metalness = tweaks.metalness; 
 
-  material.clearcoat = 1.0;
-  material.clearcoatRoughness = 0.01; 
+  material.clearcoat = tweaks.clearcoat;
+  material.clearcoatRoughness = tweaks.clearcoatRoughness;
 
   material.ior = 1.5;
   
-  material.envMapIntensity = 1.0; 
+  material.envMapIntensity = tweaks.envMapIntensity; 
   
   material.sheen = 0.0;
   material.iridescence = 0.0;
@@ -53,32 +56,41 @@ export const applyMetallicPaint = (
   material: THREE.MeshPhysicalMaterial, 
   hexColor: string
 ): void => {
+  const tweaks = useLevaStore.getState().paintMetallic;
+
   material.color.set(hexColor);
 
   material.normalMap = getFlakesTexture();
   material.normalScale.set(0.5, 0.5); 
   
   material.roughnessMap = null;
-  material.roughness = 0.3;
-  material.metalness = 0.8; 
+  material.roughness = tweaks.roughness;
+  material.metalness = tweaks.metalness; 
 
-  material.clearcoat = 1.0;
+  material.envMapIntensity = tweaks.envMapIntensity; 
+  
+  material.clearcoat = tweaks.clearcoat;
   material.clearcoatNormalMap = null; 
-  material.clearcoatRoughness = 0.0;
+  material.clearcoatRoughness = tweaks.clearcoatRoughness;
   material.ior = 1.52; 
 
   material.sheen = 0.0;
   material.iridescence = 0.0;
+
+  if (!material.userData) material.userData = {};
   
   // INJECT SHADER
   material.onBeforeCompile = (shader) => {
-    shader.uniforms.uFlakeScale = { value: 200.0 };
+    shader.uniforms.uFlakeScale = { value: tweaks.flakeScale };
+    shader.uniforms.uFlakeIntensity = { value: tweaks.flakeIntensity };
 
     shader.vertexShader = shader.vertexShader.replace('#include <common>', vertexPars);
     shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', vertexMain);
     
     shader.fragmentShader = shader.fragmentShader.replace('#include <common>', fragmentPars);
     shader.fragmentShader = shader.fragmentShader.replace('#include <normal_fragment_maps>', fragmentMain);
+
+    material.userData.shader = shader;
   };
 
   material.needsUpdate = true;
@@ -89,10 +101,18 @@ export const applySpecialPaint = (
   material: THREE.MeshPhysicalMaterial, 
   paintConfig: { name: string; hex: string }
 ): void => {
+  const tweaks = useLevaStore.getState().paintSpecial;
 
   // PYTHON GREEN CHROMAFLAIR (Thin Film Iridescence)
   if (paintConfig.name === 'Python Green Chromaflair') {
-    applyMetallicPaint(material, paintConfig.hex); 
+    applyMetallicPaint(material, paintConfig.hex);
+
+    material.clearcoat = tweaks.clearcoat;
+    material.clearcoatRoughness = tweaks.clearcoatRoughness;
+    material.metalness = tweaks.metalness;
+    material.roughness = tweaks.roughness;
+    
+    material.customProgramCacheKey = () => 'triplanar_special_flakes';
     
     // Iridescence
     material.iridescence = 1.0; 

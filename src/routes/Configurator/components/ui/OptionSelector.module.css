@@ -1,0 +1,30 @@
+.optionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.textButton {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.8rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+.textButton:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.activeTextButton {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-weight: 600;
+}

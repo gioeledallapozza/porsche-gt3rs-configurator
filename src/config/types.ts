@@ -1,9 +1,11 @@
 export type PaintFinish = 'solid' | 'metallic' | 'special';
+export type PaintCategory = 'standard' | 'pts';
 
 export interface PaintOption {
   name: string;
   hex: string;
   finish: PaintFinish;
+  category?: PaintCategory;
 }
 
 export interface PackageOption {

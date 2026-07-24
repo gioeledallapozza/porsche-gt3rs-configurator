@@ -1,50 +1,65 @@
 import React from 'react';
 import { Environment, Lightformer } from '@react-three/drei';
+import { useLevaStore } from '@/store/levaStore';
 
 const VirtualStudio: React.FC = () => {
+  const environment = useLevaStore((state) => state.environment);
+  
   return (
-    <Environment resolution={2048} background={false} >
+    <Environment resolution={1024} background={false}>
       
+      {/* <color attach="background" args={['#0f26f1']} /> */}
+
       {/* ROOM BASE */}
       <Lightformer 
-        form="sphere" 
-        intensity={0.1} 
-        color="#111" 
-        scale={100} 
+        form="rect" 
+        intensity={environment.envIntensity} 
+        color="#ffffff" 
+        scale={environment.envScale} 
+        position={[0, 20, 0]} 
+        rotation-x={Math.PI / 2}
       />
 
       {/* TOP SOFTBOX */}
       <Lightformer 
         form="rect" 
-        intensity={1.5} 
+        intensity={environment.lightformerTop}
         position={[0, 5, 0]} 
         rotation-x={Math.PI / 2} 
-        scale={[10, 10, 1]} 
+        scale={[environment.lightformerTopScale, environment.lightformerTopScale, 1]} 
       />
 
       {/* SIDE BLADES */}
       <Lightformer 
         form="rect" 
-        intensity={1.5} 
-        position={[-4, 1.5, 0]} 
+        intensity={environment.lightformerSide}
+        position={[-5, 2, 0]} 
         rotation-y={Math.PI / 2} 
-        scale={[15, 1.5, 1]} 
+        scale={[environment.lightformerSideScale, 3, 1]} 
       />
       <Lightformer 
         form="rect" 
-        intensity={0.6} 
-        position={[4, 1.5, 0]} 
+        intensity={environment.lightformerSide} 
+        position={[5, 2, 0]} 
         rotation-y={-Math.PI / 2} 
-        scale={[15, 1.5, 1]} 
+        scale={[environment.lightformerSideScale, 3, 1]} 
       />
 
       {/* FRONT KICK */}
       <Lightformer 
-        form="circle" 
-        intensity={1.0} 
-        position={[0, 1.5, 6]}
+        form="rect" 
+        intensity={environment.lightformerFront} 
+        position={[0, 1.5, 5]}
         rotation-y={Math.PI} 
-        scale={[5, 5, 1]} 
+        scale={[environment.lightformerFrontScale, 0.5, 1]} 
+      />
+
+      {/* REAR KICK */}
+      <Lightformer 
+        form="rect"
+        intensity={environment.lightformerRear}
+        position={[0, 1.5, -5]}
+        scale={[environment.lightformerRearScale, 0.5, 1]}
       />
       
     </Environment>

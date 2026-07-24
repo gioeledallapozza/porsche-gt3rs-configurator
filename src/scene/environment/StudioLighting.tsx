@@ -29,10 +29,10 @@ const StudioLighting: React.FC = () => {
         // ref={dirLightRef} // ONLY FOR DEBUG
         castShadow
         position={[5, 8, 3]}
-        intensity={2.5} 
+        intensity={0.5} 
         shadow-mapSize={[2048, 2048]}
-        shadow-bias={-0.0001}
-        shadow-normalBias={0.02} 
+        shadow-bias={-0.0005}
+        shadow-normalBias={0.04}
       >
         <orthographicCamera attach="shadow-camera" args={[-2.5, 2.5, 2.5, -2.5, 0.5, 12]} />
       </directionalLight>
