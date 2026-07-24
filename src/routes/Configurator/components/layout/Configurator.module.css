@@ -1,0 +1,101 @@
+.configuratorContainer {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100dvh; /* Dynamic Viewport Heihgt: height excluding the address bar */
+  background-color: #050505;
+  background: radial-gradient(circle at 50% 50%, #2a2a2a 0%, #050505 100%);
+  overflow: hidden;
+}
+
+.canvasWrapper {
+  flex: 1 1 0; /* grow, shrink, basis: occupy all the remaining space and shrink if necessary */
+  position: relative;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.vehicleLoader {
+  color: white;
+  letter-spacing: 0.1em; 
+  font-size: 0.85rem;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.uiPanel {
+  width: 400px;
+  height: 100%;
+  background: #1a1a1a;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto; 
+  padding: 2rem;
+  z-index: 10;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+
+/* Socials */
+.socialLinksOverlay {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.socialButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.socialButton:hover {
+  transform: scale(1.1);
+  background: rgba(30, 30, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.socialButton svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* GENERAL MOBILE LAYOUT */
+@media (max-width: 768px) {
+  .configuratorContainer {
+    flex-direction: column;
+  }
+  .canvasWrapper {
+    width: 100%;
+    height: 45dvh;
+    flex: 0 0 45dvh; 
+    z-index: 10;
+  }
+  .uiPanel {
+    width: 100%;
+    height: 55dvh; 
+    flex: 1 1 auto; 
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    z-index: 1;
+  }
+}

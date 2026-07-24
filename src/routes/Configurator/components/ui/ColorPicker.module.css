@@ -1,0 +1,166 @@
+.subPanelTitle {
+  font-size: 0.70rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 1rem 0 0.8rem 0;
+}
+
+.colorGroup { margin-bottom: 1.5rem; }
+
+.colorPickerGrid {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  flex-wrap: wrap; 
+  justify-content: flex-start; 
+}
+
+.colorButtonWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.colorButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4);
+
+  /* Fix for jitter (Keeps the element on the GPU)
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+  isolation: isolate; */
+}
+
+.colorButton:hover { transform: scale(1.1); }
+
+.colorButton::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.active::after { border-color: #fff; }
+
+.metallicFlakes {
+  /* Retains the original shadows to give the button volume. */
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.2), 
+              inset 0 -2px 4px rgba(0, 0, 0, 0.4), 
+              0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.metallicFlakes::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-image: url('/textures/ui/noise.png');
+  background-repeat: repeat;
+  background-size: 20px 20px; 
+  mix-blend-mode: color-dodge; 
+  opacity: 1.0; 
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: rgba(10, 10, 10, 0.95);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.70rem;
+  width: max-content;
+  max-width: 90px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 100;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.colorButtonWrapper:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tabContainer {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 1.5rem;
+}
+
+.tabButton {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.activeTab {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.bespokeDescription {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1.5rem;
+}
+
+.bespokeGridContainer {
+  width: 100%;
+  scrollbar-width: thin;
+}
+
+/* Only if there is a component colorPickerGrid than lives inside a father called bespokeGridContainer then apply */
+.bespokeGridContainer .colorPickerGrid {
+  padding-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(36px, 1fr));
+  gap: 1.2rem 0.5rem; 
+  justify-items: center; 
+  width: 100%;
+}
+
+.tabView {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile bigger Inputs */
+@media (max-width: 768px) {
+  .colorButton {
+    width: 39px;
+    height: 39px;
+  }
+}

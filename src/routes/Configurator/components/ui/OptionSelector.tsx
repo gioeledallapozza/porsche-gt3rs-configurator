@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import styles from '../../Configurator.module.css';
+import accordionStyles from './Accordion.module.css';
+import styles from './OptionSelector.module.css';
 import type { PackageOption } from '@/config/types';
 
 interface OptionSelectorProps {
@@ -20,8 +21,8 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className={styles.accordionSection}>
-      <h3 className={styles.panelTitle} onClick={() => setIsOpen(!isOpen)}>
+    <div className={accordionStyles.accordionSection}>
+      <h3 className={accordionStyles.panelTitle} onClick={() => setIsOpen(!isOpen)}>
         {title} <span>{isOpen ? '▲' : '▼'}</span>
       </h3>
       

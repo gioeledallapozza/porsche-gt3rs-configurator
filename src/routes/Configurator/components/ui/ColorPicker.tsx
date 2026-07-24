@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { PaintOption } from '@/config/types';
-import styles from '../../Configurator.module.css';
+import accordionStyles from './Accordion.module.css';
+import styles from './ColorPicker.module.css';
 
 interface ColorPickerProps {
   title: string;
@@ -20,6 +21,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [activeTab, setActiveTab] = useState<'core' | 'bespoke'>('core');
 
+  // Filter all colors in categories
   const standardOptions = options.filter(opt => opt.category !== 'pts');
   const bespokeOptions = options.filter(opt => opt.category === 'pts');
 
@@ -39,11 +41,11 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
               <button
                 onClick={() => onSelect(paint.hex)}
                 className={`
-                  ${styles.colorButton} 
-                  ${isActive ? styles.active : ''} 
-                  ${isMetallic ? styles.metallicFlakes : ''}
+                  ${styles.colorButton} //Always present
+                  ${isActive ? styles.active : ''} //Add active class if selected
+                  ${isMetallic ? styles.metallicFlakes : ''} //Apply flakes only if metallic
                 `}
-                style={{ backgroundColor: paint.hex }}
+                style={{ backgroundColor: paint.hex }} //Dynamic backcolor
                 aria-label={`Select ${paint.name}`}
               />
               <span className={styles.tooltip}>{paint.name}</span>
@@ -55,8 +57,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
   };
 
   return (
-    <div className={styles.accordionSection}>
-      <h2 className={styles.panelTitle} onClick={() => setIsOpen(!isOpen)}>
+    <div className={accordionStyles.accordionSection}>
+      <h2 className={accordionStyles.panelTitle} onClick={() => setIsOpen(!isOpen)}>
         {title} <span>{isOpen ? '▲' : '▼'}</span>
       </h2>
       
@@ -81,7 +83,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
             </div>
           )}
 
-          {/* VISTA CORE */}
+          {/* CORE VIEW */}
           {activeTab === 'core' && (
             <div className={styles.tabView}>
               {solidColors.length > 0 && (
@@ -105,6 +107,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
             </div>
           )}
 
+          {/* BESPOKE VIEW */}
           {activeTab === 'bespoke' && (
             <div className={`${styles.tabView} ${styles.bespokeGridContainer}`}>
                <p className={styles.bespokeDescription}>
