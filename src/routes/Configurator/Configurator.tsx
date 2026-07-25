@@ -1,13 +1,14 @@
 import React, { Suspense, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
-// import { Perf } from 'r3f-perf';
+import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
 import { CameraControls, Html } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SSAO } from '@react-three/postprocessing';
 
 //Components
+import { useConfiguratorStore } from '@/store/configuratorStore';
 import { vehicleRegistry } from '@/config/vehicles';
 import { cameraPresets } from '@/config/camera/cameraPresets';
 import Vehicle from '@/scene/vehicle/Vehicle';
@@ -33,7 +34,18 @@ const Configurator: React.FC = () => {
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
   const cameraControlsRef = useRef<CameraControls | null>(null);
 
+  //Extract initial state
+  const initVehicle = useConfiguratorStore((state) => state.initVehicle);
+  const isInitialized = useConfiguratorStore((state) => state.isInitialized);
+
   const initialPreset = cameraPresets.find(p => p.id === 'hero_view') || cameraPresets[0];
+
+  // UseEffect to initialize vehicle as soon as is ready
+  useEffect(() => {
+    if (config) {
+      initVehicle(config);
+    }
+  }, [config, initVehicle]);
 
   //Setup invalidation for frameloop=demand
   useEffect(() => {
@@ -55,8 +67,6 @@ const Configurator: React.FC = () => {
     const onUpdate = () => invalidate();
     controls.addEventListener('update', onUpdate);
 
-
-
     return () => {
       controls.removeEventListener('update', onUpdate);
     };
@@ -65,6 +75,10 @@ const Configurator: React.FC = () => {
 
   if (!config) {
     return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
+  }
+
+  if (!isInitialized) {
+    return null; // Or loader?
   }
 
   return (
@@ -76,7 +90,7 @@ const Configurator: React.FC = () => {
         <CameraPresetsUI />
         <Canvas
           shadows={{ type: THREE.PCFSoftShadowMap }}
-          frameloop="demand" //Only render when there are changes in the scene
+          frameloop="always" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
             antialias: true, 
@@ -91,16 +105,23 @@ const Configurator: React.FC = () => {
           }}
         >
           {/* Only for development purposes */}
-          {/* <Perf position="top-left" minimal={false} /> */}
+          {/* <Perf position="top-left" minimal={false} deepAnalyze={true}/> */}
+
+          {/* SEPARATED SUSPENSE, So when GLTF loads the materials of the vehicle model the envMap EXISTS */}
+          <Suspense fallback={
+            <Html center>
+              <div className={styles.vehicleLoader}>Loading Lighting...</div>
+            </Html>
+          }>
+            <VirtualStudio />  {/* EnvMap */}
+            <StudioLighting /> {/* Dynamic shadows */}
+          </Suspense>
 
           <Suspense fallback={
             <Html center>
               <div className={styles.vehicleLoader}>Loading 3D Assets...</div>
             </Html>
           }>
-            <VirtualStudio />  {/* EnvMap */}
-            <StudioLighting /> {/* Dynamic shadows */}
-
             <Vehicle vehicleId={config.id} />
           </Suspense>
 
@@ -139,7 +160,6 @@ const Configurator: React.FC = () => {
           {/* <LevaControllers /> */}
         </Canvas>
       </div>
-
 
       <ConfiguratorSidebar config={config} />
     </div>

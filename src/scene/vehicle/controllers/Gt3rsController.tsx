@@ -46,13 +46,55 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
   //const flakeNormal = useKtx2Disposal('/textures/materials/flakes/flakes_v5_normal_2k.ktx2');
 
-  // Search correct nodes
-  useLayoutEffect(() => {
+ // Apply shadows only to certains nodes based on custom blender properties
+ // Assign reference to certains nodes to enable animations
+ useLayoutEffect(() => {
   if (!nodes) return;
+
+  // Setup Animation Nodes
   ['Node_Door_L', 'Node_Door_R', 'Node_Hood', 'Wheel_Node_FL', 'Wheel_Node_FR'].forEach(name => {
-    scene.traverse((obj) => {
-      if (obj.name === name) groupRefs.current[name] = obj;
-    });
+    const node = scene.getObjectByName(name);
+    if (node) groupRefs.current[name] = node;
+  });
+
+  // Recursive function: searches for the custom property in the node. If it is not found, it checks the parent.
+  // NOTE: maybe assign manually to each mesh the properties instead of the group for efficiency
+  const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
+    if (!gltfNode) return false;
+    
+    // If Blender has saved the property (1 or true)
+    if (gltfNode.userData[property] !== undefined) {
+      return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
+    }
+    
+    // If it's not there, check the parent.
+    if (gltfNode.parent) {
+      return getInheritedShadow(gltfNode.parent, property);
+    }
+    
+    return false;
+  };
+
+  // By default gltfjsx groups doesn't support custom properties, this is why we get the original node
+  scene.traverse((r3fNode) => {
+    // Only meshes
+    if (!(r3fNode instanceof THREE.Mesh)) return;
+
+    // Retrieve the original GLTF object using the name.
+    const gltfNode = nodes[r3fNode.name];
+    if (!gltfNode) return;
+
+    // Calculates inheritance in real time (O(D), where D is the depth of the tree).
+    const shouldCast = getInheritedShadow(gltfNode, 'castShadow');
+    const shouldReceive = getInheritedShadow(gltfNode, 'receiveShadow');
+
+    // Apply only in case of discrepancy to save on WebGL recalculations
+    if (r3fNode.castShadow !== shouldCast) {
+      r3fNode.castShadow = shouldCast;
+    }
+    if (r3fNode.receiveShadow !== shouldReceive) {
+      r3fNode.receiveShadow = shouldReceive;
+    }
   });
 }, [nodes, scene]);
 
@@ -177,10 +219,14 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       }
     }
 
-    // 3. EnvMap (se l'ambiente è già caricato via Suspense)
+    // EnvMap (se l'ambiente è già caricato via Suspense)
     if (scene.environment) {
-      Object.values(extractedMaterials).forEach((mat) => {
-        if ('envMap' in mat) mat.envMap = scene.environment;
+      // Update to all materials the envMap
+      // Cache Patching: useGLTF ignores the custom envMap even if is loaded
+      Object.values(materials).forEach((mat) => {
+        if ('envMap' in mat && mat.envMap !== scene.environment) {
+          mat.envMap = scene.environment;
+        }
       });
     }
 
@@ -188,22 +234,26 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
 
   // EXPLICIT INJECTION OF ENVMAP (the useMemo load the materials before the envmap is loaded)
-  useEffect(() => {
-    
-    if (!scene.environment) return;
+  // FIXED WITH WAITING FOR THE ENV MAP BEFORE RUNNING THIS COMPONENT
+  // useEffect(() => {
+  //   if (!scene.environment) return;
 
-    //Iterate through all materials
-    Object.values(mats).forEach((mat) => {
-      // If the material support the envMap and is null update it
-      if ('envMap' in mat && mat.envMap === null) {
-        mat.envMap = scene.environment;
-        mat.needsUpdate = true;
-      }
-    });
+  //   let needsInvalidation = false;
 
-    invalidate();
-  }, [mats, scene.environment]);
+  //   Object.values(mats).forEach((mat) => {
+  //     // Inject only if the material supports envMap and it's missing or outdated
+  //     if ('envMap' in mat && mat.envMap !== scene.environment) {
+  //       mat.envMap = scene.environment;
+  //       mat.needsUpdate = true; // Inevitable for the first load to recompile the shader
+  //       needsInvalidation = true;
+  //     }
+  //   });
 
+  //   // Call invalidate only once per environment change, not per material
+  //   if (needsInvalidation) {
+  //     invalidate();
+  //   }
+  // }, [mats, scene.environment]);
 
   // Memoize textures to prevent infinite reference changes and battery drain
   const texturePack = useMemo(() => ({

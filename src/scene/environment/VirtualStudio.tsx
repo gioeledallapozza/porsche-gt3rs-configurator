@@ -1,10 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Environment, Lightformer } from '@react-three/drei';
 import { useLevaStore } from '@/store/levaStore';
+import { useConfiguratorStore } from '@/store/configuratorStore';
+import { useThree } from '@react-three/fiber';
 
 const VirtualStudio: React.FC = () => {
   const environment = useLevaStore((state) => state.environment);
+  const setEnvReady = useConfiguratorStore((state) => state.setEnvReady);
+  const { scene } = useThree();
   
+  useEffect(() => {
+    // When the scene receives the environment, we unlock the car loading process.
+    // This ensure materials to get the envMap property correctly
+    if (scene.environment) {
+      setEnvReady(true);
+    }
+    
+    // Fallback watcher in case of delays in PMREM generation
+    const checkEnv = () => {
+      if (scene.environment) {
+        setEnvReady(true);
+      } else {
+        requestAnimationFrame(checkEnv);
+      }
+    };
+    
+    if (!scene.environment) {
+      checkEnv();
+    }
+
+    return () => setEnvReady(false); // Cleanup al dismount
+  }, [scene.environment, setEnvReady]); //Update on scene.enviroment change
+
   return (
     <Environment resolution={1024} background={false}>
       

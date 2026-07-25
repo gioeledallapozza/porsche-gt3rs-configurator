@@ -1,8 +1,12 @@
 import { create } from 'zustand';
-import { gt3rsConfig } from '@/config/vehicles/gt3rs.config';
+import type { VehicleConfig } from '@/config/types';
 
 //This store manages the state of the car configurator.
 interface ConfiguratorState {
+  // Setup flag
+  isInitialized: boolean;
+  isEnvReady: boolean;
+
   //Only primite types
   carColor: string;
   wheelColor: string;
@@ -14,6 +18,10 @@ interface ConfiguratorState {
   doorsOpen: boolean;
   hoodOpen: boolean;
   steeringTurned: boolean;
+
+  // Setup Action
+  initVehicle: (config: VehicleConfig) => void;
+  setEnvReady: (status: boolean) => void;
   
   // Actions
   setCarColor: (hex: string) => void;
@@ -29,15 +37,29 @@ interface ConfiguratorState {
 }
 
 export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
-  carColor: gt3rsConfig.paintOptions[0].hex, //NOT WORKING FOR OTHER CARS DIFFERENT FROM GT3RS TO FIX
-  wheelColor: gt3rsConfig.wheelOption[0].hex,
-  caliperColor: gt3rsConfig.caliperOptions[0].hex,
+  isInitialized: false,
+  isEnvReady: false,
+  carColor: '', 
+  wheelColor: '',
+  caliperColor: '',
   activeCameraPreset: 'hero_view',
   aeroPackage: 'standard',
 
   doorsOpen: false,
   hoodOpen: false,
   steeringTurned: false,
+
+  initVehicle: (config) => set({
+    isInitialized: true,
+    carColor: config.paintOptions[0]?.hex || '#000000',
+    wheelColor: config.wheelOption[0]?.hex || '#000000',
+    caliperColor: config.caliperOptions[0]?.hex || '#000000',
+
+    doorsOpen: false,
+    hoodOpen: false,
+    steeringTurned: false,
+  }),
+  setEnvReady: (status) => set({ isEnvReady: status }),
 
   setCarColor: (hex) => set({ carColor: hex }),
   setWheelColor: (hex) => set({ wheelColor: hex }),

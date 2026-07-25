@@ -17,7 +17,7 @@ export const cameraPresets: CameraPreset[] = [
   { 
     id: 'hero_view', 
     name: 'Front 3/4', 
-    position: [3.5, 1.5, 4.5], 
+    position: [2.337, 1.140, 5.276], 
     target: [0, 0.2, 0], 
     thumbnail: '/placeholders/cam-front-34.webp' 
   },

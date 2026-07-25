@@ -1,4 +1,5 @@
 import { vehicleRegistry } from '@/config/vehicles';
+import { useConfiguratorStore } from '@/store/configuratorStore';
 import React from 'react';
 
 interface ControllerProps {
@@ -19,8 +20,15 @@ const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
   const config = vehicleRegistry[vehicleId];
   const Controller = controllerMap[vehicleId];
 
+  const isEnvReady = useConfiguratorStore((state) => state.isEnvReady);
+
   if (!config || !Controller) {
     console.warn(`[Vehicle Router] Configuration or Controller not found for: ${vehicleId}`);
+    return null;
+  }
+
+  // Wait for envmap before loading the model
+  if (!isEnvReady) {
     return null;
   }
 

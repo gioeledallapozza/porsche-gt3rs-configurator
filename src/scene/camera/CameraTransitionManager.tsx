@@ -20,13 +20,12 @@ export default function CameraTransitionManager({ controlsRef }: CameraTransitio
     const preset = cameraPresets.find((p) => p.id === activePresetId);
     if (!preset || !controlsRef.current) return;
 
+    const controls = controlsRef.current;
 
-    
     const enableTransition = !isInitialRender.current;
 
     clock.getDelta();
 
-    const controls = controlsRef.current;
     //Set min maxdistance
     controls.minDistance = preset.minDistance ?? 3.5;
     controls.maxDistance = preset.maxDistance ?? 8.0;
@@ -34,6 +33,25 @@ export default function CameraTransitionManager({ controlsRef }: CameraTransitio
     controls.maxPolarAngle = preset.maxPolarAngle ?? (Math.PI / 2 - 0.05);
     controls.minAzimuthAngle = preset.minAzimuthAngle ?? -Infinity;
     controls.maxAzimuthAngle = preset.maxAzimuthAngle ?? Infinity;
+
+    // Fix Calculation of the shortest path to avoid a 360-degree spin.
+    if (enableTransition) {
+
+      const targetAzimuth = Math.atan2(
+        preset.position[0] - preset.target[0],
+        preset.position[2] - preset.target[2]
+      );
+      const currentAzimuth = controls.azimuthAngle;
+
+      let diff = (targetAzimuth - currentAzimuth) % (Math.PI * 2);
+
+      // If the difference between the two angles is bigger than 180 we are making the longest path
+      if (diff > Math.PI) diff -= Math.PI * 2;
+      if (diff < -Math.PI) diff += Math.PI * 2;
+
+      // Update the angle
+      controls.azimuthAngle = targetAzimuth - diff;
+    }
 
     // setLookAt(posX, posY, posZ, targetX, targetY, targetZ, enableTransition)
     // The smooth transition automatically handles the interruption if the user clicks another photo mid-motion
