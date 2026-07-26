@@ -26,22 +26,14 @@ type GLTFResult = GLTF & {
     Brake_Static_FR_1: THREE.Mesh
     Brake_Static_FR_2: THREE.Mesh
     Caliper_Paint_FR: THREE.Mesh
-    Disc_RL: THREE.Mesh
-    Hub_RL: THREE.Mesh
-    Rim_Center_RL: THREE.Mesh
-    Rim_Outer_RL: THREE.Mesh
-    Tire_RL: THREE.Mesh
-    Brake_Static_RL_1: THREE.Mesh
-    Brake_Static_RL_2: THREE.Mesh
-    Caliper_Paint_RL: THREE.Mesh
-    Disc_RR: THREE.Mesh
-    Hub_RR: THREE.Mesh
-    Rim_Center_RR: THREE.Mesh
-    Rim_Outer_RR: THREE.Mesh
     Tire_RR: THREE.Mesh
-    Brake_Static_RR_1: THREE.Mesh
-    Brake_Static_RR_2: THREE.Mesh
-    Caliper_Paint_RR: THREE.Mesh
+    Tire_RR_1: THREE.Mesh
+    Tire_RR_2: THREE.Mesh
+    Tire_RR_3: THREE.Mesh
+    Tire_RR_4: THREE.Mesh
+    Tire_RR_5: THREE.Mesh
+    Tire_RR_6: THREE.Mesh
+    Tire_RR_7: THREE.Mesh
     Door_Accent_L: THREE.Mesh
     Door_Glass_L: THREE.Mesh
     Door_Interior_Base_L_1: THREE.Mesh
@@ -97,14 +89,8 @@ type GLTFResult = GLTF & {
     Taillight_Strip_Emissive: THREE.Mesh
     Wing_Flap_Active: THREE.Mesh
     Aero_Engine_Fans_Carbon: THREE.Mesh
-    Aero_Fender_Louvers: THREE.Mesh
-    Aero_Front_Splitter: THREE.Mesh
-    Aero_Rear_Diffuser: THREE.Mesh
+    Aero_Parts_Dynamic: THREE.Mesh
     Aero_Roof_Panel: THREE.Mesh
-    Aero_Roof_Rails: THREE.Mesh
-    Aero_Sideskirts: THREE.Mesh
-    Aero_Tailgate: THREE.Mesh
-    Aero_Wing_Supports: THREE.Mesh
     Badge_Rear_Lettering: THREE.Mesh
     Chassis_Paint: THREE.Mesh
     Chassis_Underbody_Static_1: THREE.Mesh
@@ -118,7 +104,6 @@ type GLTFResult = GLTF & {
     Exterior_Badges_2: THREE.Mesh
     Exterior_Badges_3: THREE.Mesh
     Windows_Cabin_Static: THREE.Mesh
-    Wing_Endplates: THREE.Mesh
     Interior_SteeringWheel_Buttons_Static_1: THREE.Mesh
     Interior_SteeringWheel_Buttons_Static_2: THREE.Mesh
     Interior_SteeringWheel_Buttons_Static_3: THREE.Mesh
@@ -286,33 +271,15 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               </group>
               <mesh name="Caliper_Paint_FR" geometry={nodes.Caliper_Paint_FR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
             </group>
-            <group name="Wheel_Node_RL" position={[-0.769, 0.303, -1.293]}>
-              <group name="Spin_Node_RL" position={[-0.007, 0.002, 0.009]} rotation={[-Math.PI, 0, 0]}>
-                <mesh name="Disc_RL" geometry={nodes.Disc_RL.geometry} material={materials.Material_Disc_Static} position={[-0.016, 0, 0.158]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
-                <mesh name="Hub_RL" geometry={nodes.Hub_RL.geometry} material={materials.Material_Structure_Lucid_Static} position={[0.777, 0.038, 0.021]} rotation={[Math.PI / 2, 0, 0]} />
-                <mesh name="Rim_Center_RL" geometry={nodes.Rim_Center_RL.geometry} material={materials.Material_Rim_Centerlock} position={[-0.125, 0.007, 0.009]} rotation={[-Math.PI / 2, 0, 0]} scale={-1.208} />
-                <mesh name="Rim_Outer_RL" geometry={nodes.Rim_Outer_RL.geometry} material={materials.Material_Rim_Primary} position={[-0.125, 0.007, 0.009]} rotation={[-Math.PI / 2, 0, 0]} scale={-1.208} />
-                <mesh name="Tire_RL" geometry={nodes.Tire_RL.geometry} material={materials.Material_Tire_Static} position={[0.007, 0, 0.003]} rotation={[-Math.PI / 2, 0, 0]} scale={[-1.414, -1.161, -1.161]} />
-              </group>
-              <group name="Brake_Static_RL" position={[-0.024, 0.002, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}>
-                <mesh name="Brake_Static_RL_1" geometry={nodes.Brake_Static_RL_1.geometry} material={materials.Material_Radiator_Static} />
-                <mesh name="Brake_Static_RL_2" geometry={nodes.Brake_Static_RL_2.geometry} material={materials.Material_Wheels_Bolts_Static} />
-              </group>
-              <mesh name="Caliper_Paint_RL" geometry={nodes.Caliper_Paint_RL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.024, 0.002, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
-            </group>
-            <group name="Wheel_Node_RR" position={[0.777, 0.298, -1.287]}>
-              <group name="Spin_Node_RR" position={[-0.003, 0.001, -0.008]} rotation={[-Math.PI, 0, 0]}>
-                <mesh name="Disc_RR" geometry={nodes.Disc_RR.geometry} material={materials.Material_Disc_Static} position={[0.02, -0.005, 0.147]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
-                <mesh name="Hub_RR" geometry={nodes.Hub_RR.geometry} material={materials.Material_Structure_Lucid_Static} position={[-0.773, 0.034, 0.01]} rotation={[Math.PI / 2, 0, 0]} />
-                <mesh name="Rim_Center_RR" geometry={nodes.Rim_Center_RR.geometry} material={materials.Material_Rim_Centerlock} position={[0.13, 0.002, -0.002]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
-                <mesh name="Rim_Outer_RR" geometry={nodes.Rim_Outer_RR.geometry} material={materials.Material_Rim_Primary} position={[0.13, 0.002, -0.002]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
-                <mesh name="Tire_RR" geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static} position={[-0.003, -0.005, -0.008]} rotation={[Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]} />
-              </group>
-              <group name="Brake_Static_RR" position={[0.017, 0.006, -0.155]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
-                <mesh name="Brake_Static_RR_1" geometry={nodes.Brake_Static_RR_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
-                <mesh name="Brake_Static_RR_2" geometry={nodes.Brake_Static_RR_2.geometry} material={materials.Material_Radiator_Static} />
-              </group>
-              <mesh name="Caliper_Paint_RR" geometry={nodes.Caliper_Paint_RR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.017, 0.006, -0.155]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
+            <group name="Wheel_R" position={[0.77, 0.305, -1.287]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]}>
+              <mesh name="Tire_RR" geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static} />
+              <mesh name="Tire_RR_1" geometry={nodes.Tire_RR_1.geometry} material={materials.Material_Rim_Primary} />
+              <mesh name="Tire_RR_2" geometry={nodes.Tire_RR_2.geometry} material={materials.Material_Rim_Centerlock} />
+              <mesh name="Tire_RR_3" geometry={nodes.Tire_RR_3.geometry} material={materials.Material_Structure_Lucid_Static} />
+              <mesh name="Tire_RR_4" geometry={nodes.Tire_RR_4.geometry} material={materials.Material_Disc_Static} />
+              <mesh name="Tire_RR_5" geometry={nodes.Tire_RR_5.geometry} material={materials.Material_Caliper_Dynamic} />
+              <mesh name="Tire_RR_6" geometry={nodes.Tire_RR_6.geometry} material={materials.Material_Wheels_Bolts_Static} />
+              <mesh name="Tire_RR_7" geometry={nodes.Tire_RR_7.geometry} material={materials.Material_Radiator_Static} />
             </group>
           </group>
           <group name="Group_Exterior">
@@ -395,14 +362,8 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               <mesh name="Wing_Flap_Active" geometry={nodes.Wing_Flap_Active.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
             </group>
             <mesh name="Aero_Engine_Fans_Carbon" geometry={nodes.Aero_Engine_Fans_Carbon.geometry} material={materials.Material_Carbon_Trim_Static} />
-            <mesh name="Aero_Fender_Louvers" geometry={nodes.Aero_Fender_Louvers.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Aero_Front_Splitter" geometry={nodes.Aero_Front_Splitter.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Aero_Rear_Diffuser" geometry={nodes.Aero_Rear_Diffuser.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
+            <mesh name="Aero_Parts_Dynamic" geometry={nodes.Aero_Parts_Dynamic.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
             <mesh name="Aero_Roof_Panel" geometry={nodes.Aero_Roof_Panel.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
-            <mesh name="Aero_Roof_Rails" geometry={nodes.Aero_Roof_Rails.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Aero_Sideskirts" geometry={nodes.Aero_Sideskirts.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Aero_Tailgate" geometry={nodes.Aero_Tailgate.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Aero_Wing_Supports" geometry={nodes.Aero_Wing_Supports.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
             <mesh name="Badge_Rear_Lettering" geometry={nodes.Badge_Rear_Lettering.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
             <mesh name="Chassis_Paint" geometry={nodes.Chassis_Paint.geometry} material={materials.Material_Chassis_Paint} />
             <group name="Chassis_Underbody_Static">
@@ -422,7 +383,6 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               <mesh name="Exterior_Badges_3" geometry={nodes.Exterior_Badges_3.geometry} material={materials.Material_Glass_Lights_Static} />
             </group>
             <mesh name="Windows_Cabin_Static" geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Cabin_Static} />
-            <mesh name="Wing_Endplates" geometry={nodes.Wing_Endplates.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
           </group>
           <group name="Group_Interior">
             <group name="Node_SteeringWheel" position={[0.343, 0.76, 0.165]}>

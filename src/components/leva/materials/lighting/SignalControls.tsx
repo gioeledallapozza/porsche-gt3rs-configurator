@@ -16,6 +16,7 @@ export const SignalControls: React.FC = () => {
           roughness: { value: state.signal.roughness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('signal', { roughness: value as number }) },
           metalness: { value: state.signal.metalness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('signal', { metalness: value as number }) },
           ior: { value: state.signal.ior, min: 1, max: 3, step: 0.01, onEditEnd: (value) => setTweaks('signal', { ior: value as number }) },
+          envMapIntensity: { value: state.signal.envMapIntensity, min: 0, max: 5, step: 0.01, onEditEnd: (value) => setTweaks('signal', { envMapIntensity: value as number }) }
         }, { collapsed: true }),
       }, { collapsed: true }),
     }, { collapsed: true }),

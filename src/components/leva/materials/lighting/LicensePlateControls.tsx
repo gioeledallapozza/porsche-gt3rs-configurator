@@ -16,6 +16,7 @@ export const LicensePlateControls: React.FC = () => {
           roughness: { value: state.licensePlate.roughness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('licensePlate', { roughness: value as number }) },
           metalness: { value: state.licensePlate.metalness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('licensePlate', { metalness: value as number }) },
           ior: { value: state.licensePlate.ior, min: 1, max: 3, step: 0.01, onEditEnd: (value) => setTweaks('licensePlate', { ior: value as number }) },
+          envMapIntensity: { value: state.licensePlate.envMapIntensity, min: 0, max: 5, step: 0.01, onEditEnd: (value) => setTweaks('licensePlate', { envMapIntensity: value as number }) }
         }, { collapsed: true }),
       }, { collapsed: true }),
     }, { collapsed: true }),

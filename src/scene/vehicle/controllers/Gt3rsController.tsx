@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { invalidate, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
 import { useConfiguratorStore } from '@/store/configuratorStore';

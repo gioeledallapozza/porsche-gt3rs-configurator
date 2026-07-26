@@ -18,7 +18,7 @@ import CameraPresetsUI from './components/canvas/camera/CameraPresetsUI.tsx';
 import CameraTransitionManager from '@/scene/camera/CameraTransitionManager';
 import CameraDebugHelper from '@/scene/camera/CameraDebugHelper';
 import SocialLinks from '@/routes/Configurator/components/canvas/overlay/SocialLinks.tsx';
-// import LevaControllers from '@/components/LevaControllers.tsx';
+import LevaControllers from '@/components/LevaControllers.tsx';
 
 //Css
 import styles from '@/routes/Configurator/components/layout/Configurator.module.css';
@@ -105,7 +105,7 @@ const Configurator: React.FC = () => {
           }}
         >
           {/* Only for development purposes */}
-          {/* <Perf position="top-left" minimal={false} deepAnalyze={true}/> */}
+          <Perf position="top-left" minimal={false} deepAnalyze={true}/>
 
           {/* SEPARATED SUSPENSE, So when GLTF loads the materials of the vehicle model the envMap EXISTS */}
           <Suspense fallback={
@@ -157,7 +157,7 @@ const Configurator: React.FC = () => {
           <CameraTransitionManager controlsRef={cameraControlsRef} />
           {/* Only developments */}
           <CameraDebugHelper controlsRef={cameraControlsRef} />
-          {/* <LevaControllers /> */}
+          <LevaControllers />
         </Canvas>
       </div>
 

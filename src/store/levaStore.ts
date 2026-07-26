@@ -109,7 +109,7 @@ export const useLevaStore = create<LevaState>()(
     signal: { color: '#ff9900', emissive: '#ff6600', emissiveIntensity: 2.0, roughness: 1.0, metalness: 0.0, ior: 1.5, envMapIntensity: 1.0 },
     licensePlate: { color: '#edf2ff', emissive: '#edf2ff', emissiveIntensity: 1.5, roughness: 1.0, metalness: 0.0, ior: 1.5, envMapIntensity: 1.0 },
     glassCabin: { opacity: 0.92, roughness: 0.0, metalness: 0.1, clearcoat: 1.0, clearcoatRoughness: 0.0, envMapIntensity: 0.9 },
-    glassLights: { transmission: 1.0, opacity: 1.0, ior: 1.0, thickness: 0.00, metalness: 0.0, roughness: 0.0, clearcoat: 1.0, clearcoatRoughness: 0.10, envMapIntensity: 1.0 },
+    glassLights: { transmission: 0.0, opacity: 0.37, ior: 2.22, thickness: 0.00, metalness: 0.0, roughness: 0.0, clearcoat: 1.0, clearcoatRoughness: 0.5, envMapIntensity: 1.4 },
     camera: { fov: 35, positionX: 2.156, positionY: 1.250, positionZ: 5.333, targetX: 0, targetY: 0.2, targetZ: 0 },
     post: { exposure: 1.0, toneMapping: THREE.ACESFilmicToneMapping as THREE.ToneMapping },
 
