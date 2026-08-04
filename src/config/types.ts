@@ -1,3 +1,9 @@
+export interface ColorOption {
+  id: string;
+  name: string;
+  hex: string;
+}
+
 export type PaintFinish = 'solid' | 'metallic' | 'special';
 export type PaintCategory = 'standard' | 'pts';
 
@@ -12,18 +18,8 @@ export interface PackageOption {
   id: string;
   label: string;
   description?: string;
-}
-
-export interface WheelOption {
-  id: string;
-  name: string;
-  hex: string;
-}
-
-export interface CaliperOption {
-  id: string;
-  name: string;
-  hex: string;
+  thumbnailUrl?: string;
+  hexFallback?: string;
 }
 
 export interface VehicleConfig {
@@ -31,6 +27,11 @@ export interface VehicleConfig {
   modelPath: string;
   paintOptions: PaintOption[];
   aeroOptions: PackageOption[];
-  wheelOption: WheelOption[];
-  caliperOptions: CaliperOption[];
+  wheelOptions: ColorOption[];
+  caliperOptions: ColorOption[];
+  
+  interiorColorOptions: ColorOption[];
+  interiorTrimOptions: PackageOption[]; 
+  stitchingOptions: ColorOption[];
+  seatbeltOptions: ColorOption[];
 }

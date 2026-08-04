@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { CameraControls } from '@react-three/drei';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { cameraPresets } from '@/config/camera/cameraPresets';
 
@@ -13,8 +14,20 @@ export default function CameraTransitionManager({ controlsRef }: CameraTransitio
   // Subscribe only to this specific piece of store data to avoid unnecessary re-renders
   const activePresetId = useConfiguratorStore((state) => state.activeCameraPreset);
   const isInitialRender = useRef(true);
+  const targetFovRef = useRef(35);
 
-  const { clock, invalidate } = useThree();
+  const { camera, clock, invalidate } = useThree();
+
+  useFrame((_, delta) => {
+    const perspectiveCamera = camera as THREE.PerspectiveCamera;
+    const nextFov = THREE.MathUtils.damp(perspectiveCamera.fov, targetFovRef.current, 5, delta);
+
+    if (Math.abs(nextFov - perspectiveCamera.fov) > 0.001) {
+      perspectiveCamera.fov = nextFov;
+      perspectiveCamera.updateProjectionMatrix();
+      invalidate();
+    }
+  });
 
   useEffect(() => {
     const preset = cameraPresets.find((p) => p.id === activePresetId);
@@ -25,6 +38,8 @@ export default function CameraTransitionManager({ controlsRef }: CameraTransitio
     const enableTransition = !isInitialRender.current;
 
     clock.getDelta();
+
+    targetFovRef.current = preset.fov ?? 35;
 
     //Set min maxdistance
     controls.minDistance = preset.minDistance ?? 3.5;
@@ -65,7 +80,7 @@ export default function CameraTransitionManager({ controlsRef }: CameraTransitio
 
     isInitialRender.current = false;
 
-  }, [activePresetId, controlsRef, clock, invalidate]);
+  }, [activePresetId, controlsRef, camera, clock, invalidate]);
 
   return null;
 }

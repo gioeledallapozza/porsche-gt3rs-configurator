@@ -187,12 +187,27 @@ export const gt3rsConfig: VehicleConfig = {
     { name: 'Cream White', hex: '#E3DAC6', finish: 'solid', category: 'pts' },
     { name: 'Carrara White Metallic', hex: '#EBEBEB', finish: 'metallic', category: 'pts' }
   ],
-  aeroOptions: [
-    { id: 'standard', label: 'Standard (Painted Body Color)' },
-    { id: 'weissach', label: 'Weissach Package (Twill Carbon)' },
-    { id: 'weissach_forged', label: 'Weissach Package (Forged Carbon)' }
+ aeroOptions: [
+    { 
+      id: 'standard', 
+      label: 'Standard (Painted Body Color)', 
+      thumbnailUrl: '/textures/ui/car_paint_nobackground.webp',
+      hexFallback: '#555555' 
+    },
+    { 
+      id: 'weissach', 
+      label: 'Weissach Package (Twill Carbon)', 
+      thumbnailUrl: '/textures/ui/carbon_twill.webp',
+      hexFallback: '#111111' 
+    },
+    { 
+      id: 'weissach_forged', 
+      label: 'Weissach Package (Forged Carbon)', 
+      thumbnailUrl: '/textures/ui/carbon_forged.webp',
+      hexFallback: '#222222' 
+    }
   ],
-  wheelOption: [
+  wheelOptions: [
     { id: 'silver', name: 'Standard Silver Alloy', hex: '#888C8D' },
     { id: 'gold', name: 'Satin Aurum', hex: '#7F6B46' }
   ],
@@ -201,5 +216,50 @@ export const gt3rsConfig: VehicleConfig = {
     { id: 'yellow', name: 'Speed Yellow (PCCB)', hex: '#f0d722' },
     { id: 'green', name: 'Acid Green (Hybrid)', hex: '#87d30f' },
     { id: 'black', name: 'High Gloss Black', hex: '#111111' }
+  ],
+
+  interiorColorOptions: [
+    { id: 'black', name: 'Black Leather', hex: '#0a0a0a' },
+    { id: 'bordeaux', name: 'Bordeaux Red', hex: '#5c171e' },
+    { id: 'cognac', name: 'Cognac Exclusive', hex: '#6b4329' }
+  ],
+  interiorTrimOptions: [
+    { 
+      id: 'carbon', 
+      label: 'Matte Carbon Fiber',
+      thumbnailUrl: '/textures/ui/carbon_twill.webp', // Puoi riutilizzare quella del Weissach!
+      hexFallback: '#111111'
+    },
+    { 
+      id: 'exterior', 
+      label: 'Painted in Exterior Color',
+      thumbnailUrl: '/textures/ui/car_paint_nobackground.webp', // Se usi la logica DynamicHex, questo diventerà invisibile a favore del backgroundColor
+      hexFallback: '#555555'
+    },
+    { 
+      id: 'aluminum', 
+      label: 'Brushed Aluminum',
+      thumbnailUrl: '/textures/ui/aluminum.webp', // Dovrai creare questa immagine (o usare solo l'hexFallback)
+      hexFallback: '#d4d4d4'
+    },
+    { 
+      id: 'plastic', 
+      label: 'Standard Matte Black',
+      thumbnailUrl: '/textures/ui/plastic.webp', // Dovrai creare questa immagine (o usare solo l'hexFallback)
+      hexFallback: '#151515'
+    }
+  ],
+  stitchingOptions: [
+    { id: 'gt_silver', name: 'GT Silver', hex: '#888C8D' },
+    { id: 'guards_red', name: 'Guards Red', hex: '#d32f2f' },
+    { id: 'racing_yellow', name: 'Racing Yellow', hex: '#f7d117' },
+    { id: 'shark_blue', name: 'Shark Blue', hex: '#0277bd' }
+  ],
+  seatbeltOptions: [
+    { id: 'black', name: 'Black', hex: '#0a0a0a' },
+    { id: 'silver', name: 'Silver Grey', hex: '#888C8D' },
+    { id: 'red', name: 'Guards Red', hex: '#d32f2f' },
+    { id: 'yellow', name: 'Racing Yellow', hex: '#f7d117' },
+    { id: 'blue', name: 'Shark Blue', hex: '#0277bd' }
   ]
 };

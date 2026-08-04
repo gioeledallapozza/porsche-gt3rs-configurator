@@ -173,13 +173,13 @@ type GLTFResult = GLTF & {
     Material_Wheels_Bolts_Static: THREE.MeshStandardMaterial
     Material_Radiator_Static: THREE.MeshStandardMaterial
     Material_Caliper_Dynamic: THREE.MeshPhysicalMaterial
-    Material_Interior_Stitching_Dynamic: THREE.MeshStandardMaterial
+    Material_Interior_Stitching_Dynamic: THREE.MeshPhysicalMaterial
     Material_Glass_Cabin_Static: THREE.MeshPhysicalMaterial
     Material_Interior_LightGrey_Plastic_Static: THREE.MeshStandardMaterial
     Material_Front_Speaker_Static: THREE.MeshStandardMaterial
     Material_Exterior_Badges_Dynamic: THREE.MeshStandardMaterial
-    Material_Leather_Primary: THREE.MeshStandardMaterial
-    Material_Upper_Leather_Dynamic: THREE.MeshStandardMaterial
+    Material_Leather_Primary: THREE.MeshPhysicalMaterial
+    Material_Upper_Leather_Dynamic: THREE.MeshPhysicalMaterial
     Material_Interior_Metal_Static: THREE.MeshStandardMaterial
     Material_Interior_Metal_Lucid_Static: THREE.MeshStandardMaterial
     Material_Mirror_Glass_Static: THREE.MeshStandardMaterial
@@ -205,7 +205,7 @@ type GLTFResult = GLTF & {
     Material_SteeringWheel_Icons_Static: THREE.MeshStandardMaterial
     Material_SteeringWheel_Buttons_Static: THREE.MeshStandardMaterial
     Material_Logo_Static: THREE.MeshStandardMaterial
-    Material_Wheel_Leather_Dynamic: THREE.MeshStandardMaterial
+    Material_Wheel_Leather_Dynamic: THREE.MeshPhysicalMaterial
     Material_Interior_Plastic_Static: THREE.MeshStandardMaterial
     Material_Carbon_Trim_Lighter_Static: THREE.MeshPhysicalMaterial
     Material_Interior_Structure_Static: THREE.MeshStandardMaterial
@@ -215,7 +215,7 @@ type GLTFResult = GLTF & {
     Material_Interior_Headliner_Static: THREE.MeshStandardMaterial
     Material_Interior_Clock_Static: THREE.MeshStandardMaterial
     Material_Interior_Vent_Static: THREE.MeshStandardMaterial
-    Material_Interior_Accent_Dynamic: THREE.MeshStandardMaterial
+    Material_Interior_Accent_Dynamic: THREE.MeshPhysicalMaterial
     Material_Interior_Padel_Metal_Static: THREE.MeshStandardMaterial
     Material_Interior_Metal_Black_Lucid_Static: THREE.MeshStandardMaterial
     Material_Interior_Screen_Digital: THREE.MeshStandardMaterial
@@ -227,7 +227,7 @@ type GLTFResult = GLTF & {
     Material_Speakers_Static: THREE.MeshStandardMaterial
     Material_Behind_Vents_Static: THREE.MeshStandardMaterial
     Material_Interior_Metallic_Structure_Static: THREE.MeshStandardMaterial
-    Material_Leather_Secondary: THREE.MeshStandardMaterial
+    Material_Leather_Secondary: THREE.MeshPhysicalMaterial
     Material_Slide_Seat_Static: THREE.MeshStandardMaterial
     Material_SeatBelt_Buckle_Static: THREE.MeshStandardMaterial
     Material_SeatBelt_Release_Button_Static: THREE.MeshStandardMaterial

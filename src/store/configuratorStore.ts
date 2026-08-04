@@ -7,12 +7,19 @@ interface ConfiguratorState {
   isInitialized: boolean;
   isEnvReady: boolean;
 
-  //Only primite types
+  //Exterior
   carColor: string;
   wheelColor: string;
   caliperColor: string;
-  activeCameraPreset: string;
   aeroPackage: string;
+
+  //Interior
+  interiorTrimPackage: string; // 'exterior', 'carbon', 'plastic', 'aluminum'
+  interiorColor: string;
+  stitchingColor: string;
+  seatbeltColor: string;
+
+  activeCameraPreset: string;
 
   //Animations
   doorsOpen: boolean;
@@ -23,12 +30,18 @@ interface ConfiguratorState {
   initVehicle: (config: VehicleConfig) => void;
   setEnvReady: (status: boolean) => void;
   
-  // Actions
+  // Actions Exterior
   setCarColor: (hex: string) => void;
   setWheelColor: (hex: string) => void;
   setCaliperColor: (hex: string) => void;
   setActiveCameraPreset: (id: string) => void;
   setAeroPackage: (id: string) => void;
+
+  // Actions Interior
+  setInteriorTrimPackage: (id: string) => void;
+  setInteriorColor: (hex: string) => void;
+  setStitchingColor: (hex: string) => void;
+  setSeatbeltColor: (hex: string) => void;
 
   // Actions Animations
   toggleDoors: () => void;
@@ -37,13 +50,23 @@ interface ConfiguratorState {
 }
 
 export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
+  // Setup flag
   isInitialized: false,
   isEnvReady: false,
+
+  //Exterior
   carColor: '', 
   wheelColor: '',
   caliperColor: '',
-  activeCameraPreset: 'hero_view',
   aeroPackage: 'standard',
+
+  //Interior
+  interiorTrimPackage: 'carbon',
+  interiorColor: '#0a0a0a',   // Nero standard
+  stitchingColor: '#ffffff',  // Cuciture a contrasto grigie/bianche
+  seatbeltColor: '#0a0a0a',
+
+  activeCameraPreset: 'hero_view',
 
   doorsOpen: false,
   hoodOpen: false,
@@ -52,8 +75,14 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   initVehicle: (config) => set({
     isInitialized: true,
     carColor: config.paintOptions[0]?.hex || '#000000',
-    wheelColor: config.wheelOption[0]?.hex || '#000000',
+    wheelColor: config.wheelOptions[0]?.hex || '#000000',
     caliperColor: config.caliperOptions[0]?.hex || '#000000',
+    aeroPackage: config.aeroOptions[0]?.id || 'standard',
+
+    interiorTrimPackage: config.interiorTrimOptions[0]?.id || 'carbon',
+    interiorColor: config.interiorColorOptions[0]?.hex || '#0a0a0a',
+    stitchingColor: config.stitchingOptions[0]?.hex || '#888C8D',
+    seatbeltColor: config.seatbeltOptions[0]?.hex || '#0a0a0a',
 
     doorsOpen: false,
     hoodOpen: false,
@@ -61,12 +90,20 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   }),
   setEnvReady: (status) => set({ isEnvReady: status }),
 
+  //Actions Exterior
   setCarColor: (hex) => set({ carColor: hex }),
   setWheelColor: (hex) => set({ wheelColor: hex }),
   setCaliperColor: (hex) => set({ caliperColor: hex }),
   setActiveCameraPreset: (id) => set({ activeCameraPreset: id }),
   setAeroPackage: (id) => set({ aeroPackage: id }),
 
+  //Actions Interiors
+  setInteriorTrimPackage: (id) => set({ interiorTrimPackage: id }),
+  setInteriorColor: (hex) => set({ interiorColor: hex }),
+  setStitchingColor: (hex) => set({ stitchingColor: hex }),
+  setSeatbeltColor: (hex) => set({ seatbeltColor: hex }),
+
+  //Actions Animations
   toggleDoors: () => set((state) => ({ doorsOpen: !state.doorsOpen })),
   toggleHood: () => set((state) => ({ hoodOpen: !state.hoodOpen })),
   toggleSteering: () => set((state) => ({ steeringTurned: !state.steeringTurned })),

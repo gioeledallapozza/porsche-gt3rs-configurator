@@ -130,9 +130,9 @@ const Configurator: React.FC = () => {
             ref={(node) => { //DISABLE PAN
               cameraControlsRef.current = node; 
               
-              if (node) {
-                node.mouseButtons.right = 0; 
-              }
+              // if (node) {
+              //   node.mouseButtons.right = 0; 
+              // }
             }}
             makeDefault 
             minDistance={2.5} 

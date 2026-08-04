@@ -13,7 +13,7 @@ import LevaLiveSubscriber from './LevaLiveSubscriber';
 
 //MATERIALS SETUP
 import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
-import { applyBlackPlastic } from '@/scene/materials/presets/plastic';
+import { applyPlastic } from '@/scene/materials/presets/plastic';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
 import { 
   configureHeadlightDRL, 
@@ -44,7 +44,8 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');
   const forgedNormal = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2');
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
-  //const flakeNormal = useKtx2Disposal('/textures/materials/flakes/flakes_v5_normal_2k.ktx2');
+  const aluminumNormal = useKtx2Disposal('/textures/materials/aluminum/aluminum_normal.ktx2');
+  const aluminumRoughness = useKtx2Disposal('/textures/materials/aluminum/aluminum_roughness.ktx2');
 
  // Apply shadows only to certains nodes based on custom blender properties
  // Assign reference to certains nodes to enable animations
@@ -128,12 +129,26 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       forgedNormal.colorSpace = THREE.NoColorSpace;
       forgedRoughness.colorSpace = THREE.NoColorSpace;
     }
-  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl.capabilities]);
+    if (aluminumNormal && aluminumRoughness) {
+      aluminumNormal.wrapS = aluminumNormal.wrapT = THREE.RepeatWrapping;
+      aluminumRoughness.wrapS = aluminumRoughness.wrapT = THREE.RepeatWrapping;
+
+      aluminumNormal.minFilter = THREE.LinearMipMapLinearFilter;
+      aluminumRoughness.minFilter = THREE.LinearMipMapLinearFilter;
+
+      aluminumNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
+      aluminumRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
+
+      aluminumNormal.colorSpace = THREE.NoColorSpace;
+      aluminumRoughness.colorSpace = THREE.NoColorSpace;
+    }
+  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, gl.capabilities]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
 
-    [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness].forEach(tex => {
+    [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, 
+      aluminumRoughness].forEach(tex => {
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       tex.minFilter = THREE.LinearMipMapLinearFilter;
       tex.anisotropy = gl.capabilities.getMaxAnisotropy();
@@ -159,6 +174,13 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       taillightEmissive: materials.Material_Taillight_Emissive as THREE.MeshStandardMaterial,
       signalEmissive: materials.Material_Signal_Emissive as THREE.MeshStandardMaterial,
       licensePlateLight: materials.Material_LicensePlateLight_Emissive as THREE.MeshStandardMaterial,
+
+      // Interior Dynamics
+      stitching: materials.Material_Interior_Stitching_Dynamic as THREE.MeshPhysicalMaterial,
+      interiorTrim: materials.Material_Interior_Accent_Dynamic as THREE.MeshPhysicalMaterial,
+      leatherPrimary: materials.Material_Leather_Primary as THREE.MeshPhysicalMaterial,
+      leatherSecondary: materials.Material_Leather_Secondary as THREE.MeshPhysicalMaterial,
+      seatbelt: materials.Material_SeatBelt_Dynamic as THREE.MeshPhysicalMaterial,
     };
 
     // Glass
@@ -173,7 +195,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureLicensePlateLight(extractedMaterials.licensePlateLight);
 
     // Plastic & rubber
-    applyBlackPlastic(extractedMaterials.exteriorLowerAero)
+    applyPlastic(extractedMaterials.exteriorLowerAero)
     applyRubberFinish(extractedMaterials.tire);
     
     // PURGE BLENDER TEXTURES
@@ -260,8 +282,10 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     carbonNormal,
     carbonRoughness,
     forgedNormal,
-    forgedRoughness
-  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness]);
+    forgedRoughness,
+    aluminumNormal,
+    aluminumRoughness
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness]);
 
   // Orchestration
   return (

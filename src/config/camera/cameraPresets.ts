@@ -4,6 +4,7 @@ export interface CameraPreset {
   position: [number, number, number];
   target: [number, number, number];
   thumbnail: string;
+  fov?: number;
 
   minDistance?: number;
   maxDistance?: number;
@@ -15,11 +16,25 @@ export interface CameraPreset {
 
 export const cameraPresets: CameraPreset[] = [
   { 
+    id: 'debug_view', 
+    name: 'Free Roam (Debug)', 
+    position: [0.0, 1.2, 2.0], 
+    target: [0.0, 1.2, 0.0], 
+    thumbnail: '', // Nessuna immagine, è solo per noi
+    
+    // NESSUN LIMITE
+    minDistance: 0.01,
+    maxDistance: 100,
+    minPolarAngle: 0,
+    maxPolarAngle: Math.PI, 
+  },
+  { 
     id: 'hero_view', 
     name: 'Front 3/4', 
-    position: [2.337, 1.140, 5.276], 
+    position: [2.153, 1.421, 5.297], 
     target: [0, 0.2, 0], 
-    thumbnail: '/placeholders/cam-front-34.webp' 
+    thumbnail: '/placeholders/cam-front-34.webp',
+    fov: 35
   },
   { 
     id: 'wheel_close', 
@@ -27,6 +42,7 @@ export const cameraPresets: CameraPreset[] = [
     position: [2.0, 0.5, 1.5], 
     target: [0.9, 0.4, 1.2], 
     thumbnail: '/placeholders/cam-wheel.webp',
+    fov: 45,
     
     minDistance: 1.5,
     maxDistance: 2.5,
@@ -61,5 +77,26 @@ export const cameraPresets: CameraPreset[] = [
     position: [-1.5, 2.0, -3.0], 
     target: [0.0, 1.2, -2.0], 
     thumbnail: '/placeholders/cam-wing.webp' 
+  },
+  { 
+    id: 'interior_view', 
+    name: 'Interior', 
+    position: [0.290, 1.035, -0.497], 
+    target: [-0.123, 0.754, 1.054], 
+    thumbnail: '/placeholders/cam-interior.webp',
+    fov: 70,
+    
+    //Low zoom scrooll
+    minDistance: 1.0,
+    maxDistance: 2.0,
+    
+    // Vertical rotation limits (Polar)
+    // minPolarAngle: Math.PI / 3,      
+    // maxPolarAngle: Math.PI / 1.6, 
+    
+    // Horizontal rotation limits (Azimuth) – Optional
+    // Unbuckle them if you don't want the user to turn completely around towards the back seats.
+    // minAzimuthAngle: -Math.PI / 2, 
+    // maxAzimuthAngle: Math.PI / 3, 
   },
 ];

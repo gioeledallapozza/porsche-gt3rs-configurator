@@ -1,6 +1,7 @@
+// src/routes/Configurator/components/sections/AeroPackageSection.tsx
 import React from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
-import OptionSelector from '../ui/OptionSelector';
+import TexturePicker from '../ui/TexturePicker';
 import type { PackageOption } from '@/config/types';
 
 interface AeroPackageSectionProps {
@@ -8,16 +9,17 @@ interface AeroPackageSectionProps {
 }
 
 const AeroPackageSection: React.FC<AeroPackageSectionProps> = ({ options }) => {
-  // Only this wrapper re-renders when aeroPackage changes
   const aeroPackage = useConfiguratorStore((state) => state.aeroPackage);
   const setAeroPackage = useConfiguratorStore((state) => state.setAeroPackage);
+  const carColor = useConfiguratorStore((state) => state.carColor); // Recuperiamo il colore
 
   return (
-    <OptionSelector 
+    <TexturePicker 
       title="Aerodynamics" 
       options={options} 
       selectedValue={aeroPackage} 
       onSelect={setAeroPackage} 
+      dynamicHex={carColor}
     />
   );
 };
