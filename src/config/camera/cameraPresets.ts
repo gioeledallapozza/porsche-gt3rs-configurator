@@ -81,22 +81,21 @@ export const cameraPresets: CameraPreset[] = [
   { 
     id: 'interior_view', 
     name: 'Interior', 
-    position: [0.290, 1.035, -0.497], 
-    target: [-0.123, 0.754, 1.054], 
+    // position: [0.223, 1.112, -0.505], 
+    // target: [-0.132, 0.507, 0.965], 
+    position: [0.0, 1.150, -0.450],
+    target: [0.0, 1.145, -0.441], 
+
     thumbnail: '/placeholders/cam-interior.webp',
     fov: 70,
     
     //Low zoom scrooll
-    minDistance: 1.0,
-    maxDistance: 2.0,
+    minDistance: 0.01,
+    maxDistance: 0.01,
     
     // Vertical rotation limits (Polar)
-    // minPolarAngle: Math.PI / 3,      
-    // maxPolarAngle: Math.PI / 1.6, 
+    minPolarAngle: Math.PI / 3,    
+    maxPolarAngle: Math.PI / 1.5,
     
-    // Horizontal rotation limits (Azimuth) – Optional
-    // Unbuckle them if you don't want the user to turn completely around towards the back seats.
-    // minAzimuthAngle: -Math.PI / 2, 
-    // maxAzimuthAngle: Math.PI / 3, 
   },
 ];

@@ -21,6 +21,8 @@ interface Gt3rsMutatorProps {
     forgedRoughness: THREE.Texture | null;
     aluminumNormal: THREE.Texture | null;
     aluminumRoughness: THREE.Texture | null;
+    leatherNormal: THREE.Texture | null;
+    leatherArm: THREE.Texture | null;
   };
 }
 
@@ -129,7 +131,7 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
     invalidate();
   }, [caliperColor, caliperMat]);
 
-  // EFFECT: Cinture e Cuciture
+  // STITCHING AND SEATBELT 
   useEffect(() => {
     if (stitchingMat) applyStitching(stitchingMat, stitchingColor);
     if (seatbeltMat) applyPolyester(seatbeltMat, seatbeltColor);
@@ -137,12 +139,24 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
     invalidate();
   }, [stitchingColor, seatbeltColor, stitchingMat, seatbeltMat]);
 
+  // LEATHER COLOR CHANGE
   useEffect(() => {
-  if (leatherPrimaryMat) applyLeather(leatherPrimaryMat, interiorColor);
-  if (leatherSecondaryMat) applyLeather(leatherSecondaryMat, interiorColor);
+  if (leatherPrimaryMat) {
+      applyLeather(leatherPrimaryMat, interiorColor, { 
+        normalMap: textures.leatherNormal, 
+        armMap: textures.leatherArm 
+      });
+    }
+    
+    if (leatherSecondaryMat) {
+      applyLeather(leatherSecondaryMat, interiorColor, { 
+        normalMap: textures.leatherNormal, 
+        armMap: textures.leatherArm 
+      });
+    }
 
-  invalidate();
-}, [interiorColor, leatherPrimaryMat, leatherSecondaryMat]);
+    invalidate();
+  }, [interiorColor, leatherPrimaryMat, leatherSecondaryMat, textures]);
 
 // INTERIOR TRIMS
 useEffect(() => {

@@ -5,12 +5,13 @@ import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 
 export default function Gt3rsHotspots() {
-  const { toggleDoors, toggleHood, toggleSteering } = useConfiguratorStore();
+  const { toggleDoors, toggleHood, toggleSteering, activeCameraPreset } = useConfiguratorStore();
 
   const [isVisible, setIsVisible] = useState(true);
   const lastCamPos = useRef(new THREE.Vector3());
   const isMoving = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isInteriorPreview = activeCameraPreset === 'interior_view';
 
   const proxyRef = useRef<THREE.Mesh>(null!);
   
@@ -32,6 +33,13 @@ export default function Gt3rsHotspots() {
 
   // LOOP TO DETERMINATE IF THE HOTPOINT IS VISIBLE OR NOT
   useFrame((state) => {
+    if (isInteriorPreview) {
+      if (isVisible) {
+        setIsVisible(false);
+      }
+      lastCamPos.current.copy(state.camera.position);
+      return;
+    }
 
     //If the vector is 0,0,0 initialize the position of the camera correctly
     if (lastCamPos.current.lengthSq() === 0) {
@@ -56,6 +64,12 @@ export default function Gt3rsHotspots() {
     lastCamPos.current.copy(state.camera.position);
   });
   
+  useEffect(() => {
+    if (!isInteriorPreview && !isVisible) {
+      setIsVisible(true);
+    }
+  }, [isInteriorPreview, isVisible]);
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-// import { useLevaStore } from '@/store/levaStore';
+import { useLevaStore } from '@/store/levaStore';
 
 interface AluminumTextures {
   normalMap: THREE.Texture;
@@ -10,19 +10,23 @@ export const applyAluminum = (
   material: THREE.MeshPhysicalMaterial,
   textures: AluminumTextures
 ): void => {
-  material.color.setHex(0xd4d4d4);
+  const tweaks = useLevaStore.getState().aluminum;
+
+  material.color.set(tweaks.color);
 
   material.normalMap = textures.normalMap;
-  material.normalScale.set(0.5, 0.5);
+  material.normalScale.set(tweaks.normalScale, tweaks.normalScale);
   
   material.roughnessMap = textures.roughnessMap;
 
-  material.roughness = 1.0; 
+  material.roughness = tweaks.roughness;
   
-  material.metalness = 1.0; // Metall
+  material.metalness = tweaks.metalness;
   
-  material.clearcoat = 0.0;
+  material.clearcoat = tweaks.clearcoat;
+  material.clearcoatRoughness = tweaks.clearcoatRoughness;
   material.clearcoatNormalMap = null;
+  material.envMapIntensity = tweaks.envMapIntensity;
   
   material.needsUpdate = true;
 };

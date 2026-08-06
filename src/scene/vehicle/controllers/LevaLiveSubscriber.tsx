@@ -235,6 +235,44 @@ export default function LevaLiveSubscriber({ mats }: Props) {
       }
     );
 
+    const unsubLeather = useLevaStore.subscribe(
+      (state) => state.leather,
+      (val) => {
+        const leatherPrimary = mats.leatherPrimary as THREE.MeshPhysicalMaterial;
+        const leatherSecondary = mats.leatherSecondary as THREE.MeshPhysicalMaterial;
+
+        [leatherPrimary, leatherSecondary].forEach((mat) => {
+          if (!mat) return;
+          mat.roughness = val.roughness;
+          mat.metalness = val.metalness;
+          mat.clearcoat = val.clearcoat;
+          mat.sheen = val.sheen;
+          mat.sheenRoughness = val.sheenRoughness;
+          mat.envMapIntensity = val.envMapIntensity;
+          mat.needsUpdate = true;
+        });
+      }
+    );
+
+    const unsubAluminum = useLevaStore.subscribe(
+      (state) => state.aluminum,
+      (val) => {
+        const interiorTrim = mats.interiorTrim as THREE.MeshPhysicalMaterial;
+        if (!interiorTrim) return;
+
+        interiorTrim.color.set(val.color);
+        interiorTrim.clearcoat = val.clearcoat;
+        interiorTrim.clearcoatRoughness = val.clearcoatRoughness;
+        interiorTrim.metalness = val.metalness;
+        interiorTrim.roughness = val.roughness;
+        interiorTrim.envMapIntensity = val.envMapIntensity;
+        if (interiorTrim.normalScale) {
+          interiorTrim.normalScale.set(val.normalScale, val.normalScale);
+        }
+        interiorTrim.needsUpdate = true;
+      }
+    );
+
     const unsubRubber = useLevaStore.subscribe(
       (state) => state.rubber,
       (val) => {
@@ -262,6 +300,25 @@ export default function LevaLiveSubscriber({ mats }: Props) {
         }
       }
     );
+
+    return () => {
+      unsubPaintSolid();
+      unsubPaintMetallic();
+      unsubPaintSpecial();
+      unsubHeadlight();
+      unsubTaillight();
+      unsubSignal();
+      unsubLicensePlate();
+      unsubGlassCabin();
+      unsubGlassLights();
+      unsubCarbonTwill();
+      unsubCarbonForged();
+      unsubMetal();
+      unsubLeather();
+      unsubAluminum();
+      unsubRubber();
+      unsubCaliper();
+    };
 
     return () => {
       unsubPaintSolid();

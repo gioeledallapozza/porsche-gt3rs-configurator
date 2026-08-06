@@ -46,6 +46,8 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
   const aluminumNormal = useKtx2Disposal('/textures/materials/aluminum/aluminum_normal.ktx2');
   const aluminumRoughness = useKtx2Disposal('/textures/materials/aluminum/aluminum_roughness.ktx2');
+  const leatherNormal = useKtx2Disposal('/textures/materials/leather/leather_normal.ktx2');
+  const leatherArm = useKtx2Disposal('/textures/materials/leather/leather_arm.ktx2');
 
  // Apply shadows only to certains nodes based on custom blender properties
  // Assign reference to certains nodes to enable animations
@@ -142,13 +144,25 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       aluminumNormal.colorSpace = THREE.NoColorSpace;
       aluminumRoughness.colorSpace = THREE.NoColorSpace;
     }
-  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, gl.capabilities]);
+    if (leatherNormal && leatherArm) {
+      leatherNormal.wrapS = leatherNormal.wrapT = THREE.RepeatWrapping;
+      leatherArm.wrapS = leatherArm.wrapT = THREE.RepeatWrapping;
+      
+      leatherNormal.minFilter = THREE.LinearMipMapLinearFilter;
+      leatherArm.minFilter = THREE.LinearMipMapLinearFilter;
+      leatherNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
+      leatherArm.anisotropy = gl.capabilities.getMaxAnisotropy();
+      
+      leatherNormal.colorSpace = THREE.NoColorSpace;
+      leatherArm.colorSpace = THREE.NoColorSpace;
+    }
+  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm, gl.capabilities]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
 
     [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, 
-      aluminumRoughness].forEach(tex => {
+      aluminumRoughness, leatherNormal, leatherArm].forEach(tex => {
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       tex.minFilter = THREE.LinearMipMapLinearFilter;
       tex.anisotropy = gl.capabilities.getMaxAnisotropy();
@@ -255,28 +269,6 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     return extractedMaterials;
   }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
 
-  // EXPLICIT INJECTION OF ENVMAP (the useMemo load the materials before the envmap is loaded)
-  // FIXED WITH WAITING FOR THE ENV MAP BEFORE RUNNING THIS COMPONENT
-  // useEffect(() => {
-  //   if (!scene.environment) return;
-
-  //   let needsInvalidation = false;
-
-  //   Object.values(mats).forEach((mat) => {
-  //     // Inject only if the material supports envMap and it's missing or outdated
-  //     if ('envMap' in mat && mat.envMap !== scene.environment) {
-  //       mat.envMap = scene.environment;
-  //       mat.needsUpdate = true; // Inevitable for the first load to recompile the shader
-  //       needsInvalidation = true;
-  //     }
-  //   });
-
-  //   // Call invalidate only once per environment change, not per material
-  //   if (needsInvalidation) {
-  //     invalidate();
-  //   }
-  // }, [mats, scene.environment]);
-
   // Memoize textures to prevent infinite reference changes and battery drain
   const texturePack = useMemo(() => ({
     carbonNormal,
@@ -284,8 +276,10 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     forgedNormal,
     forgedRoughness,
     aluminumNormal,
-    aluminumRoughness
-  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness]);
+    aluminumRoughness,
+    leatherNormal,
+    leatherArm
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm]);
 
   // Orchestration
   return (
