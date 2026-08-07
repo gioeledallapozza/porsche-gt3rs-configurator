@@ -46,8 +46,11 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
   const aluminumNormal = useKtx2Disposal('/textures/materials/aluminum/aluminum_normal.ktx2');
   const aluminumRoughness = useKtx2Disposal('/textures/materials/aluminum/aluminum_roughness.ktx2');
-  const leatherNormal = useKtx2Disposal('/textures/materials/leather/leather_normal.ktx2');
-  const leatherArm = useKtx2Disposal('/textures/materials/leather/leather_arm.ktx2');
+  const carpetAo = useKtx2Disposal('/textures/materials/ambient_occlusion/carpet_ao.ktx2');
+  const tubAo = useKtx2Disposal('/textures/materials/ambient_occlusion/interior_tub_ao.ktx2');
+  const metalAccentAo = useKtx2Disposal('/textures/materials/ambient_occlusion/metal_accent_ao.ktx2');
+  // const leatherNormal = useKtx2Disposal('/textures/materials/leather/leather_v1_normal.ktx2');
+  // const leatherArm = useKtx2Disposal('/textures/materials/leather/leather_v1_arm.ktx2');
 
  // Apply shadows only to certains nodes based on custom blender properties
  // Assign reference to certains nodes to enable animations
@@ -98,71 +101,26 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     if (r3fNode.receiveShadow !== shouldReceive) {
       r3fNode.receiveShadow = shouldReceive;
     }
+
+    // Ensure uv2 exists for baked AO / lightmap workflows
+    const geometry = r3fNode.geometry;
+    if (
+      geometry &&
+      geometry.attributes &&
+      !geometry.attributes.uv2 &&
+      geometry.attributes.uv
+    ) {
+      geometry.setAttribute('uv2', geometry.attributes.uv);
+    }
   });
 }, [nodes, scene]);
-
-  // TEXTURES SETUPS
-  useMemo(() => {
-   // Twill Carbon
-    if (carbonNormal && carbonRoughness) {
-      carbonNormal.wrapS = carbonNormal.wrapT = THREE.RepeatWrapping;
-      carbonRoughness.wrapS = carbonRoughness.wrapT = THREE.RepeatWrapping;
-
-      carbonNormal.minFilter = THREE.LinearMipMapLinearFilter;
-      carbonRoughness.minFilter = THREE.LinearMipMapLinearFilter;
-
-      carbonNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
-      carbonRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
-
-      carbonNormal.colorSpace = THREE.NoColorSpace;
-      carbonRoughness.colorSpace = THREE.NoColorSpace;
-    }
-    // Forged Carbon
-    if (forgedNormal && forgedRoughness) {
-      forgedNormal.wrapS = forgedNormal.wrapT = THREE.RepeatWrapping;
-      forgedRoughness.wrapS = forgedRoughness.wrapT = THREE.RepeatWrapping;
-
-      forgedNormal.minFilter = THREE.LinearMipMapLinearFilter;
-      forgedRoughness.minFilter = THREE.LinearMipMapLinearFilter;
-
-      forgedNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
-      forgedRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
-      
-      forgedNormal.colorSpace = THREE.NoColorSpace;
-      forgedRoughness.colorSpace = THREE.NoColorSpace;
-    }
-    if (aluminumNormal && aluminumRoughness) {
-      aluminumNormal.wrapS = aluminumNormal.wrapT = THREE.RepeatWrapping;
-      aluminumRoughness.wrapS = aluminumRoughness.wrapT = THREE.RepeatWrapping;
-
-      aluminumNormal.minFilter = THREE.LinearMipMapLinearFilter;
-      aluminumRoughness.minFilter = THREE.LinearMipMapLinearFilter;
-
-      aluminumNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
-      aluminumRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
-
-      aluminumNormal.colorSpace = THREE.NoColorSpace;
-      aluminumRoughness.colorSpace = THREE.NoColorSpace;
-    }
-    if (leatherNormal && leatherArm) {
-      leatherNormal.wrapS = leatherNormal.wrapT = THREE.RepeatWrapping;
-      leatherArm.wrapS = leatherArm.wrapT = THREE.RepeatWrapping;
-      
-      leatherNormal.minFilter = THREE.LinearMipMapLinearFilter;
-      leatherArm.minFilter = THREE.LinearMipMapLinearFilter;
-      leatherNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
-      leatherArm.anisotropy = gl.capabilities.getMaxAnisotropy();
-      
-      leatherNormal.colorSpace = THREE.NoColorSpace;
-      leatherArm.colorSpace = THREE.NoColorSpace;
-    }
-  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm, gl.capabilities]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
 
     [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, 
-      aluminumRoughness, leatherNormal, leatherArm].forEach(tex => {
+      aluminumRoughness, carpetAo, tubAo, metalAccentAo].forEach(tex => {
+      if (!tex) return;
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       tex.minFilter = THREE.LinearMipMapLinearFilter;
       tex.anisotropy = gl.capabilities.getMaxAnisotropy();
@@ -266,6 +224,52 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       });
     }
 
+    // AMBIENT OCCLUSION MAPS APPLY ONLY ONE TIME
+    // CARPET
+    if (carpetAo) {
+      [
+        materials.Material_Interior_Carpet_Static as THREE.MeshStandardMaterial,
+        materials.Material_Interior_Structure_Static as THREE.MeshStandardMaterial,
+      ].forEach((mat) => {
+        if (!mat) return;
+        mat.aoMap = carpetAo;
+        mat.aoMapIntensity = 1.0;
+
+        if (mat.name.includes('Carpet')) mat.envMapIntensity = 0.0;
+
+        mat.needsUpdate = true;
+      });
+    }
+
+    // TUB
+    // if (tubAo) {
+    //   [
+    //     materials.Material_Interior_Metal_Black_Lucid_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Interior_Plastic_Lucid_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Carbon_Trim_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Warning_Triangle_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Speakers_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Behind_Vents_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Interior_Plastic_Darker_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Interior_Metallic_Structure_Static as THREE.MeshStandardMaterial,
+    //   ].forEach((mat) => {
+    //     if (!mat) return;
+    //     mat.aoMap = tubAo;
+    //     mat.aoMapIntensity = 1.0;
+    //     mat.needsUpdate = true;
+    //   });
+    // }
+
+    // METAL INTERIOR
+    // if (metalAccentAo) {
+    //   const accentMat = materials.Material_Interior_Metal_Static as THREE.MeshStandardMaterial;
+    //   if (accentMat) {
+    //     accentMat.aoMap = metalAccentAo;
+    //     accentMat.aoMapIntensity = 1.0;
+    //     accentMat.needsUpdate = true;
+    //   }
+    // }
+
     return extractedMaterials;
   }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
 
@@ -277,9 +281,9 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     forgedRoughness,
     aluminumNormal,
     aluminumRoughness,
-    leatherNormal,
-    leatherArm
-  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm]);
+    // leatherNormal,
+    // leatherArm
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness]);
 
   // Orchestration
   return (

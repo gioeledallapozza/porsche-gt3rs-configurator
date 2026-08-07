@@ -1,32 +1,37 @@
 import * as THREE from 'three';
 import { useLevaStore } from '@/store/levaStore';
 
-interface LeatherTextures {
-  normalMap: THREE.Texture | null;
-  armMap: THREE.Texture | null;
-}
+// interface LeatherTextures {
+//   normalMap: THREE.Texture | null;
+//   // armMap: THREE.Texture | null;
+// }
 
 export const applyLeather = (
   material: THREE.MeshPhysicalMaterial,
-  hexColor: string,
-  textures: LeatherTextures
+  hexColor: string
 ): void => {
   const tweaks = useLevaStore.getState().leather;
 
   material.color.set(hexColor);
 
-  material.normalMap = textures.normalMap ?? null;
-  material.normalScale.set(0.6, 0.6);
+  // material.map = null; 
+  // material.vertexColors = false;
 
-  const physicalMaterial = material as THREE.MeshPhysicalMaterial & {
-    roughnessMapChannel?: string;
-  };
+  // material.normalMap = textures.normalMap;
+  material.normalScale.set(1.0, 1.0);
+
+  // material.aoMap = textures.armMap;
+  // material.aoMapIntensity = 0.8;
 
   material.roughness = tweaks.roughness;
-  physicalMaterial.roughnessMap = textures.armMap ?? null;
-  physicalMaterial.roughnessMapChannel = 'g';
+  // material.roughnessMap = textures.armMap;
 
-  material.metalness = tweaks.metalness;
+  material.roughnessMap = null;
+  material.aoMap = null;
+  material.metalnessMap = null;
+
+  // material.metalnessMap = textures.armMap;
+  // material.metalness = tweaks.metalness;
 
   material.clearcoat = tweaks.clearcoat;
   material.clearcoatRoughness = 0.0;

@@ -21,8 +21,8 @@ interface Gt3rsMutatorProps {
     forgedRoughness: THREE.Texture | null;
     aluminumNormal: THREE.Texture | null;
     aluminumRoughness: THREE.Texture | null;
-    leatherNormal: THREE.Texture | null;
-    leatherArm: THREE.Texture | null;
+    // leatherNormal: THREE.Texture | null;
+    // leatherArm: THREE.Texture | null;
   };
 }
 
@@ -142,17 +142,11 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   // LEATHER COLOR CHANGE
   useEffect(() => {
   if (leatherPrimaryMat) {
-      applyLeather(leatherPrimaryMat, interiorColor, { 
-        normalMap: textures.leatherNormal, 
-        armMap: textures.leatherArm 
-      });
+      applyLeather(leatherPrimaryMat, interiorColor);
     }
     
     if (leatherSecondaryMat) {
-      applyLeather(leatherSecondaryMat, interiorColor, { 
-        normalMap: textures.leatherNormal, 
-        armMap: textures.leatherArm 
-      });
+      applyLeather(leatherSecondaryMat, interiorColor);
     }
 
     invalidate();

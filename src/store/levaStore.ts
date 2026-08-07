@@ -46,6 +46,18 @@ interface LevaState {
     lightformerSideScale: number;
     lightformerFrontScale: number;
     lightformerRearScale: number;
+    dynamic: {
+      enabled: boolean;
+      showHelper: boolean;
+      intensity: number;
+      positionX: number;
+      positionY: number;
+      positionZ: number;
+      shadowBias: number;
+      shadowNormalBias: number;
+      shadowMapSize: number;
+      shadowCameraSize: number;
+    };
   };
   paintSolid: { clearcoat: number; clearcoatRoughness: number; metalness: number; roughness: number; envMapIntensity: number; };
   paintMetallic: { 
@@ -91,6 +103,18 @@ export const useLevaStore = create<LevaState>()(
       lightformerSideScale: 20,
       lightformerFrontScale: 15,
       lightformerRearScale: 3,
+      dynamic: {
+        enabled: true,
+        showHelper: false,
+        intensity: 0.5,
+        positionX: 5,
+        positionY: 8,
+        positionZ: 3,
+        shadowBias: -0.0005,
+        shadowNormalBias: 0.04,
+        shadowMapSize: 2048,
+        shadowCameraSize: 2.5,
+      },
     },
     paintSolid: { clearcoat: 1.0, clearcoatRoughness: 0.15, metalness: 0.4, roughness: 0.8, envMapIntensity: 1.0 },
     paintMetallic: { 
