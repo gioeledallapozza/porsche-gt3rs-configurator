@@ -133,6 +133,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       glassCabin: materials.Material_Glass_Cabin_Static as THREE.MeshPhysicalMaterial,
       glassLights: materials.Material_Glass_Lights_Static as THREE.MeshPhysicalMaterial,
       carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
+      interiorCarbonTrimStatic: materials.Material_Interior_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
       exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
       exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
       rimPrimary: materials.Material_Rim_Primary as THREE.MeshPhysicalMaterial,
@@ -178,6 +179,10 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
 
     // Standard
     applyCarbonFiber(extractedMaterials.carbonTrimStatic, {
+      normalMap: carbonNormal,
+      roughnessMap: carbonRoughness,
+    });
+    applyCarbonFiber(extractedMaterials.interiorCarbonTrimStatic, {
       normalMap: carbonNormal,
       roughnessMap: carbonRoughness,
     });

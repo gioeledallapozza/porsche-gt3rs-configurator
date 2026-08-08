@@ -25,6 +25,7 @@ import styles from '@/routes/Configurator/components/layout/Configurator.module.
 
 //Smart Sections
 import ConfiguratorSidebar from './components/layout/ConfiguratorSidebar.tsx';
+import CameraTransitionOverlay from './components/canvas/overlay/CameraTransitionOverlay.tsx';
 
 
 
@@ -88,6 +89,8 @@ const Configurator: React.FC = () => {
 
         <SocialLinks />
         <CameraPresetsUI />
+        <CameraTransitionOverlay />
+        
         <Canvas
           shadows={{ type: THREE.PCFSoftShadowMap }}
           frameloop="always" //Only render when there are changes in the scene

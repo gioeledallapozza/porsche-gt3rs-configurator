@@ -1,17 +1,22 @@
 import { Html } from '@react-three/drei';
-import { useFrame, invalidate } from '@react-three/fiber';
+import { useFrame, invalidate, useThree } from '@react-three/fiber';
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 
 export default function Gt3rsHotspots() {
-  const { toggleDoors, toggleHood, toggleSteering, activeCameraPreset } = useConfiguratorStore();
+  const { toggleDoors, toggleHood, toggleSteering, renderedCameraPreset, isCameraTransitioning } = useConfiguratorStore();
+
+  const { camera } = useThree();
 
   const [isVisible, setIsVisible] = useState(true);
   const lastCamPos = useRef(new THREE.Vector3());
   const isMoving = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isInteriorPreview = activeCameraPreset === 'interior_view';
+  const isInteriorPreview = renderedCameraPreset === 'interior_view';
+
+  // If they should not be visible hide them instantly
+  const effectivelyVisible = isVisible && !isInteriorPreview && !isCameraTransitioning;
 
   const proxyRef = useRef<THREE.Mesh>(null!);
   
@@ -30,6 +35,16 @@ export default function Gt3rsHotspots() {
       invalidate(); 
     }
   }, []);
+
+  useEffect(() => {
+    lastCamPos.current.copy(camera.position);
+    
+    // If we have just returned outside and the curtain has risen, force the visibility
+    if (!isInteriorPreview && !isCameraTransitioning) {
+        setIsVisible(true);
+        isMoving.current = false;
+    }
+  }, [isInteriorPreview, isCameraTransitioning, camera]);
 
   // LOOP TO DETERMINATE IF THE HOTPOINT IS VISIBLE OR NOT
   useFrame((state) => {
@@ -64,11 +79,11 @@ export default function Gt3rsHotspots() {
     lastCamPos.current.copy(state.camera.position);
   });
   
-  useEffect(() => {
-    if (!isInteriorPreview && !isVisible) {
-      setIsVisible(true);
-    }
-  }, [isInteriorPreview, isVisible]);
+  // useEffect(() => {
+  //   if (!isInteriorPreview && !isVisible) {
+  //     setIsVisible(true);
+  //   }
+  // }, [isInteriorPreview, isVisible]);
 
   useEffect(() => {
     return () => {
@@ -106,14 +121,14 @@ export default function Gt3rsHotspots() {
       </mesh>
       
       {/* Render the HTML ONLY when we are sure the Ref is ready. */}
-      {isReady && (
+      {isReady && !isInteriorPreview && !isCameraTransitioning && (
         <>
           {/* STRICT FIX: Pass 'undefined' to occlude when moving to completely kill CPU raycasting overhead */}
 
           {/* LEFT DOOR */}
-          <Html position={[0.9, 0.6, 0.2]} center occlude={isVisible ? colliders : undefined}>
+          <Html position={[0.9, 0.6, 0.2]} center occlude={effectivelyVisible ? colliders : undefined}>
             <div 
-              style={getHotspotStyle(isVisible)} 
+              style={getHotspotStyle(effectivelyVisible)} 
               onClick={(e) => handleClick(e, toggleDoors)}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
@@ -121,9 +136,9 @@ export default function Gt3rsHotspots() {
           </Html>
 
           {/* RIGHT DOOR */}
-          <Html position={[-0.9, 0.6, 0.2]} center occlude={isVisible ? colliders : undefined}>
+          <Html position={[-0.9, 0.6, 0.2]} center occlude={effectivelyVisible ? colliders : undefined}>
             <div 
-              style={getHotspotStyle(isVisible)} 
+              style={getHotspotStyle(effectivelyVisible)} 
               onClick={(e) => handleClick(e, toggleDoors)}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
@@ -131,9 +146,9 @@ export default function Gt3rsHotspots() {
           </Html>
           
           {/* HOOD */}
-          <Html position={[0, 0.7, 1.8]} center occlude={isVisible ? colliders : undefined}>
+          <Html position={[0, 0.7, 1.8]} center occlude={effectivelyVisible ? colliders : undefined}>
             <div 
-              style={getHotspotStyle(isVisible)} 
+              style={getHotspotStyle(effectivelyVisible)} 
               onClick={(e) => handleClick(e, toggleHood)}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
@@ -141,9 +156,9 @@ export default function Gt3rsHotspots() {
           </Html>
 
           {/* WHEEL Left-Front */}
-          <Html position={[-0.9, 0.4, 1.2]} center occlude={isVisible ? colliders : undefined}>
+          <Html position={[-0.9, 0.4, 1.2]} center occlude={effectivelyVisible ? colliders : undefined}>
             <div 
-              style={getHotspotStyle(isVisible)} 
+              style={getHotspotStyle(effectivelyVisible)} 
               onClick={(e) => handleClick(e, toggleSteering)}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
@@ -151,9 +166,9 @@ export default function Gt3rsHotspots() {
           </Html>
 
           {/* WHEEL Right-Front */}
-          <Html position={[0.9, 0.4, 1.2]} center occlude={isVisible ? colliders : undefined}>
+          <Html position={[0.9, 0.4, 1.2]} center occlude={effectivelyVisible ? colliders : undefined}>
             <div 
-              style={getHotspotStyle(isVisible)} 
+              style={getHotspotStyle(effectivelyVisible)} 
               onClick={(e) => handleClick(e, toggleSteering)}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}

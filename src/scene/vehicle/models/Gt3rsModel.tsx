@@ -112,8 +112,7 @@ type GLTFResult = GLTF & {
     Interior_SteeringWheel_Grip: THREE.Mesh
     Interior_SteeringWheel_Stitching_Dynamic: THREE.Mesh
     Interior_SteeringWheel_Trim_Dynamic: THREE.Mesh
-    Interior_Carbon_Trims_1: THREE.Mesh
-    Interior_Carbon_Trims_2: THREE.Mesh
+    Interior_Carbon_Trims: THREE.Mesh
     Interior_Carpet_Static_1: THREE.Mesh
     Interior_Carpet_Static_2: THREE.Mesh
     Interior_Clock_Dial_Dynamic: THREE.Mesh
@@ -210,7 +209,6 @@ type GLTFResult = GLTF & {
     Material_Logo_Static: THREE.MeshStandardMaterial
     Material_Wheel_Leather_Dynamic: THREE.MeshPhysicalMaterial
     Material_Interior_Plastic_Static: THREE.MeshStandardMaterial
-    Material_Carbon_Trim_Lighter_Static: THREE.MeshPhysicalMaterial
     Material_Interior_Structure_Static: THREE.MeshStandardMaterial
     Material_Interior_Carpet_Static: THREE.MeshStandardMaterial
     Material_DashClock_Dynamic: THREE.MeshStandardMaterial
@@ -403,10 +401,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
               <mesh name="Interior_SteeringWheel_Stitching_Dynamic" geometry={nodes.Interior_SteeringWheel_Stitching_Dynamic.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
               <mesh name="Interior_SteeringWheel_Trim_Dynamic" geometry={nodes.Interior_SteeringWheel_Trim_Dynamic.geometry} material={materials.Material_Interior_Plastic_Static} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
             </group>
-            <group name="Interior_Carbon_Trims">
-              <mesh name="Interior_Carbon_Trims_1" geometry={nodes.Interior_Carbon_Trims_1.geometry} material={materials.Material_Carbon_Trim_Static} />
-              <mesh name="Interior_Carbon_Trims_2" geometry={nodes.Interior_Carbon_Trims_2.geometry} material={materials.Material_Carbon_Trim_Lighter_Static} />
-            </group>
+            <mesh name="Interior_Carbon_Trims" geometry={nodes.Interior_Carbon_Trims.geometry} material={materials.Material_Carbon_Trim_Static} />
             <group name="Interior_Carpet_Static">
               <mesh name="Interior_Carpet_Static_1" geometry={nodes.Interior_Carpet_Static_1.geometry} material={materials.Material_Interior_Structure_Static} />
               <mesh name="Interior_Carpet_Static_2" geometry={nodes.Interior_Carpet_Static_2.geometry} material={materials.Material_Interior_Carpet_Static} />
@@ -425,7 +420,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
             </group>
             <mesh name="Interior_Headliner" geometry={nodes.Interior_Headliner.geometry} material={materials.Material_Interior_Headliner_Static} />
             <group name="Interior_Metal_Accents">
-              <mesh name="Interior_Metal_Accents_1" geometry={nodes.Interior_Metal_Accents_1.geometry} material={materials.Material_Interior_Metal_Static} />
+              <mesh name="Interior_Metal_Accents_1" geometry={nodes.Interior_Metal_Accents_1.geometry} material={materials.Material_Interior_Carpet_Static} />
               <mesh name="Interior_Metal_Accents_2" geometry={nodes.Interior_Metal_Accents_2.geometry} material={materials.Material_Interior_Clock_Static} />
               <mesh name="Interior_Metal_Accents_3" geometry={nodes.Interior_Metal_Accents_3.geometry} material={materials.Material_Interior_Vent_Static} />
             </group>

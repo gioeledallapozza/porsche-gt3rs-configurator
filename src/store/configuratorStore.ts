@@ -20,6 +20,7 @@ interface ConfiguratorState {
   seatbeltColor: string;
 
   activeCameraPreset: string;
+  renderedCameraPreset: string;
 
   //Animations
   doorsOpen: boolean;
@@ -29,12 +30,16 @@ interface ConfiguratorState {
   // Setup Action
   initVehicle: (config: VehicleConfig) => void;
   setEnvReady: (status: boolean) => void;
+
+  isCameraTransitioning: boolean;
+  setCameraTransitioning: (status: boolean) => void;
   
   // Actions Exterior
   setCarColor: (hex: string) => void;
   setWheelColor: (hex: string) => void;
   setCaliperColor: (hex: string) => void;
   setActiveCameraPreset: (id: string) => void;
+  setRenderedCameraPreset: (id: string) => void;
   setAeroPackage: (id: string) => void;
 
   // Actions Interior
@@ -67,6 +72,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   seatbeltColor: '#0a0a0a',
 
   activeCameraPreset: 'hero_view',
+  renderedCameraPreset: 'hero_view',
 
   doorsOpen: false,
   hoodOpen: false,
@@ -90,11 +96,15 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   }),
   setEnvReady: (status) => set({ isEnvReady: status }),
 
+  isCameraTransitioning: false,
+  setCameraTransitioning: (status) => set({ isCameraTransitioning: status }),
+
   //Actions Exterior
   setCarColor: (hex) => set({ carColor: hex }),
   setWheelColor: (hex) => set({ wheelColor: hex }),
   setCaliperColor: (hex) => set({ caliperColor: hex }),
   setActiveCameraPreset: (id) => set({ activeCameraPreset: id }),
+  setRenderedCameraPreset: (id) => set({ renderedCameraPreset: id }),
   setAeroPackage: (id) => set({ aeroPackage: id }),
 
   //Actions Interiors

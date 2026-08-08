@@ -11,6 +11,8 @@ export default function CameraPresetsUI() {
       <div className={styles.scrollWrapper}>
         {cameraPresets.map((preset) => {
           const isActive = activePreset === preset.id;
+          const hasThumbnail = Boolean(preset.thumbnail && preset.thumbnail.trim());
+
           return (
             <button
               key={preset.id}
@@ -19,12 +21,16 @@ export default function CameraPresetsUI() {
               aria-label={`View ${preset.name}`}
             >
               <div className={styles.imageWrapper}>
-                <img 
-                  src={preset.thumbnail} 
-                  alt={preset.name}
-                  loading="lazy"
-                  className={styles.thumbnailImg}
-                />
+                {hasThumbnail ? (
+                  <img
+                    src={preset.thumbnail}
+                    alt={preset.name}
+                    loading="lazy"
+                    className={styles.thumbnailImg}
+                  />
+                ) : (
+                  <div className={styles.thumbnailImg} aria-label={`${preset.name} thumbnail unavailable`} />
+                )}
               </div>
             </button>
           );

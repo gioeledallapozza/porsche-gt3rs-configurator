@@ -1,124 +1,110 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
-import { useThree } from '@react-three/fiber';
+import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
+import { useHelper } from '@react-three/drei';
 import { useLevaStore } from '@/store/levaStore';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 
 RectAreaLightUniformsLib.init();
 
 const StudioLighting: React.FC = () => {
-  const dirLightRef = useRef<THREE.DirectionalLight>(null!);
-  const helperRef = useRef<THREE.CameraHelper | null>(null);
-  const { scene } = useThree();
   const dynamicLight = useLevaStore((state) => state.environment.dynamic);
+  const interiorLight = useLevaStore((state) => state.environment.interior);
 
-  const activeCameraPreset = useConfiguratorStore((state) => state.activeCameraPreset);
-  const isInterior = activeCameraPreset === 'interior_view';
+  const renderedCameraPreset = useConfiguratorStore((state) => state.renderedCameraPreset);
 
-  // Adjust the directional light's position based on the camera preset
-  useEffect(() => {
-    if (!dirLightRef.current) {
-      return;
-    }
+  const isInterior = renderedCameraPreset === 'interior_view';
+  const intensityMultiplier = isInterior ? 1 : 1;
 
-    dirLightRef.current.updateMatrixWorld();
+  const dirLightRef = useRef<THREE.DirectionalLight>(null!);
+  const ceilingLightRef = useRef<THREE.SpotLight>(null!);
+  const leftPaneRef = useRef<THREE.RectAreaLight>(null!);
+  const rightPaneRef = useRef<THREE.RectAreaLight>(null!);
+  const dashLightRef = useRef<THREE.RectAreaLight>(null!);
 
-    if (helperRef.current) {
-      scene.remove(helperRef.current);
-      helperRef.current.dispose();
-      helperRef.current = null;
-    }
-
-    if (dynamicLight.enabled && dynamicLight.showHelper) {
-      const shadowHelper = new THREE.CameraHelper(dirLightRef.current.shadow.camera);
-      helperRef.current = shadowHelper;
-      scene.add(shadowHelper);
-    }
-
-    return () => {
-      if (helperRef.current) {
-        scene.remove(helperRef.current);
-        helperRef.current.dispose();
-        helperRef.current = null;
-      }
-    };
-  }, [scene, dynamicLight.enabled, dynamicLight.showHelper]);
+  useHelper(dynamicLight.enabled && dynamicLight.showHelper && dirLightRef, THREE.DirectionalLightHelper, 1, 'yellow');
+  
+  const showIntHelper = isInterior && interiorLight.enabled && interiorLight.showHelper;
+  useHelper(showIntHelper && interiorLight.ceiling.enabled && ceilingLightRef, THREE.SpotLightHelper, 'cyan');
+  useHelper(showIntHelper && interiorLight.leftPane.enabled && leftPaneRef, RectAreaLightHelper, 'cyan');
+  useHelper(showIntHelper && interiorLight.rightPane.enabled && rightPaneRef, RectAreaLightHelper, 'cyan');
+  useHelper(showIntHelper && interiorLight.dash.enabled && dashLightRef, RectAreaLightHelper, 'red');
 
   return (
     <group>
       {/* EXTERIOR LIGHTING */}
-      {dynamicLight.enabled ? (
-        <directionalLight
-          ref={dirLightRef}
-          castShadow
-          position={[dynamicLight.positionX, dynamicLight.positionY, dynamicLight.positionZ]}
-          intensity={dynamicLight.intensity}
-          shadow-mapSize={[dynamicLight.shadowMapSize, dynamicLight.shadowMapSize]}
-          shadow-bias={dynamicLight.shadowBias}
-          shadow-normalBias={dynamicLight.shadowNormalBias}
-        >
-          <orthographicCamera
-            attach="shadow-camera"
-            args={[-dynamicLight.shadowCameraSize, dynamicLight.shadowCameraSize, dynamicLight.shadowCameraSize, -dynamicLight.shadowCameraSize, 0.5, 12]}
-          />
-        </directionalLight>
-      ) : null}
+      <directionalLight
+        ref={dirLightRef}
+        castShadow
+        visible={dynamicLight.enabled}
+        position={[dynamicLight.positionX, dynamicLight.positionY, dynamicLight.positionZ]}
+        intensity={dynamicLight.intensity * (isInterior ? 0 : 1)} // Spegni fuori se sei dentro (opzionale)
+        shadow-mapSize={[dynamicLight.shadowMapSize, dynamicLight.shadowMapSize]}
+        shadow-bias={dynamicLight.shadowBias}
+        shadow-normalBias={dynamicLight.shadowNormalBias}
+      >
+        <orthographicCamera
+          attach="shadow-camera"
+          args={[-dynamicLight.shadowCameraSize, dynamicLight.shadowCameraSize, dynamicLight.shadowCameraSize, -dynamicLight.shadowCameraSize, 0.5, 12]}
+        />
+      </directionalLight>
 
-     {/* INTERIOR STUDIO LIGHTING (Si attiva solo dentro) */}
-      {isInterior && (
-        <group>
-          {/* 1. Ambient Light Base: bassissima, solo per non avere neri a 0 */}
-          <ambientLight intensity={0.3} color="#ffffff" />
-          
-          {/* 2. LA TUA IDEA (Plafoniera): SpotLight dall'alto 
-              Illumina morbidamente console centrale, cambio e sedili */}
-          <spotLight
-            position={[0, 1.3, -0.1]} 
-            angle={Math.PI / 2.5} // Cono largo     
-            penumbra={1.0}        // Sfumatura massima, zero bordi netti
-            intensity={4.0}       // Bilanciata
-            distance={2.5}            
+      {/* INTERIOR STUDIO LIGHTING - Sempre montato, intensità controllata dinamicamente */}
+      <group visible={interiorLight.enabled}>
+        <ambientLight 
+            intensity={interiorLight.ambientIntensity * intensityMultiplier} 
+            color="#ffffff" 
+        />
+
+        <spotLight
+            ref={ceilingLightRef}
+            visible={interiorLight.ceiling.enabled}
+            position={[interiorLight.ceiling.positionX, interiorLight.ceiling.positionY, interiorLight.ceiling.positionZ]}
+            angle={interiorLight.ceiling.angle}
+            penumbra={interiorLight.ceiling.penumbra}
+            intensity={interiorLight.ceiling.intensity * intensityMultiplier}
+            distance={interiorLight.ceiling.distance}
             decay={2.0}
             color="#ffffff"
             castShadow={false}
-          />
+        />
 
-          {/* 3. VETRO SINISTRO (Guidatore): 
-              Un pannello largo 1.5m che guarda verso l'interno */}
-          <rectAreaLight
+        <rectAreaLight
+            ref={leftPaneRef}
+            visible={interiorLight.leftPane.enabled}
             width={1.5}
             height={0.6}
             color="#ffffff"
-            intensity={3.0}
-            position={[0.8, 0.8, 0]} // Posizionato sul vetro
-            rotation={[0, Math.PI / 2, 0]} // Guarda verso destra (dentro l'auto)
-          />
+            intensity={interiorLight.leftPane.intensity * intensityMultiplier}
+            position={[interiorLight.leftPane.positionX, interiorLight.leftPane.positionY, interiorLight.leftPane.positionZ]}
+            rotation={[interiorLight.leftPane.rotationX, interiorLight.leftPane.rotationY, interiorLight.leftPane.rotationZ]}
+        />
 
-          {/* 4. VETRO DESTRO (Passeggero): 
-              Un pannello speculare che guarda verso l'interno */}
-          <rectAreaLight
+        <rectAreaLight
+            ref={rightPaneRef}
+            visible={interiorLight.rightPane.enabled}
             width={1.5}
             height={0.6}
             color="#ffffff"
-            intensity={3.0}
-            position={[-0.8, 0.8, 0]} // Posizionato sul vetro
-            rotation={[0, -Math.PI / 2, 0]} // Guarda verso sinistra (dentro l'auto)
-          />
+            intensity={interiorLight.rightPane.intensity * intensityMultiplier}
+            position={[interiorLight.rightPane.positionX, interiorLight.rightPane.positionY, interiorLight.rightPane.positionZ]}
+            rotation={[interiorLight.rightPane.rotationX, interiorLight.rightPane.rotationY, interiorLight.rightPane.rotationZ]}
+        />
 
-          {/* 5. PARABREZZA (Opzionale, ma fa la differenza): 
-              Dà quel bel colpo di luce sul cruscotto superiore e sul volante */}
-          <rectAreaLight
+        <rectAreaLight
+            ref={dashLightRef}
+            visible={interiorLight.dash.enabled}
             width={1.4}
             height={0.6}
             color="#ffffff"
-            intensity={2.0}
-            position={[0, 0.9, 0.6]} // Posizionato sul cruscotto anteriore
-            rotation={[-Math.PI / 6, Math.PI, 0]} // Inclinato verso i sedili
-          />
-        </group>
-      )}
+            intensity={interiorLight.dash.intensity * intensityMultiplier}
+            position={[interiorLight.dash.positionX, interiorLight.dash.positionY, interiorLight.dash.positionZ]}
+            rotation={[interiorLight.dash.rotationX, interiorLight.dash.rotationY, interiorLight.dash.rotationZ]}
+        />
+      </group>
 
+      {/* SHADOW PLANE */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]} receiveShadow>
         <planeGeometry args={[30, 30]} />
         <shadowMaterial transparent opacity={0.6} color="#000000" />
