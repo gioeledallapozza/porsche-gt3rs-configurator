@@ -19,13 +19,13 @@ import CameraTransitionManager from '@/scene/camera/CameraTransitionManager';
 import CameraDebugHelper from '@/scene/camera/CameraDebugHelper';
 import SocialLinks from '@/routes/Configurator/components/canvas/overlay/SocialLinks.tsx';
 import LevaControllers from '@/components/LevaControllers.tsx';
+import ConfiguratorSidebar from './components/layout/ConfiguratorSidebar.tsx';
+import CameraTransitionOverlay from './components/canvas/overlay/CameraTransitionOverlay.tsx';
+import ConfiguratorLoadingOverlay from './components/canvas/overlay/ConfiguratorLoadingOverlay.tsx';
 
 //Css
 import styles from '@/routes/Configurator/components/layout/Configurator.module.css';
 
-//Smart Sections
-import ConfiguratorSidebar from './components/layout/ConfiguratorSidebar.tsx';
-import CameraTransitionOverlay from './components/canvas/overlay/CameraTransitionOverlay.tsx';
 
 
 
@@ -37,7 +37,8 @@ const Configurator: React.FC = () => {
 
   //Extract initial state
   const initVehicle = useConfiguratorStore((state) => state.initVehicle);
-  const isInitialized = useConfiguratorStore((state) => state.isInitialized);
+  // const isInitialized = useConfiguratorStore((state) => state.isInitialized);
+  // const setModelReady = useConfiguratorStore((state) => state.setModelReady);
 
   const initialPreset = cameraPresets.find(p => p.id === 'hero_view') || cameraPresets[0];
 
@@ -78,10 +79,6 @@ const Configurator: React.FC = () => {
     return <div style={{ color: '#fff', padding: '2rem' }}>Vehicle not found in the registry.</div>;
   }
 
-  if (!isInitialized) {
-    return null; // Or loader?
-  }
-
   return (
     <div className={`${styles.configuratorContainer} animate-entry`}>
       {/* Canvas WebGL 3D Scene */}
@@ -93,7 +90,7 @@ const Configurator: React.FC = () => {
         
         <Canvas
           shadows={{ type: THREE.PCFSoftShadowMap }}
-          frameloop="always" //Only render when there are changes in the scene
+          frameloop="demand" //Only render when there are changes in the scene
           dpr={[1, 1.5]}
           gl={{ 
             antialias: true, 
@@ -113,6 +110,7 @@ const Configurator: React.FC = () => {
           {/* SEPARATED SUSPENSE, So when GLTF loads the materials of the vehicle model the envMap EXISTS */}
           <Suspense fallback={
             <Html center>
+              {/* NOT USED THERE IS THE LOADER OVERLAY IN THE END BUT WE KEEP IT TO BE SAFE */}
               <div className={styles.vehicleLoader}>Loading Lighting...</div>
             </Html>
           }>
@@ -121,9 +119,8 @@ const Configurator: React.FC = () => {
           </Suspense>
 
           <Suspense fallback={
-            <Html center>
-              <div className={styles.vehicleLoader}>Loading 3D Assets...</div>
-            </Html>
+            null
+            // <Html center><div className={styles.vehicleLoader}>Loading 3D Assets...</div></Html>
           }>
             <Vehicle vehicleId={config.id} />
           </Suspense>
@@ -166,8 +163,8 @@ const Configurator: React.FC = () => {
           <Preload all/>
         </Canvas>
       </div>
-
-      <ConfiguratorSidebar config={config} />
+        <ConfiguratorSidebar config={config} />
+        <ConfiguratorLoadingOverlay />
     </div>
   );
 };

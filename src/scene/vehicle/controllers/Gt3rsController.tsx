@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -37,8 +37,9 @@ interface Gt3rsControllerProps {
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
   const { materials, nodes } = useGLTF(modelPath);
-  const { scene, gl } = useThree();
+  const { camera, scene, gl } = useThree();
   const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
+  const setModelReady = useConfiguratorStore((state) => state.setModelReady);
   
   //Load textures
   const {
@@ -292,6 +293,27 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     leatherArm
   }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm]);
 
+  // Determinate when to show the car and hide the loading overlay. 
+  // We need to wait for the model to be fully compiled and ready to render.
+  useEffect(() => {
+    // Give React time to mount the nodes in the DOM and update the loader
+    const timer = setTimeout(() => {
+      
+      // Forces the renderer to synchronously compile all materials in the scene
+      // This will block the main thread for a fraction of a second, but the CSS
+      // loader will mask the stuttering.
+      gl.compile(scene, camera);
+
+      // Wait next frame to be sure everything loaded
+      requestAnimationFrame(() => {
+        setModelReady(true);
+      });
+      
+    }, 50); 
+
+    return () => clearTimeout(timer);
+  }, [gl, scene, camera]); // Stable dependencies
+  
   // Orchestration
   return (
     <>

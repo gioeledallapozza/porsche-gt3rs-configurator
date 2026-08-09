@@ -4,8 +4,10 @@ import type { VehicleConfig } from '@/config/types';
 //This store manages the state of the car configurator.
 interface ConfiguratorState {
   // Setup flag
+  currentVehicleId: string | null;
   isInitialized: boolean;
   isEnvReady: boolean;
+
 
   //Exterior
   carColor: string;
@@ -31,6 +33,9 @@ interface ConfiguratorState {
   initVehicle: (config: VehicleConfig) => void;
   setEnvReady: (status: boolean) => void;
 
+  isModelReady: boolean;
+  setModelReady: (value: boolean) => void;
+
   isCameraTransitioning: boolean;
   setCameraTransitioning: (status: boolean) => void;
   
@@ -55,6 +60,7 @@ interface ConfiguratorState {
 }
 
 export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
+  currentVehicleId: null,
   // Setup flag
   isInitialized: false,
   isEnvReady: false,
@@ -79,6 +85,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
   steeringTurned: false,
 
   initVehicle: (config) => set({
+    currentVehicleId: config.id,
     isInitialized: true,
     carColor: config.paintOptions[0]?.hex || '#000000',
     wheelColor: config.wheelOptions[0]?.hex || '#000000',
@@ -95,6 +102,9 @@ export const useConfiguratorStore = create<ConfiguratorState>((set) => ({
     steeringTurned: false,
   }),
   setEnvReady: (status) => set({ isEnvReady: status }),
+
+  isModelReady: false,
+  setModelReady: (value) => set({ isModelReady: value }),
 
   isCameraTransitioning: false,
   setCameraTransitioning: (status) => set({ isCameraTransitioning: status }),
