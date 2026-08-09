@@ -88,7 +88,6 @@ const VirtualStudio: React.FC = () => {
         position={[0, 1.5, -5]}
         scale={[environment.lightformerRearScale, 0.5, 1]}
       />
-      
     </Environment>
   );
 };

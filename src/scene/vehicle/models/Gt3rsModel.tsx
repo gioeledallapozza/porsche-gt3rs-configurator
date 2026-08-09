@@ -40,8 +40,7 @@ type GLTFResult = GLTF & {
     Door_Interior_Base_L_2: THREE.Mesh
     Door_Interior_Base_L_3: THREE.Mesh
     Door_Leather_Primary_L: THREE.Mesh
-    Door_Leather_Secondary_L_1: THREE.Mesh
-    Door_Leather_Secondary_L_2: THREE.Mesh
+    Door_Leather_Secondary_L: THREE.Mesh
     Door_Metal_Trim_L_1: THREE.Mesh
     Door_Metal_Trim_L_2: THREE.Mesh
     Door_Metal_Trim_L_3: THREE.Mesh
@@ -51,14 +50,14 @@ type GLTFResult = GLTF & {
     Door_Plastic_L_1: THREE.Mesh
     Door_Plastic_L_2: THREE.Mesh
     Door_Plastic_L_3: THREE.Mesh
+    Door_Trim_Accent_L: THREE.Mesh
     Door_Accent_R: THREE.Mesh
     Door_Glass_R: THREE.Mesh
     Door_Interior_Base_R_1: THREE.Mesh
     Door_Interior_Base_R_2: THREE.Mesh
     Door_Interior_Base_R_3: THREE.Mesh
     Door_Leather_Primary_R: THREE.Mesh
-    Door_Leather_Secondary_R_1: THREE.Mesh
-    Door_Leather_Secondary_R_2: THREE.Mesh
+    Door_Leather_Secondary_R: THREE.Mesh
     Door_Metal_Trim_R_1: THREE.Mesh
     Door_Metal_Trim_R_2: THREE.Mesh
     Door_Mirror_R: THREE.Mesh
@@ -67,6 +66,7 @@ type GLTFResult = GLTF & {
     Door_Plastic_R_1: THREE.Mesh
     Door_Plastic_R_2: THREE.Mesh
     Door_Plastic_R_3: THREE.Mesh
+    Door_Trim_Accent_R: THREE.Mesh
     Hood_Aero_Vents_Static: THREE.Mesh
     Hood_Badge_Logo: THREE.Mesh
     Hood_Carbon_Center: THREE.Mesh
@@ -180,7 +180,6 @@ type GLTFResult = GLTF & {
     Material_Front_Speaker_Static: THREE.MeshStandardMaterial
     Material_Exterior_Badges_Dynamic: THREE.MeshStandardMaterial
     Material_Leather_Primary: THREE.MeshPhysicalMaterial
-    Material_Interior_Accent_Dynamic: THREE.MeshPhysicalMaterial
     Material_Upper_Leather_Dynamic: THREE.MeshPhysicalMaterial
     Material_Interior_Metal_Static: THREE.MeshStandardMaterial
     Material_Interior_Metal_Lucid_Static: THREE.MeshStandardMaterial
@@ -189,6 +188,7 @@ type GLTFResult = GLTF & {
     Material_RubberTrim_Static: THREE.MeshStandardMaterial
     Material_Carbon_Trim_Static: THREE.MeshPhysicalMaterial
     Material_Exterior_LowerAero_Dynamic: THREE.MeshPhysicalMaterial
+    Material_Interior_Accent_Dynamic: THREE.MeshPhysicalMaterial
     Exterior_Badges: THREE.MeshStandardMaterial
     Material_Exterior_Weissach_Dynamic: THREE.MeshPhysicalMaterial
     Material_Headlight_Emissive: THREE.MeshStandardMaterial
@@ -292,10 +292,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
                 <mesh name="Door_Interior_Base_L_3" geometry={nodes.Door_Interior_Base_L_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
               </group>
               <mesh name="Door_Leather_Primary_L" geometry={nodes.Door_Leather_Primary_L.geometry} material={materials.Material_Leather_Primary} position={[-0.143, 0.122, -0.542]} />
-              <group name="Door_Leather_Secondary_L" position={[-0.143, 0.122, -0.542]}>
-                <mesh name="Door_Leather_Secondary_L_1" geometry={nodes.Door_Leather_Secondary_L_1.geometry} material={materials.Material_Interior_Accent_Dynamic} />
-                <mesh name="Door_Leather_Secondary_L_2" geometry={nodes.Door_Leather_Secondary_L_2.geometry} material={materials.Material_Upper_Leather_Dynamic} />
-              </group>
+              <mesh name="Door_Leather_Secondary_L" geometry={nodes.Door_Leather_Secondary_L.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[-0.143, 0.122, -0.542]} />
               <group name="Door_Metal_Trim_L" position={[-0.143, 0.122, -0.542]}>
                 <mesh name="Door_Metal_Trim_L_1" geometry={nodes.Door_Metal_Trim_L_1.geometry} material={materials.Material_Interior_Metal_Static} />
                 <mesh name="Door_Metal_Trim_L_2" geometry={nodes.Door_Metal_Trim_L_2.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
@@ -309,6 +306,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
                 <mesh name="Door_Plastic_L_2" geometry={nodes.Door_Plastic_L_2.geometry} material={materials.Material_Carbon_Trim_Static} />
                 <mesh name="Door_Plastic_L_3" geometry={nodes.Door_Plastic_L_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
               </group>
+              <mesh name="Door_Trim_Accent_L" geometry={nodes.Door_Trim_Accent_L.geometry} material={materials.Material_Interior_Accent_Dynamic} position={[-0.143, 0.122, -0.542]} />
             </group>
             <group name="Node_Door_R" position={[-0.826, 0.575, 0.565]}>
               <mesh name="Door_Accent_R" geometry={nodes.Door_Accent_R.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.15, 0.071, -0.529]} />
@@ -319,10 +317,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
                 <mesh name="Door_Interior_Base_R_3" geometry={nodes.Door_Interior_Base_R_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
               </group>
               <mesh name="Door_Leather_Primary_R" geometry={nodes.Door_Leather_Primary_R.geometry} material={materials.Material_Leather_Primary} position={[0.15, 0.071, -0.529]} />
-              <group name="Door_Leather_Secondary_R" position={[0.15, 0.071, -0.529]}>
-                <mesh name="Door_Leather_Secondary_R_1" geometry={nodes.Door_Leather_Secondary_R_1.geometry} material={materials.Material_Upper_Leather_Dynamic} />
-                <mesh name="Door_Leather_Secondary_R_2" geometry={nodes.Door_Leather_Secondary_R_2.geometry} material={materials.Material_Interior_Accent_Dynamic} />
-              </group>
+              <mesh name="Door_Leather_Secondary_R" geometry={nodes.Door_Leather_Secondary_R.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[0.15, 0.071, -0.529]} />
               <group name="Door_Metal_Trim_R" position={[0.15, 0.071, -0.529]}>
                 <mesh name="Door_Metal_Trim_R_1" geometry={nodes.Door_Metal_Trim_R_1.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
                 <mesh name="Door_Metal_Trim_R_2" geometry={nodes.Door_Metal_Trim_R_2.geometry} material={materials.Material_Interior_Metal_Static} />
@@ -335,6 +330,7 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
                 <mesh name="Door_Plastic_R_2" geometry={nodes.Door_Plastic_R_2.geometry} material={materials.Material_Carbon_Trim_Static} />
                 <mesh name="Door_Plastic_R_3" geometry={nodes.Door_Plastic_R_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
               </group>
+              <mesh name="Door_Trim_Accent_R" geometry={nodes.Door_Trim_Accent_R.geometry} material={materials.Material_Interior_Accent_Dynamic} position={[0.15, 0.071, -0.529]} />
             </group>
             <group name="Node_Hood" position={[0.003, 0.874, 0.7]}>
               <mesh name="Hood_Aero_Vents_Static" geometry={nodes.Hood_Aero_Vents_Static.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} position={[-0.003, -0.874, -0.7]} />

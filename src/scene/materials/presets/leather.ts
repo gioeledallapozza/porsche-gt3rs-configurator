@@ -8,37 +8,38 @@ import { useLevaStore } from '@/store/levaStore';
 
 export const applyLeather = (
   material: THREE.MeshPhysicalMaterial,
-  hexColor: string
+  hexColor: string,
+  textures: { normalMap: THREE.Texture | null; armMap: THREE.Texture | null }
 ): void => {
   const tweaks = useLevaStore.getState().leather;
 
-  material.color.set(hexColor);
+  const baseColor = new THREE.Color(hexColor);
+  material.color.copy(baseColor);
+  
+  // material.color.set(hexColor);
 
   // material.map = null; 
   // material.vertexColors = false;
 
-  // material.normalMap = textures.normalMap;
-  material.normalScale.set(1.0, 1.0);
+  material.normalMap = textures.normalMap;
+  material.normalScale.set(tweaks.normalScale, tweaks.normalScale);
 
-  // material.aoMap = textures.armMap;
-  // material.aoMapIntensity = 0.8;
+  material.aoMap = textures.armMap;
+  material.aoMapIntensity = 0.1;
 
   material.roughness = tweaks.roughness;
-  // material.roughnessMap = textures.armMap;
+  material.roughnessMap = textures.armMap;
 
-  material.roughnessMap = null;
-  material.aoMap = null;
-  material.metalnessMap = null;
-
-  // material.metalnessMap = textures.armMap;
-  // material.metalness = tweaks.metalness;
+  material.metalnessMap = textures.armMap;
+  material.metalness = tweaks.metalness;
 
   material.clearcoat = tweaks.clearcoat;
-  material.clearcoatRoughness = 0.0;
+  material.clearcoatRoughness = tweaks.clearcoatRoughness;
 
   material.sheen = tweaks.sheen;
   material.sheenRoughness = tweaks.sheenRoughness;
-  material.sheenColor.setHex(0xffffff);
+  // material.sheenColor.set(hexColor);
+  material.sheenColor = baseColor.clone().lerp(new THREE.Color(0xffffff), 0.4);
 
   material.envMapIntensity = tweaks.envMapIntensity;
 
@@ -50,12 +51,15 @@ export const applyStitching = (
   material: THREE.MeshPhysicalMaterial, 
   hexColor: string
 ): void => {
-  material.color.set(hexColor);
+  const baseColor = new THREE.Color(hexColor);
+  material.color.copy(baseColor);
   
   material.roughness = 0.9;
   material.metalness = 0.0;
   material.clearcoat = 0.0;
-  material.sheen = 0.1; // Filo leggermente riflettente ai bordi
+  material.sheen = 0.3; 
+
+  material.sheenColor = baseColor.clone().lerp(new THREE.Color(0xffffff), 0.4);
 
   material.needsUpdate = true;
 };

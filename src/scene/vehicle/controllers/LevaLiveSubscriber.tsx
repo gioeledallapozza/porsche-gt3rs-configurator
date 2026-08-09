@@ -246,8 +246,10 @@ export default function LevaLiveSubscriber({ mats }: Props) {
           mat.roughness = val.roughness;
           mat.metalness = val.metalness;
           mat.clearcoat = val.clearcoat;
+          mat.clearcoatRoughness = val.clearcoatRoughness;
           mat.sheen = val.sheen;
           mat.sheenRoughness = val.sheenRoughness;
+          mat.normalScale.set(val.normalScale, val.normalScale);
           mat.envMapIntensity = val.envMapIntensity;
           mat.needsUpdate = true;
         });

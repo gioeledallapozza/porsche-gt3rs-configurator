@@ -117,7 +117,7 @@ interface LevaState {
   carbonTwill: { color: string; clearcoat: number; clearcoatRoughness: number; metalness: number; roughness: number; normalScale: number; envMapIntensity: number; };
   carbonForged: { color: string; clearcoat: number; clearcoatRoughness: number; metalness: number; roughness: number; normalScale: number; envMapIntensity: number; };
   metal: { clearcoat: number; clearcoatRoughness: number; metalness: number; roughness: number; envMapIntensity: number; };
-  leather: { roughness: number; metalness: number; clearcoat: number; sheen: number; sheenRoughness: number; envMapIntensity: number; };
+  leather: { roughness: number; metalness: number; clearcoat: number; clearcoatRoughness: number; sheen: number; sheenRoughness: number; normalScale: number; envMapIntensity: number; };
   aluminum: { color: string; clearcoat: number; clearcoatRoughness: number; metalness: number; roughness: number; normalScale: number; envMapIntensity: number; };
   caliper: { clearcoat: number; clearcoatRoughness: number; metalness: number; roughness: number; envMapIntensity: number; };
   rubber: { roughness: number; metalness: number; envMapIntensity: number; }
@@ -165,11 +165,11 @@ export const useLevaStore = create<LevaState>()(
         showHelper: false,
         ambientIntensity: 0.02, // Drastically reduced ambient light
         ceiling: {
-          enabled: true, // Disabled the ceiling spotlight
+          enabled: true, 
           intensity: 2.4,
           positionX: 0,
-          positionY: 1.3,
-          positionZ: -0.1,
+          positionY: 1.40,
+          positionZ: 0.3,
           angle: Math.PI / 2.5,
           penumbra: 1.0,
           distance: 1.7,
@@ -220,8 +220,8 @@ export const useLevaStore = create<LevaState>()(
     carbonTwill: { color: '#0a0a0a', clearcoat: 1.0, clearcoatRoughness: 0.0, metalness: 0.6, roughness: 1.0, normalScale: 1.0, envMapIntensity: 1.0 },
     carbonForged: { color: '#0a0a0a', clearcoat: 1.0, clearcoatRoughness: 0.0, metalness: 0.6, roughness: 1.0, normalScale: 1.0, envMapIntensity: 1.0 },
     metal: { clearcoat: 1.0, clearcoatRoughness: 0.15, metalness: 0.97, roughness: 0.5, envMapIntensity: 2.0 },
-    leather: { roughness: 0.8, metalness: 0.0, clearcoat: 0.0, sheen: 0.1, sheenRoughness: 0.6, envMapIntensity: 1.0 },
-    aluminum: { color: '#d4d4d4', clearcoat: 0.0, clearcoatRoughness: 0.0, metalness: 1.0, roughness: 1.0, normalScale: 0.5, envMapIntensity: 1.0 },
+    leather: { roughness: 1.0, metalness: 0.0, clearcoat: 0.06, clearcoatRoughness: 0.60, sheen: 0.6, sheenRoughness: 0.6, normalScale: 1.3, envMapIntensity: 1.0 },
+    aluminum: { color: '#a8a8a8', clearcoat: 0.0, clearcoatRoughness: 0.0, metalness: 1.0, roughness: 0.40, normalScale: 0.5, envMapIntensity: 1.0 },
     caliper: { clearcoat: 1.0, clearcoatRoughness: 0.05, metalness: 0.1, roughness: 0.15, envMapIntensity: 1.2 },
     rubber: { roughness: 0.95, metalness: 0.0, envMapIntensity: 0.1 },
     headlight: { color: '#ffffff', emissive: '#ffffff', emissiveIntensity: 1.0, roughness: 1.0, metalness: 0.0, ior: 1.5, envMapIntensity: 1.0 },

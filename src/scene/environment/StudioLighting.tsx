@@ -102,6 +102,7 @@ const StudioLighting: React.FC = () => {
             position={[interiorLight.dash.positionX, interiorLight.dash.positionY, interiorLight.dash.positionZ]}
             rotation={[interiorLight.dash.rotationX, interiorLight.dash.rotationY, interiorLight.dash.rotationZ]}
         />
+
       </group>
 
       {/* SHADOW PLANE */}

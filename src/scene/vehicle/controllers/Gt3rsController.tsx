@@ -25,6 +25,7 @@ import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/
 import { applyAlloyFinish } from '@/scene/materials/presets/metals';
 import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
 import { applyRubberFinish } from '@/scene/materials/presets/rubber';
+import { applyLeather } from '@/scene/materials/presets/leather';
 
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
 
@@ -46,11 +47,12 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
   const aluminumNormal = useKtx2Disposal('/textures/materials/aluminum/aluminum_normal.ktx2');
   const aluminumRoughness = useKtx2Disposal('/textures/materials/aluminum/aluminum_roughness.ktx2');
+  const leatherNormal = useKtx2Disposal('/textures/materials/leather/leather_v1_normal.ktx2');
+  const leatherArm = useKtx2Disposal('/textures/materials/leather/leather_v1_arm.ktx2');
   const carpetAo = useKtx2Disposal('/textures/materials/ambient_occlusion/carpet_ao.ktx2');
   const tubAo = useKtx2Disposal('/textures/materials/ambient_occlusion/interior_tub_ao.ktx2');
   const metalAccentAo = useKtx2Disposal('/textures/materials/ambient_occlusion/metal_accent_ao.ktx2');
-  // const leatherNormal = useKtx2Disposal('/textures/materials/leather/leather_v1_normal.ktx2');
-  // const leatherArm = useKtx2Disposal('/textures/materials/leather/leather_v1_arm.ktx2');
+  
 
  // Apply shadows only to certains nodes based on custom blender properties
  // Assign reference to certains nodes to enable animations
@@ -119,7 +121,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const mats = useMemo(() => {
 
     [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, 
-      aluminumRoughness, carpetAo, tubAo, metalAccentAo].forEach(tex => {
+      aluminumRoughness, leatherNormal, leatherArm, carpetAo, tubAo, metalAccentAo].forEach(tex => {
       if (!tex) return;
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       tex.minFilter = THREE.LinearMipMapLinearFilter;
@@ -154,6 +156,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       leatherPrimary: materials.Material_Leather_Primary as THREE.MeshPhysicalMaterial,
       leatherSecondary: materials.Material_Leather_Secondary as THREE.MeshPhysicalMaterial,
       seatbelt: materials.Material_SeatBelt_Dynamic as THREE.MeshPhysicalMaterial,
+      leatherUpper: materials.Material_Upper_Leather_Dynamic as THREE.MeshPhysicalMaterial,
     };
 
     // Glass
@@ -167,9 +170,10 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureSignalEmissive(extractedMaterials.signalEmissive);
     configureLicensePlateLight(extractedMaterials.licensePlateLight);
 
-    // Plastic & rubber
+    // Static 
     applyPlastic(extractedMaterials.exteriorLowerAero)
     applyRubberFinish(extractedMaterials.tire);
+    applyLeather(extractedMaterials.leatherUpper, 'rgb(22, 22, 22)', { normalMap: leatherNormal, armMap: leatherArm });
     
     // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
@@ -286,9 +290,9 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     forgedRoughness,
     aluminumNormal,
     aluminumRoughness,
-    // leatherNormal,
-    // leatherArm
-  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness]);
+    leatherNormal,
+    leatherArm
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm]);
 
   // Orchestration
   return (
