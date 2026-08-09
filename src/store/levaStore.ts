@@ -81,6 +81,7 @@ interface LevaState {
         rotationX: number;
         rotationY: number;
         rotationZ: number;
+        distance: number;
       };
       rightPane: {
         enabled: boolean;
@@ -91,16 +92,7 @@ interface LevaState {
         rotationX: number;
         rotationY: number;
         rotationZ: number;
-      };
-      dash: {
-        enabled: boolean;
-        intensity: number;
-        positionX: number;
-        positionY: number;
-        positionZ: number;
-        rotationX: number;
-        rotationY: number;
-        rotationZ: number;
+        distance: number;
       };
     };
   };
@@ -168,8 +160,8 @@ export const useLevaStore = create<LevaState>()(
           enabled: true, 
           intensity: 2.4,
           positionX: 0,
-          positionY: 1.40,
-          positionZ: 0.3,
+          positionY: 1.4,
+          positionZ: 0.55,
           angle: Math.PI / 2.5,
           penumbra: 1.0,
           distance: 1.7,
@@ -177,33 +169,25 @@ export const useLevaStore = create<LevaState>()(
         leftPane: {
           enabled: true,
           intensity: 0.8, // Reduced intensity
-          positionX: 1.1, // Moved outside
+          positionX: 0.7, // Moved outside
           positionY: 0.9, // Raised
           positionZ: 0.2,
-          rotationX: -Math.PI / 12, // Tilted down slightly
-          rotationY: Math.PI / 2,
+          rotationX: -Math.PI / 6, // Tilted down slightly
+          rotationY: Math.PI / 2.5,
           rotationZ: 0,
+          distance: 1.0,
         },
         rightPane: {
           enabled: true,
           intensity: 0.8, // Reduced intensity
-          positionX: -1.1, // Moved outside
-          positionY: 0.9, // Raised
+          positionX: -0.7, 
+          positionY: 0.9, 
           positionZ: 0.2,
-          rotationX: -Math.PI / 12, // Tilted down slightly
-          rotationY: -Math.PI / 2,
+          rotationX: -Math.PI / 6, // Tilted down slightly
+          rotationY: -Math.PI / 2.5,
           rotationZ: 0,
-        },
-        dash: {
-          enabled: true,
-          intensity: 2.5, // Main key light
-          positionX: 0,
-          positionY: 1.2, // Raised above hood line
-          positionZ: 1.6, // Moved outside windshield
-          rotationX: -Math.PI / 8, // Tilted inwards
-          rotationY: Math.PI, 
-          rotationZ: 0,
-        },
+          distance: 1.0,
+        }
       },
     },
     paintSolid: { clearcoat: 1.0, clearcoatRoughness: 0.15, metalness: 0.4, roughness: 0.8, envMapIntensity: 1.0 },

@@ -49,6 +49,34 @@ content = content.replace(
 // --- 5. CLEANUP ---
 content = content.replace(/\s+animations: GLTFAction\[\]/, '');
 
+
+// --- 6. INJECT SHADOW INHERITANCE LOGIC ---
+const shadowHelper = `
+// Function dynamically injected by patch-model.js
+const getInheritedShadow = (gltfNode: any, property: 'castShadow' | 'receiveShadow'): boolean => {
+  if (!gltfNode) return false;
+  if (gltfNode.userData[property] !== undefined) {
+    return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
+  }
+  if (gltfNode.parent) {
+    return getInheritedShadow(gltfNode.parent, property);
+  }
+  return false;
+};
+`;
+
+// Add the helper before the component declaration
+content = content.replace(
+  "export default function Gt3rsModel", 
+  shadowHelper + "\nexport default function Gt3rsModel"
+);
+
+// Locate all the meshes and inject the props evaluated at runtime into the nodes
+content = content.replace(
+  /<mesh([^>]*)geometry=\{nodes\.([\w-]+)\.geometry\}([^>]*?)\/?>/g,
+  "<mesh$1geometry={nodes.$2.geometry}$3 castShadow={getInheritedShadow(nodes.$2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.$2, 'receiveShadow')} />"
+);
+
 // Write file and clean up
 fs.writeFileSync(targetPath, content);
 fs.unlinkSync(generatedFile);

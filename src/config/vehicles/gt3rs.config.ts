@@ -3,6 +3,20 @@ import type { VehicleConfig } from '../types';
 export const gt3rsConfig: VehicleConfig = {
   id: 'gt3rs',
   modelPath: '/models/gt3rs/scene.glb',
+  texturePack: {
+    carbonNormal: '/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2',
+    carbonRoughness: '/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2',
+    forgedNormal: '/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2',
+    forgedRoughness: '/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2',
+    aluminumNormal: '/textures/materials/aluminum/aluminum_normal.ktx2',
+    aluminumRoughness: '/textures/materials/aluminum/aluminum_roughness.ktx2',
+    leatherNormal: '/textures/materials/leather/leather_v1_normal.ktx2',
+    leatherArm: '/textures/materials/leather/leather_v1_arm.ktx2',
+    carpetAo: '/textures/materials/ambient_occlusion/carpet_ao.ktx2',
+    // tubAo: '/textures/materials/ambient_occlusion/interior_tub_ao.ktx2',
+    // metalAccentAo: '/textures/materials/ambient_occlusion/metal_accent_ao.ktx2',
+  },
+
   paintOptions: [
 
     // --- STANDARD ---
@@ -245,10 +259,10 @@ export const gt3rsConfig: VehicleConfig = {
   ],
   interiorColorOptions: [
     // --- 16 Leather Color (Exclusive Manufaktur) ---
-    { id: 'chalk', name: 'Chalk', hex: '#D3D3D1' }, // Gesso
+    { id: 'black', name: 'Black', hex: '#111111' },
+    { id: 'chalk', name: 'Chalk', hex: '#D3D3D1' }, 
     { id: 'slate_grey', name: 'Slate Grey', hex: '#8C908E' },
     { id: 'graphite_blue', name: 'Graphite Blue', hex: '#44515E' },
-    { id: 'black', name: 'Black', hex: '#111111' },
     { id: 'mojave_beige', name: 'Mojave Beige', hex: '#E7DEC8' },
     { id: 'sahara_beige', name: 'Sahara Beige', hex: '#A19385' },
     { id: 'cognac', name: 'Cognac', hex: '#AA7048' },

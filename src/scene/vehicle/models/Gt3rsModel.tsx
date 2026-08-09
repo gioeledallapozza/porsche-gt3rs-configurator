@@ -236,6 +236,19 @@ type GLTFResult = GLTF & {
   }
 }
 
+
+// Function dynamically injected by patch-model.js
+const getInheritedShadow = (gltfNode: any, property: 'castShadow' | 'receiveShadow'): boolean => {
+  if (!gltfNode) return false;
+  if (gltfNode.userData[property] !== undefined) {
+    return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
+  }
+  if (gltfNode.parent) {
+    return getInheritedShadow(gltfNode.parent, property);
+  }
+  return false;
+};
+
 export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['group'] & { url: string }) {
   const { nodes, materials } = useGLTF(url) as unknown as GLTFResult as GLTFResult
   return (
@@ -245,234 +258,234 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
           <group name="Group_Dynamics">
             <group name="Wheel_Node_FL" position={[-0.773, 0.303, 1.163]}>
               <group name="Spin_Node_FL" position={[-0.007, 0.003, 0.011]}>
-                <mesh name="Disc_FL" geometry={nodes.Disc_FL.geometry} material={materials.Material_Disc_Static} position={[-0.013, -0.001, -0.16]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
-                <mesh name="Hub_FL" geometry={nodes.Hub_FL.geometry} material={materials.Material_Structure_Lucid_Static} position={[0.78, -0.003, -0.034]} rotation={[-Math.PI / 2, 0, 0]} />
-                <mesh name="Rim_Center_FL" geometry={nodes.Rim_Center_FL.geometry} material={materials.Material_Rim_Centerlock} position={[-0.122, -0.008, -0.011]} rotation={[Math.PI / 2, 0, 0]} scale={-1.208} />
-                <mesh name="Rim_Outer_FL" geometry={nodes.Rim_Outer_FL.geometry} material={materials.Material_Rim_Primary} position={[-0.122, -0.008, -0.011]} rotation={[Math.PI / 2, 0, 0]} scale={-1.208} />
-                <mesh name="Tire_FL" geometry={nodes.Tire_FL.geometry} material={materials.Material_Tire_Static} position={[0.01, -0.001, -0.005]} rotation={[Math.PI / 2, 0, 0]} scale={[-1.414, -1.161, -1.161]} />
+                <mesh name="Disc_FL" geometry={nodes.Disc_FL.geometry} material={materials.Material_Disc_Static} position={[-0.013, -0.001, -0.16]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}  castShadow={getInheritedShadow(nodes.Disc_FL, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Disc_FL, 'receiveShadow')} />
+                <mesh name="Hub_FL" geometry={nodes.Hub_FL.geometry} material={materials.Material_Structure_Lucid_Static} position={[0.78, -0.003, -0.034]} rotation={[-Math.PI / 2, 0, 0]}  castShadow={getInheritedShadow(nodes.Hub_FL, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hub_FL, 'receiveShadow')} />
+                <mesh name="Rim_Center_FL" geometry={nodes.Rim_Center_FL.geometry} material={materials.Material_Rim_Centerlock} position={[-0.122, -0.008, -0.011]} rotation={[Math.PI / 2, 0, 0]} scale={-1.208}  castShadow={getInheritedShadow(nodes.Rim_Center_FL, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Rim_Center_FL, 'receiveShadow')} />
+                <mesh name="Rim_Outer_FL" geometry={nodes.Rim_Outer_FL.geometry} material={materials.Material_Rim_Primary} position={[-0.122, -0.008, -0.011]} rotation={[Math.PI / 2, 0, 0]} scale={-1.208}  castShadow={getInheritedShadow(nodes.Rim_Outer_FL, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Rim_Outer_FL, 'receiveShadow')} />
+                <mesh name="Tire_FL" geometry={nodes.Tire_FL.geometry} material={materials.Material_Tire_Static} position={[0.01, -0.001, -0.005]} rotation={[Math.PI / 2, 0, 0]} scale={[-1.414, -1.161, -1.161]}  castShadow={getInheritedShadow(nodes.Tire_FL, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_FL, 'receiveShadow')} />
               </group>
               <group name="Brake_Static_FL" position={[-0.02, 0.001, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}>
-                <mesh name="Brake_Static_FL_1" geometry={nodes.Brake_Static_FL_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
-                <mesh name="Brake_Static_FL_2" geometry={nodes.Brake_Static_FL_2.geometry} material={materials.Material_Radiator_Static} />
+                <mesh name="Brake_Static_FL_1" geometry={nodes.Brake_Static_FL_1.geometry} material={materials.Material_Wheels_Bolts_Static}  castShadow={getInheritedShadow(nodes.Brake_Static_FL_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Brake_Static_FL_1, 'receiveShadow')} />
+                <mesh name="Brake_Static_FL_2" geometry={nodes.Brake_Static_FL_2.geometry} material={materials.Material_Radiator_Static}  castShadow={getInheritedShadow(nodes.Brake_Static_FL_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Brake_Static_FL_2, 'receiveShadow')} />
               </group>
-              <mesh name="Caliper_Paint_FL" geometry={nodes.Caliper_Paint_FL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.02, 0.001, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]} />
+              <mesh name="Caliper_Paint_FL" geometry={nodes.Caliper_Paint_FL.geometry} material={materials.Material_Caliper_Dynamic} position={[-0.02, 0.001, -0.149]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[-1.254, -1.076, -1.076]}  castShadow={getInheritedShadow(nodes.Caliper_Paint_FL, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Caliper_Paint_FL, 'receiveShadow')} />
             </group>
             <group name="Wheel_Node_FR" position={[0.773, 0.317, 1.168]}>
               <group name="Spin_Node_FR" position={[0.009, -0.019, 0.007]} rotation={[-Math.PI, 0, 0]}>
-                <mesh name="Disc_FR" geometry={nodes.Disc_FR.geometry} material={materials.Material_Disc_Static} position={[0.012, -0.007, 0.161]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
-                <mesh name="Hub_FR" geometry={nodes.Hub_FR.geometry} material={materials.Material_Structure_Lucid_Static} position={[-0.782, -0.005, 0.035]} rotation={[Math.PI / 2, 0, 0]} />
-                <mesh name="Rim_Center_FR" geometry={nodes.Rim_Center_FR.geometry} material={materials.Material_Rim_Centerlock} position={[0.121, 0, 0.012]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
-                <mesh name="Rim_Outer_FR" geometry={nodes.Rim_Outer_FR.geometry} material={materials.Material_Rim_Primary} position={[0.121, 0, 0.012]} rotation={[Math.PI / 2, 0, 0]} scale={1.208} />
-                <mesh name="Tire_FR" geometry={nodes.Tire_FR.geometry} material={materials.Material_Tire_Static} position={[-0.011, -0.007, 0.006]} rotation={[Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]} />
+                <mesh name="Disc_FR" geometry={nodes.Disc_FR.geometry} material={materials.Material_Disc_Static} position={[0.012, -0.007, 0.161]} rotation={[-Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}  castShadow={getInheritedShadow(nodes.Disc_FR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Disc_FR, 'receiveShadow')} />
+                <mesh name="Hub_FR" geometry={nodes.Hub_FR.geometry} material={materials.Material_Structure_Lucid_Static} position={[-0.782, -0.005, 0.035]} rotation={[Math.PI / 2, 0, 0]}  castShadow={getInheritedShadow(nodes.Hub_FR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hub_FR, 'receiveShadow')} />
+                <mesh name="Rim_Center_FR" geometry={nodes.Rim_Center_FR.geometry} material={materials.Material_Rim_Centerlock} position={[0.121, 0, 0.012]} rotation={[Math.PI / 2, 0, 0]} scale={1.208}  castShadow={getInheritedShadow(nodes.Rim_Center_FR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Rim_Center_FR, 'receiveShadow')} />
+                <mesh name="Rim_Outer_FR" geometry={nodes.Rim_Outer_FR.geometry} material={materials.Material_Rim_Primary} position={[0.121, 0, 0.012]} rotation={[Math.PI / 2, 0, 0]} scale={1.208}  castShadow={getInheritedShadow(nodes.Rim_Outer_FR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Rim_Outer_FR, 'receiveShadow')} />
+                <mesh name="Tire_FR" geometry={nodes.Tire_FR.geometry} material={materials.Material_Tire_Static} position={[-0.011, -0.007, 0.006]} rotation={[Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]}  castShadow={getInheritedShadow(nodes.Tire_FR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_FR, 'receiveShadow')} />
               </group>
               <group name="Brake_Static_FR" position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}>
-                <mesh name="Brake_Static_FR_1" geometry={nodes.Brake_Static_FR_1.geometry} material={materials.Material_Wheels_Bolts_Static} />
-                <mesh name="Brake_Static_FR_2" geometry={nodes.Brake_Static_FR_2.geometry} material={materials.Material_Radiator_Static} />
+                <mesh name="Brake_Static_FR_1" geometry={nodes.Brake_Static_FR_1.geometry} material={materials.Material_Wheels_Bolts_Static}  castShadow={getInheritedShadow(nodes.Brake_Static_FR_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Brake_Static_FR_1, 'receiveShadow')} />
+                <mesh name="Brake_Static_FR_2" geometry={nodes.Brake_Static_FR_2.geometry} material={materials.Material_Radiator_Static}  castShadow={getInheritedShadow(nodes.Brake_Static_FR_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Brake_Static_FR_2, 'receiveShadow')} />
               </group>
-              <mesh name="Caliper_Paint_FR" geometry={nodes.Caliper_Paint_FR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]} />
+              <mesh name="Caliper_Paint_FR" geometry={nodes.Caliper_Paint_FR.geometry} material={materials.Material_Caliper_Dynamic} position={[0.021, -0.012, -0.154]} rotation={[Math.PI / 2, -0.035, Math.PI]} scale={[1.254, 1.076, 1.076]}  castShadow={getInheritedShadow(nodes.Caliper_Paint_FR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Caliper_Paint_FR, 'receiveShadow')} />
             </group>
             <group name="Wheel_R" position={[0.77, 0.305, -1.287]} rotation={[-Math.PI / 2, 0, 0]} scale={[1.414, 1.161, 1.161]}>
-              <mesh name="Tire_RR" geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static} />
-              <mesh name="Tire_RR_1" geometry={nodes.Tire_RR_1.geometry} material={materials.Material_Rim_Primary} />
-              <mesh name="Tire_RR_2" geometry={nodes.Tire_RR_2.geometry} material={materials.Material_Rim_Centerlock} />
-              <mesh name="Tire_RR_3" geometry={nodes.Tire_RR_3.geometry} material={materials.Material_Structure_Lucid_Static} />
-              <mesh name="Tire_RR_4" geometry={nodes.Tire_RR_4.geometry} material={materials.Material_Disc_Static} />
-              <mesh name="Tire_RR_5" geometry={nodes.Tire_RR_5.geometry} material={materials.Material_Caliper_Dynamic} />
-              <mesh name="Tire_RR_6" geometry={nodes.Tire_RR_6.geometry} material={materials.Material_Wheels_Bolts_Static} />
-              <mesh name="Tire_RR_7" geometry={nodes.Tire_RR_7.geometry} material={materials.Material_Radiator_Static} />
+              <mesh name="Tire_RR" geometry={nodes.Tire_RR.geometry} material={materials.Material_Tire_Static}  castShadow={getInheritedShadow(nodes.Tire_RR, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR, 'receiveShadow')} />
+              <mesh name="Tire_RR_1" geometry={nodes.Tire_RR_1.geometry} material={materials.Material_Rim_Primary}  castShadow={getInheritedShadow(nodes.Tire_RR_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_1, 'receiveShadow')} />
+              <mesh name="Tire_RR_2" geometry={nodes.Tire_RR_2.geometry} material={materials.Material_Rim_Centerlock}  castShadow={getInheritedShadow(nodes.Tire_RR_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_2, 'receiveShadow')} />
+              <mesh name="Tire_RR_3" geometry={nodes.Tire_RR_3.geometry} material={materials.Material_Structure_Lucid_Static}  castShadow={getInheritedShadow(nodes.Tire_RR_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_3, 'receiveShadow')} />
+              <mesh name="Tire_RR_4" geometry={nodes.Tire_RR_4.geometry} material={materials.Material_Disc_Static}  castShadow={getInheritedShadow(nodes.Tire_RR_4, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_4, 'receiveShadow')} />
+              <mesh name="Tire_RR_5" geometry={nodes.Tire_RR_5.geometry} material={materials.Material_Caliper_Dynamic}  castShadow={getInheritedShadow(nodes.Tire_RR_5, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_5, 'receiveShadow')} />
+              <mesh name="Tire_RR_6" geometry={nodes.Tire_RR_6.geometry} material={materials.Material_Wheels_Bolts_Static}  castShadow={getInheritedShadow(nodes.Tire_RR_6, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_6, 'receiveShadow')} />
+              <mesh name="Tire_RR_7" geometry={nodes.Tire_RR_7.geometry} material={materials.Material_Radiator_Static}  castShadow={getInheritedShadow(nodes.Tire_RR_7, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tire_RR_7, 'receiveShadow')} />
             </group>
           </group>
           <group name="Group_Exterior">
             <group name="Node_Door_L" position={[0.819, 0.52, 0.575]}>
-              <mesh name="Door_Accent_L" geometry={nodes.Door_Accent_L.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[-0.143, 0.122, -0.542]} />
-              <mesh name="Door_Glass_L" geometry={nodes.Door_Glass_L.geometry} material={materials.Material_Glass_Cabin_Static} position={[-0.164, 0.51, -0.767]} />
+              <mesh name="Door_Accent_L" geometry={nodes.Door_Accent_L.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[-0.143, 0.122, -0.542]}  castShadow={getInheritedShadow(nodes.Door_Accent_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Accent_L, 'receiveShadow')} />
+              <mesh name="Door_Glass_L" geometry={nodes.Door_Glass_L.geometry} material={materials.Material_Glass_Cabin_Static} position={[-0.164, 0.51, -0.767]}  castShadow={getInheritedShadow(nodes.Door_Glass_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Glass_L, 'receiveShadow')} />
               <group name="Door_Interior_Base_L" position={[-0.143, 0.122, -0.542]}>
-                <mesh name="Door_Interior_Base_L_1" geometry={nodes.Door_Interior_Base_L_1.geometry} material={materials.Material_Interior_LightGrey_Plastic_Static} />
-                <mesh name="Door_Interior_Base_L_2" geometry={nodes.Door_Interior_Base_L_2.geometry} material={materials.Material_Front_Speaker_Static} />
-                <mesh name="Door_Interior_Base_L_3" geometry={nodes.Door_Interior_Base_L_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+                <mesh name="Door_Interior_Base_L_1" geometry={nodes.Door_Interior_Base_L_1.geometry} material={materials.Material_Interior_LightGrey_Plastic_Static}  castShadow={getInheritedShadow(nodes.Door_Interior_Base_L_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Interior_Base_L_1, 'receiveShadow')} />
+                <mesh name="Door_Interior_Base_L_2" geometry={nodes.Door_Interior_Base_L_2.geometry} material={materials.Material_Front_Speaker_Static}  castShadow={getInheritedShadow(nodes.Door_Interior_Base_L_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Interior_Base_L_2, 'receiveShadow')} />
+                <mesh name="Door_Interior_Base_L_3" geometry={nodes.Door_Interior_Base_L_3.geometry} material={materials.Material_Exterior_Badges_Dynamic}  castShadow={getInheritedShadow(nodes.Door_Interior_Base_L_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Interior_Base_L_3, 'receiveShadow')} />
               </group>
-              <mesh name="Door_Leather_Primary_L" geometry={nodes.Door_Leather_Primary_L.geometry} material={materials.Material_Leather_Primary} position={[-0.143, 0.122, -0.542]} />
-              <mesh name="Door_Leather_Secondary_L" geometry={nodes.Door_Leather_Secondary_L.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[-0.143, 0.122, -0.542]} />
+              <mesh name="Door_Leather_Primary_L" geometry={nodes.Door_Leather_Primary_L.geometry} material={materials.Material_Leather_Primary} position={[-0.143, 0.122, -0.542]}  castShadow={getInheritedShadow(nodes.Door_Leather_Primary_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Leather_Primary_L, 'receiveShadow')} />
+              <mesh name="Door_Leather_Secondary_L" geometry={nodes.Door_Leather_Secondary_L.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[-0.143, 0.122, -0.542]}  castShadow={getInheritedShadow(nodes.Door_Leather_Secondary_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Leather_Secondary_L, 'receiveShadow')} />
               <group name="Door_Metal_Trim_L" position={[-0.143, 0.122, -0.542]}>
-                <mesh name="Door_Metal_Trim_L_1" geometry={nodes.Door_Metal_Trim_L_1.geometry} material={materials.Material_Interior_Metal_Static} />
-                <mesh name="Door_Metal_Trim_L_2" geometry={nodes.Door_Metal_Trim_L_2.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
-                <mesh name="Door_Metal_Trim_L_3" geometry={nodes.Door_Metal_Trim_L_3.geometry} material={materials.Material_Interior_Metal_Static} />
+                <mesh name="Door_Metal_Trim_L_1" geometry={nodes.Door_Metal_Trim_L_1.geometry} material={materials.Material_Interior_Metal_Static}  castShadow={getInheritedShadow(nodes.Door_Metal_Trim_L_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Metal_Trim_L_1, 'receiveShadow')} />
+                <mesh name="Door_Metal_Trim_L_2" geometry={nodes.Door_Metal_Trim_L_2.geometry} material={materials.Material_Interior_Metal_Lucid_Static}  castShadow={getInheritedShadow(nodes.Door_Metal_Trim_L_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Metal_Trim_L_2, 'receiveShadow')} />
+                <mesh name="Door_Metal_Trim_L_3" geometry={nodes.Door_Metal_Trim_L_3.geometry} material={materials.Material_Interior_Metal_Static}  castShadow={getInheritedShadow(nodes.Door_Metal_Trim_L_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Metal_Trim_L_3, 'receiveShadow')} />
               </group>
-              <mesh name="Door_Mirror_L" geometry={nodes.Door_Mirror_L.geometry} material={materials.Material_Mirror_Glass_Static} position={[0.092, 0.374, -0.325]} />
-              <mesh name="Door_Paint_L" geometry={nodes.Door_Paint_L.geometry} material={materials.Material_Chassis_Paint} position={[0.092, 0.374, -0.325]} />
-              <mesh name="Door_Painted_Trim_L_Dynamic" geometry={nodes.Door_Painted_Trim_L_Dynamic.geometry} material={materials.Material_Interior_Metal_Static} position={[-0.143, 0.122, -0.542]} />
+              <mesh name="Door_Mirror_L" geometry={nodes.Door_Mirror_L.geometry} material={materials.Material_Mirror_Glass_Static} position={[0.092, 0.374, -0.325]}  castShadow={getInheritedShadow(nodes.Door_Mirror_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Mirror_L, 'receiveShadow')} />
+              <mesh name="Door_Paint_L" geometry={nodes.Door_Paint_L.geometry} material={materials.Material_Chassis_Paint} position={[0.092, 0.374, -0.325]}  castShadow={getInheritedShadow(nodes.Door_Paint_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Paint_L, 'receiveShadow')} />
+              <mesh name="Door_Painted_Trim_L_Dynamic" geometry={nodes.Door_Painted_Trim_L_Dynamic.geometry} material={materials.Material_Interior_Metal_Static} position={[-0.143, 0.122, -0.542]}  castShadow={getInheritedShadow(nodes.Door_Painted_Trim_L_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Painted_Trim_L_Dynamic, 'receiveShadow')} />
               <group name="Door_Plastic_L" position={[0.092, 0.374, -0.325]}>
-                <mesh name="Door_Plastic_L_1" geometry={nodes.Door_Plastic_L_1.geometry} material={materials.Material_RubberTrim_Static} />
-                <mesh name="Door_Plastic_L_2" geometry={nodes.Door_Plastic_L_2.geometry} material={materials.Material_Carbon_Trim_Static} />
-                <mesh name="Door_Plastic_L_3" geometry={nodes.Door_Plastic_L_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
+                <mesh name="Door_Plastic_L_1" geometry={nodes.Door_Plastic_L_1.geometry} material={materials.Material_RubberTrim_Static}  castShadow={getInheritedShadow(nodes.Door_Plastic_L_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Plastic_L_1, 'receiveShadow')} />
+                <mesh name="Door_Plastic_L_2" geometry={nodes.Door_Plastic_L_2.geometry} material={materials.Material_Carbon_Trim_Static}  castShadow={getInheritedShadow(nodes.Door_Plastic_L_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Plastic_L_2, 'receiveShadow')} />
+                <mesh name="Door_Plastic_L_3" geometry={nodes.Door_Plastic_L_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic}  castShadow={getInheritedShadow(nodes.Door_Plastic_L_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Plastic_L_3, 'receiveShadow')} />
               </group>
-              <mesh name="Door_Trim_Accent_L" geometry={nodes.Door_Trim_Accent_L.geometry} material={materials.Material_Interior_Accent_Dynamic} position={[-0.143, 0.122, -0.542]} />
+              <mesh name="Door_Trim_Accent_L" geometry={nodes.Door_Trim_Accent_L.geometry} material={materials.Material_Interior_Accent_Dynamic} position={[-0.143, 0.122, -0.542]}  castShadow={getInheritedShadow(nodes.Door_Trim_Accent_L, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Trim_Accent_L, 'receiveShadow')} />
             </group>
             <group name="Node_Door_R" position={[-0.826, 0.575, 0.565]}>
-              <mesh name="Door_Accent_R" geometry={nodes.Door_Accent_R.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.15, 0.071, -0.529]} />
-              <mesh name="Door_Glass_R" geometry={nodes.Door_Glass_R.geometry} material={materials.Material_Glass_Cabin_Static} position={[0.171, 0.455, -0.753]} />
+              <mesh name="Door_Accent_R" geometry={nodes.Door_Accent_R.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.15, 0.071, -0.529]}  castShadow={getInheritedShadow(nodes.Door_Accent_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Accent_R, 'receiveShadow')} />
+              <mesh name="Door_Glass_R" geometry={nodes.Door_Glass_R.geometry} material={materials.Material_Glass_Cabin_Static} position={[0.171, 0.455, -0.753]}  castShadow={getInheritedShadow(nodes.Door_Glass_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Glass_R, 'receiveShadow')} />
               <group name="Door_Interior_Base_R" position={[0.15, 0.071, -0.529]}>
-                <mesh name="Door_Interior_Base_R_1" geometry={nodes.Door_Interior_Base_R_1.geometry} material={materials.Material_Interior_LightGrey_Plastic_Static} />
-                <mesh name="Door_Interior_Base_R_2" geometry={nodes.Door_Interior_Base_R_2.geometry} material={materials.Material_Front_Speaker_Static} />
-                <mesh name="Door_Interior_Base_R_3" geometry={nodes.Door_Interior_Base_R_3.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+                <mesh name="Door_Interior_Base_R_1" geometry={nodes.Door_Interior_Base_R_1.geometry} material={materials.Material_Interior_LightGrey_Plastic_Static}  castShadow={getInheritedShadow(nodes.Door_Interior_Base_R_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Interior_Base_R_1, 'receiveShadow')} />
+                <mesh name="Door_Interior_Base_R_2" geometry={nodes.Door_Interior_Base_R_2.geometry} material={materials.Material_Front_Speaker_Static}  castShadow={getInheritedShadow(nodes.Door_Interior_Base_R_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Interior_Base_R_2, 'receiveShadow')} />
+                <mesh name="Door_Interior_Base_R_3" geometry={nodes.Door_Interior_Base_R_3.geometry} material={materials.Material_Exterior_Badges_Dynamic}  castShadow={getInheritedShadow(nodes.Door_Interior_Base_R_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Interior_Base_R_3, 'receiveShadow')} />
               </group>
-              <mesh name="Door_Leather_Primary_R" geometry={nodes.Door_Leather_Primary_R.geometry} material={materials.Material_Leather_Primary} position={[0.15, 0.071, -0.529]} />
-              <mesh name="Door_Leather_Secondary_R" geometry={nodes.Door_Leather_Secondary_R.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[0.15, 0.071, -0.529]} />
+              <mesh name="Door_Leather_Primary_R" geometry={nodes.Door_Leather_Primary_R.geometry} material={materials.Material_Leather_Primary} position={[0.15, 0.071, -0.529]}  castShadow={getInheritedShadow(nodes.Door_Leather_Primary_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Leather_Primary_R, 'receiveShadow')} />
+              <mesh name="Door_Leather_Secondary_R" geometry={nodes.Door_Leather_Secondary_R.geometry} material={materials.Material_Upper_Leather_Dynamic} position={[0.15, 0.071, -0.529]}  castShadow={getInheritedShadow(nodes.Door_Leather_Secondary_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Leather_Secondary_R, 'receiveShadow')} />
               <group name="Door_Metal_Trim_R" position={[0.15, 0.071, -0.529]}>
-                <mesh name="Door_Metal_Trim_R_1" geometry={nodes.Door_Metal_Trim_R_1.geometry} material={materials.Material_Interior_Metal_Lucid_Static} />
-                <mesh name="Door_Metal_Trim_R_2" geometry={nodes.Door_Metal_Trim_R_2.geometry} material={materials.Material_Interior_Metal_Static} />
+                <mesh name="Door_Metal_Trim_R_1" geometry={nodes.Door_Metal_Trim_R_1.geometry} material={materials.Material_Interior_Metal_Lucid_Static}  castShadow={getInheritedShadow(nodes.Door_Metal_Trim_R_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Metal_Trim_R_1, 'receiveShadow')} />
+                <mesh name="Door_Metal_Trim_R_2" geometry={nodes.Door_Metal_Trim_R_2.geometry} material={materials.Material_Interior_Metal_Static}  castShadow={getInheritedShadow(nodes.Door_Metal_Trim_R_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Metal_Trim_R_2, 'receiveShadow')} />
               </group>
-              <mesh name="Door_Mirror_R" geometry={nodes.Door_Mirror_R.geometry} material={materials.Material_Mirror_Glass_Static} position={[-0.085, 0.319, -0.315]} />
-              <mesh name="Door_Paint_R" geometry={nodes.Door_Paint_R.geometry} material={materials.Material_Chassis_Paint} position={[-0.085, 0.319, -0.315]} />
-              <mesh name="Door_Painted_Trim_R_Dynamic" geometry={nodes.Door_Painted_Trim_R_Dynamic.geometry} material={materials.Material_Interior_Metal_Static} position={[0.15, 0.071, -0.529]} />
+              <mesh name="Door_Mirror_R" geometry={nodes.Door_Mirror_R.geometry} material={materials.Material_Mirror_Glass_Static} position={[-0.085, 0.319, -0.315]}  castShadow={getInheritedShadow(nodes.Door_Mirror_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Mirror_R, 'receiveShadow')} />
+              <mesh name="Door_Paint_R" geometry={nodes.Door_Paint_R.geometry} material={materials.Material_Chassis_Paint} position={[-0.085, 0.319, -0.315]}  castShadow={getInheritedShadow(nodes.Door_Paint_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Paint_R, 'receiveShadow')} />
+              <mesh name="Door_Painted_Trim_R_Dynamic" geometry={nodes.Door_Painted_Trim_R_Dynamic.geometry} material={materials.Material_Interior_Metal_Static} position={[0.15, 0.071, -0.529]}  castShadow={getInheritedShadow(nodes.Door_Painted_Trim_R_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Painted_Trim_R_Dynamic, 'receiveShadow')} />
               <group name="Door_Plastic_R" position={[0.089, 0.298, -0.677]}>
-                <mesh name="Door_Plastic_R_1" geometry={nodes.Door_Plastic_R_1.geometry} material={materials.Material_RubberTrim_Static} />
-                <mesh name="Door_Plastic_R_2" geometry={nodes.Door_Plastic_R_2.geometry} material={materials.Material_Carbon_Trim_Static} />
-                <mesh name="Door_Plastic_R_3" geometry={nodes.Door_Plastic_R_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
+                <mesh name="Door_Plastic_R_1" geometry={nodes.Door_Plastic_R_1.geometry} material={materials.Material_RubberTrim_Static}  castShadow={getInheritedShadow(nodes.Door_Plastic_R_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Plastic_R_1, 'receiveShadow')} />
+                <mesh name="Door_Plastic_R_2" geometry={nodes.Door_Plastic_R_2.geometry} material={materials.Material_Carbon_Trim_Static}  castShadow={getInheritedShadow(nodes.Door_Plastic_R_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Plastic_R_2, 'receiveShadow')} />
+                <mesh name="Door_Plastic_R_3" geometry={nodes.Door_Plastic_R_3.geometry} material={materials.Material_Exterior_LowerAero_Dynamic}  castShadow={getInheritedShadow(nodes.Door_Plastic_R_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Plastic_R_3, 'receiveShadow')} />
               </group>
-              <mesh name="Door_Trim_Accent_R" geometry={nodes.Door_Trim_Accent_R.geometry} material={materials.Material_Interior_Accent_Dynamic} position={[0.15, 0.071, -0.529]} />
+              <mesh name="Door_Trim_Accent_R" geometry={nodes.Door_Trim_Accent_R.geometry} material={materials.Material_Interior_Accent_Dynamic} position={[0.15, 0.071, -0.529]}  castShadow={getInheritedShadow(nodes.Door_Trim_Accent_R, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Door_Trim_Accent_R, 'receiveShadow')} />
             </group>
             <group name="Node_Hood" position={[0.003, 0.874, 0.7]}>
-              <mesh name="Hood_Aero_Vents_Static" geometry={nodes.Hood_Aero_Vents_Static.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} position={[-0.003, -0.874, -0.7]} />
-              <mesh name="Hood_Badge_Logo" geometry={nodes.Hood_Badge_Logo.geometry} material={materials.Exterior_Badges} position={[-0.003, -0.874, -0.7]} />
-              <mesh name="Hood_Carbon_Center" geometry={nodes.Hood_Carbon_Center.geometry} material={materials.Material_Exterior_Weissach_Dynamic} position={[-0.003, -0.874, -0.7]} />
-              <mesh name="Hood_Paint" geometry={nodes.Hood_Paint.geometry} material={materials.Material_Chassis_Paint} position={[-0.003, -0.874, -0.7]} />
-              <mesh name="Hood_Radiator_Static" geometry={nodes.Hood_Radiator_Static.geometry} material={materials.Material_Radiator_Static} position={[-0.003, -0.874, -0.7]} />
+              <mesh name="Hood_Aero_Vents_Static" geometry={nodes.Hood_Aero_Vents_Static.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} position={[-0.003, -0.874, -0.7]}  castShadow={getInheritedShadow(nodes.Hood_Aero_Vents_Static, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hood_Aero_Vents_Static, 'receiveShadow')} />
+              <mesh name="Hood_Badge_Logo" geometry={nodes.Hood_Badge_Logo.geometry} material={materials.Exterior_Badges} position={[-0.003, -0.874, -0.7]}  castShadow={getInheritedShadow(nodes.Hood_Badge_Logo, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hood_Badge_Logo, 'receiveShadow')} />
+              <mesh name="Hood_Carbon_Center" geometry={nodes.Hood_Carbon_Center.geometry} material={materials.Material_Exterior_Weissach_Dynamic} position={[-0.003, -0.874, -0.7]}  castShadow={getInheritedShadow(nodes.Hood_Carbon_Center, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hood_Carbon_Center, 'receiveShadow')} />
+              <mesh name="Hood_Paint" geometry={nodes.Hood_Paint.geometry} material={materials.Material_Chassis_Paint} position={[-0.003, -0.874, -0.7]}  castShadow={getInheritedShadow(nodes.Hood_Paint, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hood_Paint, 'receiveShadow')} />
+              <mesh name="Hood_Radiator_Static" geometry={nodes.Hood_Radiator_Static.geometry} material={materials.Material_Radiator_Static} position={[-0.003, -0.874, -0.7]}  castShadow={getInheritedShadow(nodes.Hood_Radiator_Static, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Hood_Radiator_Static, 'receiveShadow')} />
             </group>
             <group name="Node_Light_Front">
-              <mesh name="Headlight_Emissive" geometry={nodes.Headlight_Emissive.geometry} material={materials.Material_Headlight_Emissive} />
-              <mesh name="HeadLight_Glass" geometry={nodes.HeadLight_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
-              <mesh name="HeadLight_Housing_Static" geometry={nodes.HeadLight_Housing_Static.geometry} material={materials.Material_Plastic_Smooth_Static} />
-              <mesh name="Signal_Front_Emissive" geometry={nodes.Signal_Front_Emissive.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-              <mesh name="Signal_Front_Glass" geometry={nodes.Signal_Front_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
-              <mesh name="Signal_Side_Emissive" geometry={nodes.Signal_Side_Emissive.geometry} material={materials.Material_Signal_Emissive} />
-              <mesh name="Signal_Side_Glass" geometry={nodes.Signal_Side_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
+              <mesh name="Headlight_Emissive" geometry={nodes.Headlight_Emissive.geometry} material={materials.Material_Headlight_Emissive}  castShadow={getInheritedShadow(nodes.Headlight_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Headlight_Emissive, 'receiveShadow')} />
+              <mesh name="HeadLight_Glass" geometry={nodes.HeadLight_Glass.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.HeadLight_Glass, 'castShadow')} receiveShadow={getInheritedShadow(nodes.HeadLight_Glass, 'receiveShadow')} />
+              <mesh name="HeadLight_Housing_Static" geometry={nodes.HeadLight_Housing_Static.geometry} material={materials.Material_Plastic_Smooth_Static}  castShadow={getInheritedShadow(nodes.HeadLight_Housing_Static, 'castShadow')} receiveShadow={getInheritedShadow(nodes.HeadLight_Housing_Static, 'receiveShadow')} />
+              <mesh name="Signal_Front_Emissive" geometry={nodes.Signal_Front_Emissive.geometry} material={materials.Material_Exterior_Badges_Dynamic}  castShadow={getInheritedShadow(nodes.Signal_Front_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Signal_Front_Emissive, 'receiveShadow')} />
+              <mesh name="Signal_Front_Glass" geometry={nodes.Signal_Front_Glass.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.Signal_Front_Glass, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Signal_Front_Glass, 'receiveShadow')} />
+              <mesh name="Signal_Side_Emissive" geometry={nodes.Signal_Side_Emissive.geometry} material={materials.Material_Signal_Emissive}  castShadow={getInheritedShadow(nodes.Signal_Side_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Signal_Side_Emissive, 'receiveShadow')} />
+              <mesh name="Signal_Side_Glass" geometry={nodes.Signal_Side_Glass.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.Signal_Side_Glass, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Signal_Side_Glass, 'receiveShadow')} />
             </group>
             <group name="Node_Light_Rear">
-              <mesh name="Licence_Plate_Emissive" geometry={nodes.Licence_Plate_Emissive.geometry} material={materials.Material_LicensePlateLight_Emissive} />
-              <mesh name="License_Plate_Glass" geometry={nodes.License_Plate_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
-              <mesh name="Rear_Reflactors_Red" geometry={nodes.Rear_Reflactors_Red.geometry} material={materials.Material_Reflector_Red_Static} />
-              <mesh name="Tailgate_Brake_Emissive" geometry={nodes.Tailgate_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive} />
-              <mesh name="Tailgate_Glass" geometry={nodes.Tailgate_Glass.geometry} material={materials.Material_Glass_Cabin_Static} />
-              <mesh name="Taillight_Brake_Emissive" geometry={nodes.Taillight_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive} />
-              <mesh name="Taillight_Housing_Static_AntiChrome" geometry={nodes.Taillight_Housing_Static_AntiChrome.geometry} material={materials.Material_Taillight_Housing_Static} />
-              <mesh name="Taillight_Housing_Static_PlasticSmooth" geometry={nodes.Taillight_Housing_Static_PlasticSmooth.geometry} material={materials.Material_Plastic_Smooth_Static} />
-              <mesh name="Taillight_Main_Glass" geometry={nodes.Taillight_Main_Glass.geometry} material={materials.Material_Glass_Lights_Static} />
-              <mesh name="Taillight_Strip_Emissive" geometry={nodes.Taillight_Strip_Emissive.geometry} material={materials.Material_Taillight_Emissive} />
+              <mesh name="Licence_Plate_Emissive" geometry={nodes.Licence_Plate_Emissive.geometry} material={materials.Material_LicensePlateLight_Emissive}  castShadow={getInheritedShadow(nodes.Licence_Plate_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Licence_Plate_Emissive, 'receiveShadow')} />
+              <mesh name="License_Plate_Glass" geometry={nodes.License_Plate_Glass.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.License_Plate_Glass, 'castShadow')} receiveShadow={getInheritedShadow(nodes.License_Plate_Glass, 'receiveShadow')} />
+              <mesh name="Rear_Reflactors_Red" geometry={nodes.Rear_Reflactors_Red.geometry} material={materials.Material_Reflector_Red_Static}  castShadow={getInheritedShadow(nodes.Rear_Reflactors_Red, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Rear_Reflactors_Red, 'receiveShadow')} />
+              <mesh name="Tailgate_Brake_Emissive" geometry={nodes.Tailgate_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive}  castShadow={getInheritedShadow(nodes.Tailgate_Brake_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tailgate_Brake_Emissive, 'receiveShadow')} />
+              <mesh name="Tailgate_Glass" geometry={nodes.Tailgate_Glass.geometry} material={materials.Material_Glass_Cabin_Static}  castShadow={getInheritedShadow(nodes.Tailgate_Glass, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Tailgate_Glass, 'receiveShadow')} />
+              <mesh name="Taillight_Brake_Emissive" geometry={nodes.Taillight_Brake_Emissive.geometry} material={materials.Material_Taillight_Brake_Emissive}  castShadow={getInheritedShadow(nodes.Taillight_Brake_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Taillight_Brake_Emissive, 'receiveShadow')} />
+              <mesh name="Taillight_Housing_Static_AntiChrome" geometry={nodes.Taillight_Housing_Static_AntiChrome.geometry} material={materials.Material_Taillight_Housing_Static}  castShadow={getInheritedShadow(nodes.Taillight_Housing_Static_AntiChrome, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Taillight_Housing_Static_AntiChrome, 'receiveShadow')} />
+              <mesh name="Taillight_Housing_Static_PlasticSmooth" geometry={nodes.Taillight_Housing_Static_PlasticSmooth.geometry} material={materials.Material_Plastic_Smooth_Static}  castShadow={getInheritedShadow(nodes.Taillight_Housing_Static_PlasticSmooth, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Taillight_Housing_Static_PlasticSmooth, 'receiveShadow')} />
+              <mesh name="Taillight_Main_Glass" geometry={nodes.Taillight_Main_Glass.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.Taillight_Main_Glass, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Taillight_Main_Glass, 'receiveShadow')} />
+              <mesh name="Taillight_Strip_Emissive" geometry={nodes.Taillight_Strip_Emissive.geometry} material={materials.Material_Taillight_Emissive}  castShadow={getInheritedShadow(nodes.Taillight_Strip_Emissive, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Taillight_Strip_Emissive, 'receiveShadow')} />
             </group>
             <group name="Node_Wind_DRS">
-              <mesh name="Wing_Flap_Active" geometry={nodes.Wing_Flap_Active.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
+              <mesh name="Wing_Flap_Active" geometry={nodes.Wing_Flap_Active.geometry} material={materials.Material_Exterior_Weissach_Dynamic}  castShadow={getInheritedShadow(nodes.Wing_Flap_Active, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Wing_Flap_Active, 'receiveShadow')} />
             </group>
-            <mesh name="Aero_Engine_Fans_Carbon" geometry={nodes.Aero_Engine_Fans_Carbon.geometry} material={materials.Material_Carbon_Trim_Static} />
-            <mesh name="Aero_Parts_Dynamic" geometry={nodes.Aero_Parts_Dynamic.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Aero_Roof_Panel" geometry={nodes.Aero_Roof_Panel.geometry} material={materials.Material_Exterior_Weissach_Dynamic} />
-            <mesh name="Badge_Rear_Lettering" geometry={nodes.Badge_Rear_Lettering.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-            <mesh name="Chassis_Paint" geometry={nodes.Chassis_Paint.geometry} material={materials.Material_Chassis_Paint} />
+            <mesh name="Aero_Engine_Fans_Carbon" geometry={nodes.Aero_Engine_Fans_Carbon.geometry} material={materials.Material_Carbon_Trim_Static}  castShadow={getInheritedShadow(nodes.Aero_Engine_Fans_Carbon, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Aero_Engine_Fans_Carbon, 'receiveShadow')} />
+            <mesh name="Aero_Parts_Dynamic" geometry={nodes.Aero_Parts_Dynamic.geometry} material={materials.Material_Exterior_LowerAero_Dynamic}  castShadow={getInheritedShadow(nodes.Aero_Parts_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Aero_Parts_Dynamic, 'receiveShadow')} />
+            <mesh name="Aero_Roof_Panel" geometry={nodes.Aero_Roof_Panel.geometry} material={materials.Material_Exterior_Weissach_Dynamic}  castShadow={getInheritedShadow(nodes.Aero_Roof_Panel, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Aero_Roof_Panel, 'receiveShadow')} />
+            <mesh name="Badge_Rear_Lettering" geometry={nodes.Badge_Rear_Lettering.geometry} material={materials.Material_Exterior_Badges_Dynamic}  castShadow={getInheritedShadow(nodes.Badge_Rear_Lettering, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Badge_Rear_Lettering, 'receiveShadow')} />
+            <mesh name="Chassis_Paint" geometry={nodes.Chassis_Paint.geometry} material={materials.Material_Chassis_Paint}  castShadow={getInheritedShadow(nodes.Chassis_Paint, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Paint, 'receiveShadow')} />
             <group name="Chassis_Underbody_Static">
-              <mesh name="Chassis_Underbody_Static_1" geometry={nodes.Chassis_Underbody_Static_1.geometry} material={materials.Material_Radiator_Static} />
-              <mesh name="Chassis_Underbody_Static_2" geometry={nodes.Chassis_Underbody_Static_2.geometry} material={materials.Material_Structure_Lucid_Static} />
-              <mesh name="Chassis_Underbody_Static_3" geometry={nodes.Chassis_Underbody_Static_3.geometry} material={materials.Material_Structure_Opaque_Static} />
+              <mesh name="Chassis_Underbody_Static_1" geometry={nodes.Chassis_Underbody_Static_1.geometry} material={materials.Material_Radiator_Static}  castShadow={getInheritedShadow(nodes.Chassis_Underbody_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Underbody_Static_1, 'receiveShadow')} />
+              <mesh name="Chassis_Underbody_Static_2" geometry={nodes.Chassis_Underbody_Static_2.geometry} material={materials.Material_Structure_Lucid_Static}  castShadow={getInheritedShadow(nodes.Chassis_Underbody_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Underbody_Static_2, 'receiveShadow')} />
+              <mesh name="Chassis_Underbody_Static_3" geometry={nodes.Chassis_Underbody_Static_3.geometry} material={materials.Material_Structure_Opaque_Static}  castShadow={getInheritedShadow(nodes.Chassis_Underbody_Static_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Underbody_Static_3, 'receiveShadow')} />
             </group>
             <group name="Chassis_Window_Trims_Static">
-              <mesh name="Chassis_Window_Trims_Static_1" geometry={nodes.Chassis_Window_Trims_Static_1.geometry} material={materials.Material_RubberTrim_Static} />
-              <mesh name="Chassis_Window_Trims_Static_2" geometry={nodes.Chassis_Window_Trims_Static_2.geometry} material={materials.Material_RubberTrim2_Staitc} />
-              <mesh name="Chassis_Window_Trims_Static_3" geometry={nodes.Chassis_Window_Trims_Static_3.geometry} material={materials.Material_Glass_Black_Static} />
-              <mesh name="Chassis_Window_Trims_Static_4" geometry={nodes.Chassis_Window_Trims_Static_4.geometry} material={materials.Material_Carbon_Trim_Static} />
+              <mesh name="Chassis_Window_Trims_Static_1" geometry={nodes.Chassis_Window_Trims_Static_1.geometry} material={materials.Material_RubberTrim_Static}  castShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_1, 'receiveShadow')} />
+              <mesh name="Chassis_Window_Trims_Static_2" geometry={nodes.Chassis_Window_Trims_Static_2.geometry} material={materials.Material_RubberTrim2_Staitc}  castShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_2, 'receiveShadow')} />
+              <mesh name="Chassis_Window_Trims_Static_3" geometry={nodes.Chassis_Window_Trims_Static_3.geometry} material={materials.Material_Glass_Black_Static}  castShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_3, 'receiveShadow')} />
+              <mesh name="Chassis_Window_Trims_Static_4" geometry={nodes.Chassis_Window_Trims_Static_4.geometry} material={materials.Material_Carbon_Trim_Static}  castShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_4, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Window_Trims_Static_4, 'receiveShadow')} />
             </group>
             <group name="Exterior_Badges">
-              <mesh name="Exterior_Badges_1" geometry={nodes.Exterior_Badges_1.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
-              <mesh name="Exterior_Badges_2" geometry={nodes.Exterior_Badges_2.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic} />
-              <mesh name="Exterior_Badges_3" geometry={nodes.Exterior_Badges_3.geometry} material={materials.Material_Glass_Lights_Static} />
+              <mesh name="Exterior_Badges_1" geometry={nodes.Exterior_Badges_1.geometry} material={materials.Material_Exterior_Badges_Dynamic}  castShadow={getInheritedShadow(nodes.Exterior_Badges_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Exterior_Badges_1, 'receiveShadow')} />
+              <mesh name="Exterior_Badges_2" geometry={nodes.Exterior_Badges_2.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic}  castShadow={getInheritedShadow(nodes.Exterior_Badges_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Exterior_Badges_2, 'receiveShadow')} />
+              <mesh name="Exterior_Badges_3" geometry={nodes.Exterior_Badges_3.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.Exterior_Badges_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Exterior_Badges_3, 'receiveShadow')} />
             </group>
-            <mesh name="Windows_Cabin_Static" geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Cabin_Static} />
+            <mesh name="Windows_Cabin_Static" geometry={nodes.Windows_Cabin_Static.geometry} material={materials.Material_Glass_Cabin_Static}  castShadow={getInheritedShadow(nodes.Windows_Cabin_Static, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Windows_Cabin_Static, 'receiveShadow')} />
           </group>
           <group name="Group_Interior">
             <group name="Node_SteeringWheel" position={[0.343, 0.76, 0.165]}>
               <group name="Interior_SteeringWheel_Buttons_Static" position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]}>
-                <mesh name="Interior_SteeringWheel_Buttons_Static_1" geometry={nodes.Interior_SteeringWheel_Buttons_Static_1.geometry} material={materials.Material_SteeringWheel_Icons_Static} />
-                <mesh name="Interior_SteeringWheel_Buttons_Static_2" geometry={nodes.Interior_SteeringWheel_Buttons_Static_2.geometry} material={materials.Material_SteeringWheel_Buttons_Static} />
-                <mesh name="Interior_SteeringWheel_Buttons_Static_3" geometry={nodes.Interior_SteeringWheel_Buttons_Static_3.geometry} material={materials.Material_Logo_Static} />
+                <mesh name="Interior_SteeringWheel_Buttons_Static_1" geometry={nodes.Interior_SteeringWheel_Buttons_Static_1.geometry} material={materials.Material_SteeringWheel_Icons_Static}  castShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Buttons_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Buttons_Static_1, 'receiveShadow')} />
+                <mesh name="Interior_SteeringWheel_Buttons_Static_2" geometry={nodes.Interior_SteeringWheel_Buttons_Static_2.geometry} material={materials.Material_SteeringWheel_Buttons_Static}  castShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Buttons_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Buttons_Static_2, 'receiveShadow')} />
+                <mesh name="Interior_SteeringWheel_Buttons_Static_3" geometry={nodes.Interior_SteeringWheel_Buttons_Static_3.geometry} material={materials.Material_Logo_Static}  castShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Buttons_Static_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Buttons_Static_3, 'receiveShadow')} />
               </group>
-              <mesh name="Interior_SteeringWheel_Grip" geometry={nodes.Interior_SteeringWheel_Grip.geometry} material={materials.Material_Wheel_Leather_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
-              <mesh name="Interior_SteeringWheel_Stitching_Dynamic" geometry={nodes.Interior_SteeringWheel_Stitching_Dynamic.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
-              <mesh name="Interior_SteeringWheel_Trim_Dynamic" geometry={nodes.Interior_SteeringWheel_Trim_Dynamic.geometry} material={materials.Material_Interior_Plastic_Static} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]} />
+              <mesh name="Interior_SteeringWheel_Grip" geometry={nodes.Interior_SteeringWheel_Grip.geometry} material={materials.Material_Wheel_Leather_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]}  castShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Grip, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Grip, 'receiveShadow')} />
+              <mesh name="Interior_SteeringWheel_Stitching_Dynamic" geometry={nodes.Interior_SteeringWheel_Stitching_Dynamic.geometry} material={materials.Material_Interior_Stitching_Dynamic} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]}  castShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Stitching_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Stitching_Dynamic, 'receiveShadow')} />
+              <mesh name="Interior_SteeringWheel_Trim_Dynamic" geometry={nodes.Interior_SteeringWheel_Trim_Dynamic.geometry} material={materials.Material_Interior_Plastic_Static} position={[0.002, -0.009, 0.028]} rotation={[-2.793, 0, Math.PI]}  castShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Trim_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringWheel_Trim_Dynamic, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Carbon_Trims" geometry={nodes.Interior_Carbon_Trims.geometry} material={materials.Material_Carbon_Trim_Static} />
+            <mesh name="Interior_Carbon_Trims" geometry={nodes.Interior_Carbon_Trims.geometry} material={materials.Material_Carbon_Trim_Static}  castShadow={getInheritedShadow(nodes.Interior_Carbon_Trims, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Carbon_Trims, 'receiveShadow')} />
             <group name="Interior_Carpet_Static">
-              <mesh name="Interior_Carpet_Static_1" geometry={nodes.Interior_Carpet_Static_1.geometry} material={materials.Material_Interior_Structure_Static} />
-              <mesh name="Interior_Carpet_Static_2" geometry={nodes.Interior_Carpet_Static_2.geometry} material={materials.Material_Interior_Carpet_Static} />
+              <mesh name="Interior_Carpet_Static_1" geometry={nodes.Interior_Carpet_Static_1.geometry} material={materials.Material_Interior_Structure_Static}  castShadow={getInheritedShadow(nodes.Interior_Carpet_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Carpet_Static_1, 'receiveShadow')} />
+              <mesh name="Interior_Carpet_Static_2" geometry={nodes.Interior_Carpet_Static_2.geometry} material={materials.Material_Interior_Carpet_Static}  castShadow={getInheritedShadow(nodes.Interior_Carpet_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Carpet_Static_2, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Clock_Dial_Dynamic" geometry={nodes.Interior_Clock_Dial_Dynamic.geometry} material={materials.Material_DashClock_Dynamic} />
-            <mesh name="Interior_Dash_Lower_Primary" geometry={nodes.Interior_Dash_Lower_Primary.geometry} material={materials.Material_Leather_Primary} />
+            <mesh name="Interior_Clock_Dial_Dynamic" geometry={nodes.Interior_Clock_Dial_Dynamic.geometry} material={materials.Material_DashClock_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Clock_Dial_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Clock_Dial_Dynamic, 'receiveShadow')} />
+            <mesh name="Interior_Dash_Lower_Primary" geometry={nodes.Interior_Dash_Lower_Primary.geometry} material={materials.Material_Leather_Primary}  castShadow={getInheritedShadow(nodes.Interior_Dash_Lower_Primary, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Dash_Lower_Primary, 'receiveShadow')} />
             <group name="Interior_Dash_Trim_Dynamic">
-              <mesh name="Interior_Dash_Trim_Dynamic_1" geometry={nodes.Interior_Dash_Trim_Dynamic_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-              <mesh name="Interior_Dash_Trim_Dynamic_2" geometry={nodes.Interior_Dash_Trim_Dynamic_2.geometry} material={materials.Material_Interior_Plastic_Static} />
+              <mesh name="Interior_Dash_Trim_Dynamic_1" geometry={nodes.Interior_Dash_Trim_Dynamic_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static}  castShadow={getInheritedShadow(nodes.Interior_Dash_Trim_Dynamic_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Dash_Trim_Dynamic_1, 'receiveShadow')} />
+              <mesh name="Interior_Dash_Trim_Dynamic_2" geometry={nodes.Interior_Dash_Trim_Dynamic_2.geometry} material={materials.Material_Interior_Plastic_Static}  castShadow={getInheritedShadow(nodes.Interior_Dash_Trim_Dynamic_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Dash_Trim_Dynamic_2, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Dash_Upper_Secondary" geometry={nodes.Interior_Dash_Upper_Secondary.geometry} material={materials.Material_Upper_Leather_Dynamic} />
+            <mesh name="Interior_Dash_Upper_Secondary" geometry={nodes.Interior_Dash_Upper_Secondary.geometry} material={materials.Material_Upper_Leather_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Dash_Upper_Secondary, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Dash_Upper_Secondary, 'receiveShadow')} />
             <group name="Interior_Glass_Static">
-              <mesh name="Interior_Glass_Static_1" geometry={nodes.Interior_Glass_Static_1.geometry} material={materials.Material_Interior_Structure_Static} />
-              <mesh name="Interior_Glass_Static_2" geometry={nodes.Interior_Glass_Static_2.geometry} material={materials.Material_Mirror_Glass_Static} />
-              <mesh name="Interior_Glass_Static_3" geometry={nodes.Interior_Glass_Static_3.geometry} material={materials.Material_Glass_Lights_Static} />
+              <mesh name="Interior_Glass_Static_1" geometry={nodes.Interior_Glass_Static_1.geometry} material={materials.Material_Interior_Structure_Static}  castShadow={getInheritedShadow(nodes.Interior_Glass_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Glass_Static_1, 'receiveShadow')} />
+              <mesh name="Interior_Glass_Static_2" geometry={nodes.Interior_Glass_Static_2.geometry} material={materials.Material_Mirror_Glass_Static}  castShadow={getInheritedShadow(nodes.Interior_Glass_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Glass_Static_2, 'receiveShadow')} />
+              <mesh name="Interior_Glass_Static_3" geometry={nodes.Interior_Glass_Static_3.geometry} material={materials.Material_Glass_Lights_Static}  castShadow={getInheritedShadow(nodes.Interior_Glass_Static_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Glass_Static_3, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Headliner" geometry={nodes.Interior_Headliner.geometry} material={materials.Material_Interior_Headliner_Static} />
+            <mesh name="Interior_Headliner" geometry={nodes.Interior_Headliner.geometry} material={materials.Material_Interior_Headliner_Static}  castShadow={getInheritedShadow(nodes.Interior_Headliner, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Headliner, 'receiveShadow')} />
             <group name="Interior_Metal_Accents">
-              <mesh name="Interior_Metal_Accents_1" geometry={nodes.Interior_Metal_Accents_1.geometry} material={materials.Material_Interior_Carpet_Static} />
-              <mesh name="Interior_Metal_Accents_2" geometry={nodes.Interior_Metal_Accents_2.geometry} material={materials.Material_Interior_Clock_Static} />
-              <mesh name="Interior_Metal_Accents_3" geometry={nodes.Interior_Metal_Accents_3.geometry} material={materials.Material_Interior_Vent_Static} />
+              <mesh name="Interior_Metal_Accents_1" geometry={nodes.Interior_Metal_Accents_1.geometry} material={materials.Material_Interior_Carpet_Static}  castShadow={getInheritedShadow(nodes.Interior_Metal_Accents_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Metal_Accents_1, 'receiveShadow')} />
+              <mesh name="Interior_Metal_Accents_2" geometry={nodes.Interior_Metal_Accents_2.geometry} material={materials.Material_Interior_Clock_Static}  castShadow={getInheritedShadow(nodes.Interior_Metal_Accents_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Metal_Accents_2, 'receiveShadow')} />
+              <mesh name="Interior_Metal_Accents_3" geometry={nodes.Interior_Metal_Accents_3.geometry} material={materials.Material_Interior_Vent_Static}  castShadow={getInheritedShadow(nodes.Interior_Metal_Accents_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Metal_Accents_3, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Mirror_Housing_Dynamic" geometry={nodes.Interior_Mirror_Housing_Dynamic.geometry} material={materials.Material_Exterior_LowerAero_Dynamic} />
-            <mesh name="Interior_Painted_Trims_Dynamic" geometry={nodes.Interior_Painted_Trims_Dynamic.geometry} material={materials.Material_Interior_Accent_Dynamic} />
-            <mesh name="Interior_Pedals_Metal" geometry={nodes.Interior_Pedals_Metal.geometry} material={materials.Material_Interior_Padel_Metal_Static} />
-            <mesh name="Interior_Pedals_Rubber" geometry={nodes.Interior_Pedals_Rubber.geometry} material={materials.Material_Interior_Metal_Black_Lucid_Static} />
+            <mesh name="Interior_Mirror_Housing_Dynamic" geometry={nodes.Interior_Mirror_Housing_Dynamic.geometry} material={materials.Material_Exterior_LowerAero_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Mirror_Housing_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Mirror_Housing_Dynamic, 'receiveShadow')} />
+            <mesh name="Interior_Painted_Trims_Dynamic" geometry={nodes.Interior_Painted_Trims_Dynamic.geometry} material={materials.Material_Interior_Accent_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Painted_Trims_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Painted_Trims_Dynamic, 'receiveShadow')} />
+            <mesh name="Interior_Pedals_Metal" geometry={nodes.Interior_Pedals_Metal.geometry} material={materials.Material_Interior_Padel_Metal_Static}  castShadow={getInheritedShadow(nodes.Interior_Pedals_Metal, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Pedals_Metal, 'receiveShadow')} />
+            <mesh name="Interior_Pedals_Rubber" geometry={nodes.Interior_Pedals_Rubber.geometry} material={materials.Material_Interior_Metal_Black_Lucid_Static}  castShadow={getInheritedShadow(nodes.Interior_Pedals_Rubber, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Pedals_Rubber, 'receiveShadow')} />
             <group name="Interior_Screens_Digital">
-              <mesh name="Interior_Screens_Digital_1" geometry={nodes.Interior_Screens_Digital_1.geometry} material={materials.Material_Interior_Screen_Digital} />
-              <mesh name="Interior_Screens_Digital_2" geometry={nodes.Interior_Screens_Digital_2.geometry} material={materials.Material_Interior_Screen_GPS_Digital} />
+              <mesh name="Interior_Screens_Digital_1" geometry={nodes.Interior_Screens_Digital_1.geometry} material={materials.Material_Interior_Screen_Digital}  castShadow={getInheritedShadow(nodes.Interior_Screens_Digital_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Screens_Digital_1, 'receiveShadow')} />
+              <mesh name="Interior_Screens_Digital_2" geometry={nodes.Interior_Screens_Digital_2.geometry} material={materials.Material_Interior_Screen_GPS_Digital}  castShadow={getInheritedShadow(nodes.Interior_Screens_Digital_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Screens_Digital_2, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Seatbelts_Dynamic" geometry={nodes.Interior_Seatbelts_Dynamic.geometry} material={materials.Material_SeatBelt_Dynamic} />
+            <mesh name="Interior_Seatbelts_Dynamic" geometry={nodes.Interior_Seatbelts_Dynamic.geometry} material={materials.Material_SeatBelt_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Seatbelts_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Seatbelts_Dynamic, 'receiveShadow')} />
             <group name="Interior_Shifter_Base_Static">
-              <mesh name="Interior_Shifter_Base_Static_1" geometry={nodes.Interior_Shifter_Base_Static_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-              <mesh name="Interior_Shifter_Base_Static_2" geometry={nodes.Interior_Shifter_Base_Static_2.geometry} material={materials.Material_Exterior_Badges_Dynamic} />
+              <mesh name="Interior_Shifter_Base_Static_1" geometry={nodes.Interior_Shifter_Base_Static_1.geometry} material={materials.Material_Interior_Plastic_Darker_Static}  castShadow={getInheritedShadow(nodes.Interior_Shifter_Base_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Shifter_Base_Static_1, 'receiveShadow')} />
+              <mesh name="Interior_Shifter_Base_Static_2" geometry={nodes.Interior_Shifter_Base_Static_2.geometry} material={materials.Material_Exterior_Badges_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Shifter_Base_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Shifter_Base_Static_2, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Shifter_Trim_Dynamic" geometry={nodes.Interior_Shifter_Trim_Dynamic.geometry} material={materials.Material_Interior_Plastic_Static} />
-            <mesh name="Interior_Shifter_Upholstery" geometry={nodes.Interior_Shifter_Upholstery.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+            <mesh name="Interior_Shifter_Trim_Dynamic" geometry={nodes.Interior_Shifter_Trim_Dynamic.geometry} material={materials.Material_Interior_Plastic_Static}  castShadow={getInheritedShadow(nodes.Interior_Shifter_Trim_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Shifter_Trim_Dynamic, 'receiveShadow')} />
+            <mesh name="Interior_Shifter_Upholstery" geometry={nodes.Interior_Shifter_Upholstery.geometry} material={materials.Material_Interior_Plastic_Darker_Static}  castShadow={getInheritedShadow(nodes.Interior_Shifter_Upholstery, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Shifter_Upholstery, 'receiveShadow')} />
             <group name="Interior_SteeringColumn_Stalks">
-              <mesh name="Interior_SteeringColumn_Stalks_1" geometry={nodes.Interior_SteeringColumn_Stalks_1.geometry} material={materials.Material_Interior_Plastic_Static} />
-              <mesh name="Interior_SteeringColumn_Stalks_2" geometry={nodes.Interior_SteeringColumn_Stalks_2.geometry} material={materials.Material_Interior_Metal_Static} />
-              <mesh name="Interior_SteeringColumn_Stalks_3" geometry={nodes.Interior_SteeringColumn_Stalks_3.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+              <mesh name="Interior_SteeringColumn_Stalks_1" geometry={nodes.Interior_SteeringColumn_Stalks_1.geometry} material={materials.Material_Interior_Plastic_Static}  castShadow={getInheritedShadow(nodes.Interior_SteeringColumn_Stalks_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringColumn_Stalks_1, 'receiveShadow')} />
+              <mesh name="Interior_SteeringColumn_Stalks_2" geometry={nodes.Interior_SteeringColumn_Stalks_2.geometry} material={materials.Material_Interior_Metal_Static}  castShadow={getInheritedShadow(nodes.Interior_SteeringColumn_Stalks_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringColumn_Stalks_2, 'receiveShadow')} />
+              <mesh name="Interior_SteeringColumn_Stalks_3" geometry={nodes.Interior_SteeringColumn_Stalks_3.geometry} material={materials.Material_Interior_Plastic_Darker_Static}  castShadow={getInheritedShadow(nodes.Interior_SteeringColumn_Stalks_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_SteeringColumn_Stalks_3, 'receiveShadow')} />
             </group>
-            <mesh name="Interior_Stitching_Dynamic" geometry={nodes.Interior_Stitching_Dynamic.geometry} material={materials.Material_Interior_Stitching_Dynamic} />
-            <mesh name="Interior_Tacho_Dial_Dynamic" geometry={nodes.Interior_Tacho_Dial_Dynamic.geometry} material={materials.Material_Sticker_Tacho_Dynamic} />
-            <mesh name="Interior_Tacho_Needle" geometry={nodes.Interior_Tacho_Needle.geometry} material={materials.Material_Interior_Metal_Static} />
+            <mesh name="Interior_Stitching_Dynamic" geometry={nodes.Interior_Stitching_Dynamic.geometry} material={materials.Material_Interior_Stitching_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Stitching_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Stitching_Dynamic, 'receiveShadow')} />
+            <mesh name="Interior_Tacho_Dial_Dynamic" geometry={nodes.Interior_Tacho_Dial_Dynamic.geometry} material={materials.Material_Sticker_Tacho_Dynamic}  castShadow={getInheritedShadow(nodes.Interior_Tacho_Dial_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tacho_Dial_Dynamic, 'receiveShadow')} />
+            <mesh name="Interior_Tacho_Needle" geometry={nodes.Interior_Tacho_Needle.geometry} material={materials.Material_Interior_Metal_Static}  castShadow={getInheritedShadow(nodes.Interior_Tacho_Needle, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tacho_Needle, 'receiveShadow')} />
             <group name="Interior_Tub_Static">
-              <mesh name="Interior_Tub_Static_1" geometry={nodes.Interior_Tub_Static_1.geometry} material={materials.Material_Interior_Metal_Black_Lucid_Static} />
-              <mesh name="Interior_Tub_Static_2" geometry={nodes.Interior_Tub_Static_2.geometry} material={materials.Material_Interior_Plastic_Lucid_Static} />
-              <mesh name="Interior_Tub_Static_3" geometry={nodes.Interior_Tub_Static_3.geometry} material={materials.Material_Carbon_Trim_Static} />
-              <mesh name="Interior_Tub_Static_4" geometry={nodes.Interior_Tub_Static_4.geometry} material={materials.Material_Warning_Triangle_Static} />
-              <mesh name="Interior_Tub_Static_5" geometry={nodes.Interior_Tub_Static_5.geometry} material={materials.Material_Speakers_Static} />
-              <mesh name="Interior_Tub_Static_6" geometry={nodes.Interior_Tub_Static_6.geometry} material={materials.Material_Behind_Vents_Static} />
-              <mesh name="Interior_Tub_Static_7" geometry={nodes.Interior_Tub_Static_7.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
-              <mesh name="Interior_Tub_Static_8" geometry={nodes.Interior_Tub_Static_8.geometry} material={materials.Material_Interior_Metallic_Structure_Static} />
+              <mesh name="Interior_Tub_Static_1" geometry={nodes.Interior_Tub_Static_1.geometry} material={materials.Material_Interior_Metal_Black_Lucid_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_1, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_2" geometry={nodes.Interior_Tub_Static_2.geometry} material={materials.Material_Interior_Plastic_Lucid_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_2, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_3" geometry={nodes.Interior_Tub_Static_3.geometry} material={materials.Material_Carbon_Trim_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_3, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_4" geometry={nodes.Interior_Tub_Static_4.geometry} material={materials.Material_Warning_Triangle_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_4, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_4, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_5" geometry={nodes.Interior_Tub_Static_5.geometry} material={materials.Material_Speakers_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_5, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_5, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_6" geometry={nodes.Interior_Tub_Static_6.geometry} material={materials.Material_Behind_Vents_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_6, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_6, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_7" geometry={nodes.Interior_Tub_Static_7.geometry} material={materials.Material_Interior_Plastic_Darker_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_7, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_7, 'receiveShadow')} />
+              <mesh name="Interior_Tub_Static_8" geometry={nodes.Interior_Tub_Static_8.geometry} material={materials.Material_Interior_Metallic_Structure_Static}  castShadow={getInheritedShadow(nodes.Interior_Tub_Static_8, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Interior_Tub_Static_8, 'receiveShadow')} />
             </group>
-            <mesh name="Seats_Leather_Primary" geometry={nodes.Seats_Leather_Primary.geometry} material={materials.Material_Leather_Primary} />
-            <mesh name="Seats_Leather_Secondary" geometry={nodes.Seats_Leather_Secondary.geometry} material={materials.Material_Leather_Secondary} />
+            <mesh name="Seats_Leather_Primary" geometry={nodes.Seats_Leather_Primary.geometry} material={materials.Material_Leather_Primary}  castShadow={getInheritedShadow(nodes.Seats_Leather_Primary, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Leather_Primary, 'receiveShadow')} />
+            <mesh name="Seats_Leather_Secondary" geometry={nodes.Seats_Leather_Secondary.geometry} material={materials.Material_Leather_Secondary}  castShadow={getInheritedShadow(nodes.Seats_Leather_Secondary, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Leather_Secondary, 'receiveShadow')} />
             <group name="Seats_Structure_Static">
-              <mesh name="Seats_Metal_Mechanics" geometry={nodes.Seats_Metal_Mechanics.geometry} material={materials.Material_Slide_Seat_Static} />
-              <mesh name="Seats_Metal_Mechanics_1" geometry={nodes.Seats_Metal_Mechanics_1.geometry} material={materials.Material_Interior_Metal_Static} />
-              <mesh name="Seats_Metal_Mechanics_2" geometry={nodes.Seats_Metal_Mechanics_2.geometry} material={materials.Material_SeatBelt_Buckle_Static} />
-              <mesh name="Seats_Metal_Mechanics_3" geometry={nodes.Seats_Metal_Mechanics_3.geometry} material={materials.Material_SeatBelt_Release_Button_Static} />
-              <mesh name="Seats_Metal_Mechanics_4" geometry={nodes.Seats_Metal_Mechanics_4.geometry} material={materials.Material_Buckle_Housing_Static} />
-              <mesh name="Seats_Metal_Mechanics_5" geometry={nodes.Seats_Metal_Mechanics_5.geometry} material={materials.Material_Seat_Plastic_Static} />
+              <mesh name="Seats_Metal_Mechanics" geometry={nodes.Seats_Metal_Mechanics.geometry} material={materials.Material_Slide_Seat_Static}  castShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics, 'receiveShadow')} />
+              <mesh name="Seats_Metal_Mechanics_1" geometry={nodes.Seats_Metal_Mechanics_1.geometry} material={materials.Material_Interior_Metal_Static}  castShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_1, 'receiveShadow')} />
+              <mesh name="Seats_Metal_Mechanics_2" geometry={nodes.Seats_Metal_Mechanics_2.geometry} material={materials.Material_SeatBelt_Buckle_Static}  castShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_2, 'receiveShadow')} />
+              <mesh name="Seats_Metal_Mechanics_3" geometry={nodes.Seats_Metal_Mechanics_3.geometry} material={materials.Material_SeatBelt_Release_Button_Static}  castShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_3, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_3, 'receiveShadow')} />
+              <mesh name="Seats_Metal_Mechanics_4" geometry={nodes.Seats_Metal_Mechanics_4.geometry} material={materials.Material_Buckle_Housing_Static}  castShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_4, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_4, 'receiveShadow')} />
+              <mesh name="Seats_Metal_Mechanics_5" geometry={nodes.Seats_Metal_Mechanics_5.geometry} material={materials.Material_Seat_Plastic_Static}  castShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_5, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Seats_Metal_Mechanics_5, 'receiveShadow')} />
             </group>
           </group>
           <group name="Group_PowerTrain">
             <group name="Chassis_Powertrain_Static">
-              <mesh name="Chassis_Powertrain_Static_1" geometry={nodes.Chassis_Powertrain_Static_1.geometry} material={materials.Material_Structure_Lucid_Static} />
-              <mesh name="Chassis_Powertrain_Static_2" geometry={nodes.Chassis_Powertrain_Static_2.geometry} material={materials.Material_Interior_Plastic_Darker_Static} />
+              <mesh name="Chassis_Powertrain_Static_1" geometry={nodes.Chassis_Powertrain_Static_1.geometry} material={materials.Material_Structure_Lucid_Static}  castShadow={getInheritedShadow(nodes.Chassis_Powertrain_Static_1, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Powertrain_Static_1, 'receiveShadow')} />
+              <mesh name="Chassis_Powertrain_Static_2" geometry={nodes.Chassis_Powertrain_Static_2.geometry} material={materials.Material_Interior_Plastic_Darker_Static}  castShadow={getInheritedShadow(nodes.Chassis_Powertrain_Static_2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Powertrain_Static_2, 'receiveShadow')} />
             </group>
-            <mesh name="Exterior_ExhaustTips_Dynamic" geometry={nodes.Exterior_ExhaustTips_Dynamic.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic} />
+            <mesh name="Exterior_ExhaustTips_Dynamic" geometry={nodes.Exterior_ExhaustTips_Dynamic.geometry} material={materials.Material_Exterior_ExhaustTips_Dynamic}  castShadow={getInheritedShadow(nodes.Exterior_ExhaustTips_Dynamic, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Exterior_ExhaustTips_Dynamic, 'receiveShadow')} />
           </group>
           <group name="Group_Suspension">
-            <mesh name="Chassis_Suspension_Static" geometry={nodes.Chassis_Suspension_Static.geometry} material={materials.Material_Structure_Lucid_Static} />
+            <mesh name="Chassis_Suspension_Static" geometry={nodes.Chassis_Suspension_Static.geometry} material={materials.Material_Structure_Lucid_Static}  castShadow={getInheritedShadow(nodes.Chassis_Suspension_Static, 'castShadow')} receiveShadow={getInheritedShadow(nodes.Chassis_Suspension_Static, 'receiveShadow')} />
           </group>
         </group>
       </group>

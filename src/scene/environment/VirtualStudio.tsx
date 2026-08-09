@@ -33,7 +33,7 @@ const VirtualStudio: React.FC = () => {
   }, [scene.environment, setEnvReady]); //Update on scene.enviroment change
 
   return (
-    <Environment resolution={1024} background={false}>
+    <Environment resolution={128} background={false}>
       
       {/* <color attach="background" args={['#0f26f1']} /> */}
 

@@ -1,12 +1,8 @@
 import React, { useRef } from 'react';
 import * as THREE from 'three';
-import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
-import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js';
 import { useHelper } from '@react-three/drei';
 import { useLevaStore } from '@/store/levaStore';
 import { useConfiguratorStore } from '@/store/configuratorStore';
-
-RectAreaLightUniformsLib.init();
 
 const StudioLighting: React.FC = () => {
   const dynamicLight = useLevaStore((state) => state.environment.dynamic);
@@ -21,15 +17,13 @@ const StudioLighting: React.FC = () => {
   const ceilingLightRef = useRef<THREE.SpotLight>(null!);
   const leftPaneRef = useRef<THREE.RectAreaLight>(null!);
   const rightPaneRef = useRef<THREE.RectAreaLight>(null!);
-  const dashLightRef = useRef<THREE.RectAreaLight>(null!);
 
   useHelper(dynamicLight.enabled && dynamicLight.showHelper && dirLightRef, THREE.DirectionalLightHelper, 1, 'yellow');
   
   const showIntHelper = isInterior && interiorLight.enabled && interiorLight.showHelper;
   useHelper(showIntHelper && interiorLight.ceiling.enabled && ceilingLightRef, THREE.SpotLightHelper, 'cyan');
-  useHelper(showIntHelper && interiorLight.leftPane.enabled && leftPaneRef, RectAreaLightHelper, 'cyan');
-  useHelper(showIntHelper && interiorLight.rightPane.enabled && rightPaneRef, RectAreaLightHelper, 'cyan');
-  useHelper(showIntHelper && interiorLight.dash.enabled && dashLightRef, RectAreaLightHelper, 'red');
+  useHelper(showIntHelper && interiorLight.leftPane.enabled && leftPaneRef, THREE.SpotLightHelper, 'cyan');
+  useHelper(showIntHelper && interiorLight.rightPane.enabled && rightPaneRef, THREE.SpotLightHelper, 'cyan');
 
   return (
     <group>
@@ -50,13 +44,15 @@ const StudioLighting: React.FC = () => {
         />
       </directionalLight>
 
-      {/* INTERIOR STUDIO LIGHTING - Sempre montato, intensità controllata dinamicamente */}
+     {/* INTERIOR STUDIO LIGHTING */}
       <group visible={interiorLight.enabled}>
         <ambientLight 
+            layers={1} 
             intensity={interiorLight.ambientIntensity * intensityMultiplier} 
             color="#ffffff" 
         />
 
+        {/* CEILING */}
         <spotLight
             ref={ceilingLightRef}
             visible={interiorLight.ceiling.enabled}
@@ -70,39 +66,45 @@ const StudioLighting: React.FC = () => {
             castShadow={false}
         />
 
-        <rectAreaLight
-            ref={leftPaneRef}
-            visible={interiorLight.leftPane.enabled}
-            width={1.5}
-            height={0.6}
-            color="#ffffff"
-            intensity={interiorLight.leftPane.intensity * intensityMultiplier}
+       {/* LEFT WINDOW */}
+        {/* <group
             position={[interiorLight.leftPane.positionX, interiorLight.leftPane.positionY, interiorLight.leftPane.positionZ]}
             rotation={[interiorLight.leftPane.rotationX, interiorLight.leftPane.rotationY, interiorLight.leftPane.rotationZ]}
-        />
+        >
+          <spotLight
+              ref={leftPaneRef}
+              visible={interiorLight.leftPane.enabled}
+              color="#ffffff"
+              intensity={interiorLight.leftPane.intensity * intensityMultiplier}
+              angle={Math.PI / 3}
+              penumbra={1.0}
+              distance={interiorLight.leftPane.distance} // FIX: Now reads from Leva Store!
+              decay={2.0}
+              castShadow={false}
+          >
+              <object3D position={[0, 0, -1]} attach="target" />
+          </spotLight>
+        </group> */}
 
-        <rectAreaLight
-            ref={rightPaneRef}
-            visible={interiorLight.rightPane.enabled}
-            width={1.5}
-            height={0.6}
-            color="#ffffff"
-            intensity={interiorLight.rightPane.intensity * intensityMultiplier}
+        {/* RIGHT WINDOW */}
+        <group
             position={[interiorLight.rightPane.positionX, interiorLight.rightPane.positionY, interiorLight.rightPane.positionZ]}
             rotation={[interiorLight.rightPane.rotationX, interiorLight.rightPane.rotationY, interiorLight.rightPane.rotationZ]}
-        />
-
-        <rectAreaLight
-            ref={dashLightRef}
-            visible={interiorLight.dash.enabled}
-            width={1.4}
-            height={0.6}
-            color="#ffffff"
-            intensity={interiorLight.dash.intensity * intensityMultiplier}
-            position={[interiorLight.dash.positionX, interiorLight.dash.positionY, interiorLight.dash.positionZ]}
-            rotation={[interiorLight.dash.rotationX, interiorLight.dash.rotationY, interiorLight.dash.rotationZ]}
-        />
-
+        >
+          <spotLight
+              ref={rightPaneRef}
+              visible={interiorLight.rightPane.enabled}
+              color="#ffffff"
+              intensity={interiorLight.rightPane.intensity * intensityMultiplier}
+              angle={Math.PI / 3}
+              penumbra={1.0}
+              distance={interiorLight.rightPane.distance} // FIX: Now reads from Leva Store!
+              decay={2.0}
+              castShadow={false}
+          >
+              <object3D position={[0, 0, -1]} attach="target" />
+          </spotLight>
+        </group>
       </group>
 
       {/* SHADOW PLANE */}

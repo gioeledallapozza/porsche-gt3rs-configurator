@@ -18,6 +18,7 @@ export const LeftInteriorLight: React.FC = () => {
           rotationX: { value: initial.rotationX, min: -Math.PI, max: Math.PI, step: 0.05, onEditEnd: (v) => setTweaks('environment', { interior: { ...useLevaStore.getState().environment.interior, leftPane: { ...useLevaStore.getState().environment.interior.leftPane, rotationX: v } } }) },
           rotationY: { value: initial.rotationY, min: -Math.PI, max: Math.PI, step: 0.05, onEditEnd: (v) => setTweaks('environment', { interior: { ...useLevaStore.getState().environment.interior, leftPane: { ...useLevaStore.getState().environment.interior.leftPane, rotationY: v } } }) },
           rotationZ: { value: initial.rotationZ, min: -Math.PI, max: Math.PI, step: 0.05, onEditEnd: (v) => setTweaks('environment', { interior: { ...useLevaStore.getState().environment.interior, leftPane: { ...useLevaStore.getState().environment.interior.leftPane, rotationZ: v } } }) },
+          distance: { value: initial.distance, min: 0.5, max: 10, step: 0.1, onEditEnd: (v) => setTweaks('environment', { interior: { ...useLevaStore.getState().environment.interior, leftPane: { ...useLevaStore.getState().environment.interior.leftPane, distance: v } } }) },
         }, { collapsed: true }),
       }, { collapsed: false })
     }, { collapsed: false })

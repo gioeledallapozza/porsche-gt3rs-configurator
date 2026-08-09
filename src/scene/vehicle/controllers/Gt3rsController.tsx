@@ -40,18 +40,15 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   const { scene, gl } = useThree();
   const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
   
-  //To define which carbon texture to load
-  const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
-  const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');
-  const forgedNormal = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2');
-  const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
-  const aluminumNormal = useKtx2Disposal('/textures/materials/aluminum/aluminum_normal.ktx2');
-  const aluminumRoughness = useKtx2Disposal('/textures/materials/aluminum/aluminum_roughness.ktx2');
-  const leatherNormal = useKtx2Disposal('/textures/materials/leather/leather_v1_normal.ktx2');
-  const leatherArm = useKtx2Disposal('/textures/materials/leather/leather_v1_arm.ktx2');
-  const carpetAo = useKtx2Disposal('/textures/materials/ambient_occlusion/carpet_ao.ktx2');
-  const tubAo = useKtx2Disposal('/textures/materials/ambient_occlusion/interior_tub_ao.ktx2');
-  const metalAccentAo = useKtx2Disposal('/textures/materials/ambient_occlusion/metal_accent_ao.ktx2');
+  //Load textures
+  const {
+  carbonNormal, carbonRoughness,
+  forgedNormal, forgedRoughness,
+  aluminumNormal, aluminumRoughness,
+  leatherNormal, leatherArm,
+  carpetAo, 
+  // tubAo, metalAccentAo,
+  } = useKtx2Disposal(gt3rsConfig.texturePack);
   
 
  // Apply shadows only to certains nodes based on custom blender properties
@@ -67,61 +64,61 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
 
   // Recursive function: searches for the custom property in the node. If it is not found, it checks the parent.
   // NOTE: maybe assign manually to each mesh the properties instead of the group for efficiency
-  const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
-    if (!gltfNode) return false;
+  // const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
+  //   if (!gltfNode) return false;
     
-    // If Blender has saved the property (1 or true)
-    if (gltfNode.userData[property] !== undefined) {
-      return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
-    }
+  //   // If Blender has saved the property (1 or true)
+  //   if (gltfNode.userData[property] !== undefined) {
+  //     return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
+  //   }
     
-    // If it's not there, check the parent.
-    if (gltfNode.parent) {
-      return getInheritedShadow(gltfNode.parent, property);
-    }
+  //   // If it's not there, check the parent.
+  //   if (gltfNode.parent) {
+  //     return getInheritedShadow(gltfNode.parent, property);
+  //   }
     
-    return false;
-  };
+  //   return false;
+  // };
 
   // By default gltfjsx groups doesn't support custom properties, this is why we get the original node
-  scene.traverse((r3fNode) => {
-    // Only meshes
-    if (!(r3fNode instanceof THREE.Mesh)) return;
+  // scene.traverse((r3fNode) => {
+  //   // Only meshes
+  //   if (!(r3fNode instanceof THREE.Mesh)) return;
 
-    // Retrieve the original GLTF object using the name.
-    const gltfNode = nodes[r3fNode.name];
-    if (!gltfNode) return;
+  //   // // Retrieve the original GLTF object using the name.
+  //   // const gltfNode = nodes[r3fNode.name];
+  //   // if (!gltfNode) return;
 
-    // Calculates inheritance in real time (O(D), where D is the depth of the tree).
-    const shouldCast = getInheritedShadow(gltfNode, 'castShadow');
-    const shouldReceive = getInheritedShadow(gltfNode, 'receiveShadow');
+  //   // // Calculates inheritance in real time (O(D), where D is the depth of the tree).
+  //   // const shouldCast = getInheritedShadow(gltfNode, 'castShadow');
+  //   // const shouldReceive = getInheritedShadow(gltfNode, 'receiveShadow');
 
-    // Apply only in case of discrepancy to save on WebGL recalculations
-    if (r3fNode.castShadow !== shouldCast) {
-      r3fNode.castShadow = shouldCast;
-    }
-    if (r3fNode.receiveShadow !== shouldReceive) {
-      r3fNode.receiveShadow = shouldReceive;
-    }
+  //   // // Apply only in case of discrepancy to save on WebGL recalculations
+  //   // if (r3fNode.castShadow !== shouldCast) {
+  //   //   r3fNode.castShadow = shouldCast;
+  //   // }
+  //   // if (r3fNode.receiveShadow !== shouldReceive) {
+  //   //   r3fNode.receiveShadow = shouldReceive;
+  //   // }
 
-    // Ensure uv2 exists for baked AO / lightmap workflows
-    const geometry = r3fNode.geometry;
-    if (
-      geometry &&
-      geometry.attributes &&
-      !geometry.attributes.uv2 &&
-      geometry.attributes.uv
-    ) {
-      geometry.setAttribute('uv2', geometry.attributes.uv);
-    }
-  });
+  //   // Ensure uv2 exists for baked AO / lightmap workflows
+  //   // const geometry = r3fNode.geometry;
+  //   // if (
+  //   //   geometry &&
+  //   //   geometry.attributes &&
+  //   //   !geometry.attributes.uv2 &&
+  //   //   geometry.attributes.uv
+  //   // ) {
+  //   //   geometry.setAttribute('uv2', geometry.attributes.uv);
+  //   // }
+  // });
 }, [nodes, scene]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
 
     [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, 
-      aluminumRoughness, leatherNormal, leatherArm, carpetAo, tubAo, metalAccentAo].forEach(tex => {
+      aluminumRoughness, leatherNormal, leatherArm, carpetAo].forEach(tex => {
       if (!tex) return;
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       tex.minFilter = THREE.LinearMipMapLinearFilter;
@@ -222,7 +219,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       }
     }
 
-    // EnvMap (se l'ambiente è già caricato via Suspense)
+    // EnvMap
     if (scene.environment) {
       // Update to all materials the envMap
       // Cache Patching: useGLTF ignores the custom envMap even if is loaded
@@ -250,6 +247,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       });
     }
 
+    // NOT USED BECAUSE OF UV MAP BUGGED IN MODEL
     // TUB
     // if (tubAo) {
     //   [
@@ -280,7 +278,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     // }
 
     return extractedMaterials;
-  }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
+  }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm, carpetAo, gl, scene.environment]);
 
   // Memoize textures to prevent infinite reference changes and battery drain
   const texturePack = useMemo(() => ({

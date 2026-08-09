@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, Html } from '@react-three/drei';
+import { CameraControls, Html, Preload } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SSAO } from '@react-three/postprocessing';
 
@@ -161,6 +161,9 @@ const Configurator: React.FC = () => {
           {/* Only developments */}
           <CameraDebugHelper controlsRef={cameraControlsRef} />
           <LevaControllers />
+
+
+          <Preload all/>
         </Canvas>
       </div>
 

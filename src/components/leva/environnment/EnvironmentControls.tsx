@@ -4,7 +4,6 @@ import { AmbientInteriorLight } from './dynamic/AmbientInteriorLight';
 import { CeilingInteriorLight } from './dynamic/CeilingInteriorLight';
 import { LeftInteriorLight } from './dynamic/LeftInteriorLight';
 import { RightInteriorLight } from './dynamic/RightInteriorLight';
-import { DashInteriorLight } from './dynamic/DashInteriorLight';
 
 import { BaseRoomMap } from './map/BaseRoomMap';
 import { TopSoftboxMap } from './map/TopSoftboxMap';
@@ -21,7 +20,6 @@ export const EnvironmentControls: React.FC = () => {
       <CeilingInteriorLight />
       <LeftInteriorLight />
       <RightInteriorLight />
-      <DashInteriorLight />
       
       <BaseRoomMap />
       <TopSoftboxMap />

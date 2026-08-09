@@ -321,23 +321,6 @@ export default function LevaLiveSubscriber({ mats }: Props) {
       unsubRubber();
       unsubCaliper();
     };
-
-    return () => {
-      unsubPaintSolid();
-      unsubPaintMetallic();
-      unsubPaintSpecial();
-      unsubCarbonTwill();
-      unsubCarbonForged();
-      unsubMetal();
-      unsubRubber();
-      unsubCaliper();
-      unsubHeadlight();
-      unsubTaillight();
-      unsubSignal();
-      unsubLicensePlate();
-      unsubGlassCabin();
-      unsubGlassLights();
-    };
   }, [mats]);
 
   return null;

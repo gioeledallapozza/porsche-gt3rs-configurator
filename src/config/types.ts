@@ -25,6 +25,8 @@ export interface PackageOption {
 export interface VehicleConfig {
   id: string;
   modelPath: string;
+  texturePack: Record<string, string>; // KTX2 path, free key for vehicle — consumed by useKtx2Disposal
+  
   paintOptions: PaintOption[];
   aeroOptions: PackageOption[];
   wheelOptions: ColorOption[];
