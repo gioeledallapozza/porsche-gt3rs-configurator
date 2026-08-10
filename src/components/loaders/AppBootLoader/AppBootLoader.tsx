@@ -9,16 +9,17 @@ const AppBootLoader: React.FC = () => {
   // Format the ID, fallback to 'VEHICLE' if not present
   const displayName = vehicleId ? vehicleId.toUpperCase() : 'VEHICLE';
 
-  // Full screen loader mounted during the initial boot of the Configuration page.
-  <div className={styles.boot} role="status" aria-live="polite">
-    <div className={styles.content}>
-      <span className={styles.mark}>{displayName}</span>
-      <div className={styles.indeterminateTrack}>
-        <div className={styles.indeterminateBar} />
+  return (
+    <div className={styles.boot} role="status" aria-live="polite">
+      <div className={styles.content}>
+        <span className={styles.mark}>{displayName}</span>
+        <div className={styles.indeterminateTrack}>
+          <div className={styles.indeterminateBar} />
+        </div>
+        <p className={styles.label}>Initializing virtual environment...</p>
       </div>
-      <p className={styles.label}>Initializing virtual environment...</p>
     </div>
-  </div>
+  );
 };
 
 export default AppBootLoader;

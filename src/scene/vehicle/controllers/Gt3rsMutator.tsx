@@ -26,6 +26,7 @@ interface Gt3rsMutatorProps {
   };
 }
 
+/* eslint-disable react-hooks/immutability */
 export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   // Extract state specifically (component only re-evaluates when these specific slices change)
   const renderedCameraPreset = useConfiguratorStore((state) => state.renderedCameraPreset);

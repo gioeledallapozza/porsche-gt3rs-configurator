@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import styles from './ConfiguratorLoadingOverlay.module.css';
+import { invalidate } from '@react-three/fiber';
 
 //Min time on screen
-const MIN_VISIBLE_MS = 500;
+const MIN_VISIBLE_MS = 1500;
+
 
 const ConfiguratorLoadingOverlay: React.FC = () => {
   const isInitialized = useConfiguratorStore((s) => s.isInitialized);
@@ -15,14 +17,24 @@ const ConfiguratorLoadingOverlay: React.FC = () => {
   const allReady = isInitialized && isEnvReady && isModelReady;
 
   const [canHide, setCanHide] = useState(false);
-  const shownAt = useRef(performance.now());
+  const shownAt = useRef<number>(0);
+
+  //Bypass lint
+  useEffect(() => {
+    shownAt.current = performance.now();
+  }, []);
 
   // UseEffect to manage the minimum visible time of the overlay
   useEffect(() => {
     if (!allReady) return;
     const elapsed = performance.now() - shownAt.current;
     const remaining = Math.max(MIN_VISIBLE_MS - elapsed, 0);
-    const t = setTimeout(() => setCanHide(true), remaining);
+    invalidate();
+    const t = setTimeout(() => {
+      setCanHide(true)
+      invalidate();
+    }, remaining);
+
     return () => clearTimeout(t);
   }, [allReady]);
 

@@ -4,6 +4,7 @@ import { EXRLoader } from 'three-stdlib';
 import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 
+/* eslint-disable react-hooks/immutability */
 const VirtualStudio: React.FC = () => {
   const texture = useLoader(EXRLoader, '/hdri/studio_prebaked.exr');
   const { scene } = useThree();

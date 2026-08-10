@@ -1,5 +1,5 @@
 import { Html } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, invalidate } from '@react-three/fiber';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
@@ -32,14 +32,26 @@ export default function Gt3rsHotspots() {
   const movementTimer = useRef<number>(0);
   const isMoving = useRef(false);
 
+  // Helper for applying styles to DOM nodes in batches
+  const applyToAll = (opacity: number, transform: string, pointerEvents: string) => {
+    htmlRefs.current.forEach((el) => {
+      if (el) {
+        el.style.opacity = opacity.toString();
+        el.style.transform = transform;
+        el.style.pointerEvents = pointerEvents;
+      }
+    });
+  };
+
+  // Initialize camera
   useEffect(() => {
-    // Initialize camera
     lastCamPos.current.copy(camera.position);
   }, [camera]);
+  
 
   // CORE LOGIC: Frameloop high performance
   useFrame((state, delta) => {
-    // Letto live ad ogni frame, mai in closure: niente re-render, niente stale state
+    // Read live at every frame, never cached: no re-renders, no stale state
     const { renderedCameraPreset, isCameraTransitioning } = useConfiguratorStore.getState();
     const isInterior = renderedCameraPreset === 'interior_view';
     const isTransitioning = isCameraTransitioning;
@@ -62,7 +74,10 @@ export default function Gt3rsHotspots() {
       movementTimer.current = 0;
     } else if (isMoving.current) {
       movementTimer.current += delta;
-      // Ritardo di ri-apparizione (400ms = 0.4s)
+
+      invalidate(); // Force refresh
+
+      // Reappearance delay(400ms = 0.4s)
       if (movementTimer.current > 0.4) {
         isMoving.current = false;
       }
@@ -97,17 +112,6 @@ export default function Gt3rsHotspots() {
 
     lastCamPos.current.copy(state.camera.position);
   });
-
-  // Helper per applicare stili in batch ai nodi DOM
-  const applyToAll = (opacity: number, transform: string, pointerEvents: string) => {
-    htmlRefs.current.forEach((el) => {
-      if (el) {
-        el.style.opacity = opacity.toString();
-        el.style.transform = transform;
-        el.style.pointerEvents = pointerEvents;
-      }
-    });
-  };
 
   // CSS STYLE
   const getInitialStyle = (): React.CSSProperties => ({

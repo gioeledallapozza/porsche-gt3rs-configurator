@@ -238,7 +238,7 @@ type GLTFResult = GLTF & {
 
 
 // Function dynamically injected by patch-model.js
-const getInheritedShadow = (gltfNode: any, property: 'castShadow' | 'receiveShadow'): boolean => {
+const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
   if (!gltfNode) return false;
   if (gltfNode.userData[property] !== undefined) {
     return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
@@ -250,7 +250,7 @@ const getInheritedShadow = (gltfNode: any, property: 'castShadow' | 'receiveShad
 };
 
 export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['group'] & { url: string }) {
-  const { nodes, materials } = useGLTF(url, '/draco/') as unknown as GLTFResult as GLTFResult
+  const { nodes, materials } = useGLTF(url, '/draco/') as unknown as GLTFResult
   return (
     <group {...props} dispose={null}>
       <group name="Scene">

@@ -1,7 +1,7 @@
 import React, { Suspense, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
-import { Perf } from 'r3f-perf';
+// import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
 import { CameraControls, Html, Preload } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
@@ -16,12 +16,13 @@ import VirtualStudio from '@/scene/environment/VirtualStudio.tsx';
 import StudioLighting from '@/scene/environment/StudioLighting.tsx';
 import CameraPresetsUI from './components/canvas/camera/CameraPresetsUI.tsx';
 import CameraTransitionManager from '@/scene/camera/CameraTransitionManager';
-import CameraDebugHelper from '@/scene/camera/CameraDebugHelper';
 import SocialLinks from '@/routes/Configurator/components/canvas/overlay/SocialLinks.tsx';
-import LevaControllers from '@/components/LevaControllers.tsx';
 import ConfiguratorSidebar from './components/layout/ConfiguratorSidebar.tsx';
 import CameraTransitionOverlay from './components/canvas/overlay/CameraTransitionOverlay.tsx';
 import ConfiguratorLoadingOverlay from './components/canvas/overlay/ConfiguratorLoadingOverlay.tsx';
+
+// import LevaControllers from '@/components/LevaControllers.tsx';
+// import CameraDebugHelper from '@/scene/camera/CameraDebugHelper';
 
 //Css
 import styles from '@/routes/Configurator/components/layout/Configurator.module.css';
@@ -129,9 +130,9 @@ const Configurator: React.FC = () => {
             ref={(node) => { //DISABLE PAN
               cameraControlsRef.current = node; 
               
-              // if (node) {
-              //   node.mouseButtons.right = 0; 
-              // }
+              if (node) {
+                node.mouseButtons.right = 0; 
+              }
             }}
             makeDefault 
             minDistance={2.5} 
@@ -157,7 +158,7 @@ const Configurator: React.FC = () => {
           {/* Only developments */}
           {/* <CameraDebugHelper controlsRef={cameraControlsRef} /> */}
           {/* <Perf position="top-left" minimal={false} deepAnalyze={true}/> */}
-          <LevaControllers />
+          {/* <LevaControllers /> */}
 
 
           <Preload all/>

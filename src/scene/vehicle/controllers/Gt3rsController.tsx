@@ -33,7 +33,6 @@ interface Gt3rsControllerProps {
   modelPath: string;
 }
 
-/* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
   const { materials, nodes } = useGLTF(modelPath, '/draco/');
@@ -312,7 +311,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     }, 50); 
 
     return () => clearTimeout(timer);
-  }, [gl, scene, camera]); // Stable dependencies
+  }, [gl, scene, camera, setModelReady]); // Stable dependencies
   
   // Orchestration
   return (

@@ -36,7 +36,7 @@ content = content.replace(
 
 // --- 3. REPLACE HARDCODED PATH WITH DYNAMIC URL ---
 content = content.replace(
-  /const { nodes, materials } = useGLTF\(['"`].*?['"`]\)/,
+  /const { nodes, materials } = useGLTF\(['"`].*?['"`]\)( as GLTFResult)?/,
   "const { nodes, materials } = useGLTF(url, '/draco/') as unknown as GLTFResult"
 );
 
@@ -53,7 +53,7 @@ content = content.replace(/\s+animations: GLTFAction\[\]/, '');
 // --- 6. INJECT SHADOW INHERITANCE LOGIC ---
 const shadowHelper = `
 // Function dynamically injected by patch-model.js
-const getInheritedShadow = (gltfNode: any, property: 'castShadow' | 'receiveShadow'): boolean => {
+const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
   if (!gltfNode) return false;
   if (gltfNode.userData[property] !== undefined) {
     return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;

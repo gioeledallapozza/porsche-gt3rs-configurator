@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { cameraPresets } from '@/config/camera/cameraPresets';
 
+
 interface CameraTransitionManagerProps {
   controlsRef: React.MutableRefObject<CameraControls | null>;
 }
@@ -12,6 +13,7 @@ interface CameraTransitionManagerProps {
 // Duration of the black screen fade (must match the CSS transition duration in the overlay)
 const FADE_DURATION = 700; 
 
+/* eslint-disable react-hooks/immutability */
 export default function CameraTransitionManager({ controlsRef }: CameraTransitionManagerProps) {
   // Logical preset requested by the user
   const activePresetId = useConfiguratorStore((state) => state.activeCameraPreset);
@@ -96,6 +98,8 @@ export default function CameraTransitionManager({ controlsRef }: CameraTransitio
           setTimeout(() => {
              // Raise the curtain
              setCameraTransitioning(false); 
+
+             invalidate();
           }, 50); 
         });
       }, FADE_DURATION);
