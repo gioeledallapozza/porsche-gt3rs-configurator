@@ -3,7 +3,8 @@
 An enterprise-grade, real-time 3D configurator for the Porsche 911 GT3 RS. 
 Built from scratch focusing on high performance, photorealistic materials, and seamless UX across desktop and mobile devices.
 
-![Configurator Preview](preview/preview.webp)
+<img width="3834" height="1786" alt="image" src="https://github.com/user-attachments/assets/93e2c1ec-b668-4cf6-936c-8b58a8a864e3" />
+
 
 ## ✨ Core Features
 *   **High-Performance Rendering:** Optimized for steady 60 FPS, maintaining visual fidelity without frying mobile GPUs.
