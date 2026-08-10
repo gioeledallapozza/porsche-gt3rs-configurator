@@ -98,4 +98,21 @@ export const cameraPresets: CameraPreset[] = [
     maxPolarAngle: Math.PI / 1.5,
     
   },
+  // { 
+  //   id: 'interior_rear_view', 
+  //   name: 'Interior Seats & Belts', 
+  //   position: [0.350, 1.150, 0.150], 
+  //   target: [0.340, 1.100, 0.140], 
+  //   thumbnail: '/placeholders/cam-interior-rear.webp',
+  //   fov: 70,
+
+  //   minDistance: 0.01,
+  //   maxDistance: 0.01,
+    
+  //   minPolarAngle: Math.PI / 2.5,
+  //   maxPolarAngle: Math.PI / 1.5,
+
+  //   minAzimuthAngle: -0.2, 
+  //   maxAzimuthAngle: Math.PI / 1.5,
+  // }
 ];

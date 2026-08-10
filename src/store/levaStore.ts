@@ -68,9 +68,13 @@ interface LevaState {
         positionX: number;
         positionY: number;
         positionZ: number;
+        targetX: number;
+        targetY: number;
+        targetZ: number;
         angle: number;
         penumbra: number;
         distance: number;
+        decay: number;
       };
       leftPane: {
         enabled: boolean;
@@ -78,10 +82,13 @@ interface LevaState {
         positionX: number;
         positionY: number;
         positionZ: number;
-        rotationX: number;
-        rotationY: number;
-        rotationZ: number;
+        targetX: number;
+        targetY: number;
+        targetZ: number;
+        angle: number;
+        penumbra: number;
         distance: number;
+        decay: number;
       };
       rightPane: {
         enabled: boolean;
@@ -89,10 +96,13 @@ interface LevaState {
         positionX: number;
         positionY: number;
         positionZ: number;
-        rotationX: number;
-        rotationY: number;
-        rotationZ: number;
+        targetX: number;
+        targetY: number;
+        targetZ: number;
+        angle: number;
+        penumbra: number;
         distance: number;
+        decay: number;
       };
     };
   };
@@ -156,37 +166,60 @@ export const useLevaStore = create<LevaState>()(
         enabled: true,
         showHelper: false,
         ambientIntensity: 0.02, // Drastically reduced ambient light
+        // STEP 1 (light-linking fix): moved off the header/roofline and narrowed
+        // so the cone never grazes the windshield/door glass -> no more specular "dot"
+        // reflected in Material_Glass_Cabin_Static. Explicit target (world-space) replaces
+        // the old rotation+local-offset aiming, so position and aim are independent and
+        // directly Leva-tunable.
+        // STEP 2 (balance pass): ceiling was overpowering the center and, at Y:1.3,
+        // was poking above the physical roof shell near the windshield header -> confirmed
+        // fix is Y:1.2 (below the headliner). Pane lights were dying within ~20cm of the
+        // source (distance too short) so door cards / floor mats never picked up any light -
+        // that's the actual bug, not the position. Aim now targets low (sill/floor height),
+        // which is structurally safe from the glass: the glazed area starts above the
+        // beltline, so anything aimed at floor level geometrically cannot graze the window
+        // regardless of angle.
         ceiling: {
           enabled: true, 
-          intensity: 2.4,
+          intensity: 1.6,
           positionX: 0,
-          positionY: 1.4,
-          positionZ: 0.55,
-          angle: Math.PI / 2.5,
-          penumbra: 1.0,
-          distance: 1.7,
+          positionY: 1.2,    
+          positionZ: 0.1,      
+          targetX: 0,
+          targetY: 0.5,
+          targetZ: -0.15,
+          angle: 1.08,         
+          penumbra: 0.9,
+          distance: 1.6,
+          decay: 2,
         },
         leftPane: {
           enabled: true,
-          intensity: 0.8, // Reduced intensity
-          positionX: 0.7, // Moved outside
-          positionY: 0.9, // Raised
-          positionZ: 0.2,
-          rotationX: -Math.PI / 6, // Tilted down slightly
-          rotationY: Math.PI / 2.5,
-          rotationZ: 0,
-          distance: 1.0,
+          intensity: 1.1,
+          positionX: 0.42,
+          positionY: 1.15,
+          positionZ: 0.1,
+          targetX: 0.55,    
+          targetY: 0.15, 
+          targetZ: 0.15,
+          angle: 1.09, 
+          penumbra: 1.0,     
+          distance: 2.0, 
+          decay: 1.0,
         },
         rightPane: {
           enabled: true,
-          intensity: 0.8, // Reduced intensity
-          positionX: -0.7, 
-          positionY: 0.9, 
-          positionZ: 0.2,
-          rotationX: -Math.PI / 6, // Tilted down slightly
-          rotationY: -Math.PI / 2.5,
-          rotationZ: 0,
-          distance: 1.0,
+          intensity: 1.1,
+          positionX: -0.42,
+          positionY: 1.15,
+          positionZ: 0.1,
+          targetX: -0.55,
+          targetY: 0.15,
+          targetZ: 0.15,
+          angle: 1.09,
+          penumbra: 1.0,
+          distance: 2.0,
+          decay: 1.0,
         }
       },
     },
@@ -204,7 +237,7 @@ export const useLevaStore = create<LevaState>()(
     carbonTwill: { color: '#0a0a0a', clearcoat: 1.0, clearcoatRoughness: 0.0, metalness: 0.6, roughness: 1.0, normalScale: 1.0, envMapIntensity: 1.0 },
     carbonForged: { color: '#0a0a0a', clearcoat: 1.0, clearcoatRoughness: 0.0, metalness: 0.6, roughness: 1.0, normalScale: 1.0, envMapIntensity: 1.0 },
     metal: { clearcoat: 1.0, clearcoatRoughness: 0.15, metalness: 0.97, roughness: 0.5, envMapIntensity: 2.0 },
-    leather: { roughness: 1.0, metalness: 0.0, clearcoat: 0.06, clearcoatRoughness: 0.60, sheen: 0.6, sheenRoughness: 0.6, normalScale: 1.3, envMapIntensity: 1.0 },
+    leather: { roughness: 1.0, metalness: 0.10, clearcoat: 0.06, clearcoatRoughness: 0.60, sheen: 0.2, sheenRoughness: 0.6, normalScale: 1.3, envMapIntensity: 0.6 },
     aluminum: { color: '#a8a8a8', clearcoat: 0.0, clearcoatRoughness: 0.0, metalness: 1.0, roughness: 0.40, normalScale: 0.5, envMapIntensity: 1.0 },
     caliper: { clearcoat: 1.0, clearcoatRoughness: 0.05, metalness: 0.1, roughness: 0.15, envMapIntensity: 1.2 },
     rubber: { roughness: 0.95, metalness: 0.0, envMapIntensity: 0.1 },

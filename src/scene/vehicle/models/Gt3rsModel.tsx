@@ -250,7 +250,7 @@ const getInheritedShadow = (gltfNode: any, property: 'castShadow' | 'receiveShad
 };
 
 export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['group'] & { url: string }) {
-  const { nodes, materials } = useGLTF(url) as unknown as GLTFResult as GLTFResult
+  const { nodes, materials } = useGLTF(url, '/draco/') as unknown as GLTFResult as GLTFResult
   return (
     <group {...props} dispose={null}>
       <group name="Scene">
@@ -493,4 +493,4 @@ export default function Gt3rsModel({ url, ...props }: JSX.IntrinsicElements['gro
   )
 }
 
-useGLTF.preload('/models/gt3rs/scene-opt.glb')
+useGLTF.preload('/models/gt3rs/scene-opt.glb', '/draco/')

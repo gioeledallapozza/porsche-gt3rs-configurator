@@ -40,7 +40,7 @@ const Vehicle: React.FC<VehicleProps> = ({ vehicleId }) => {
   // with envMap (PMREM) generation, rather than after it.
   useEffect(() => {
     if (!config) return;
-    useGLTF.preload(config.modelPath);
+    useGLTF.preload(config.modelPath, '/draco/');
     useKtx2Disposal.preload(config.texturePack, gl);
     controllerLoaders[vehicleId]?.();
   }, [config, vehicleId, gl]);

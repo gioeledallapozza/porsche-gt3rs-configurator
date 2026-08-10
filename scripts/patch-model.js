@@ -37,13 +37,13 @@ content = content.replace(
 // --- 3. REPLACE HARDCODED PATH WITH DYNAMIC URL ---
 content = content.replace(
   /const { nodes, materials } = useGLTF\(['"`].*?['"`]\)/,
-  'const { nodes, materials } = useGLTF(url) as unknown as GLTFResult'
+  "const { nodes, materials } = useGLTF(url, '/draco/') as unknown as GLTFResult"
 );
 
 // --- 4. FIX PRELOAD STATIC PATH ---
 content = content.replace(
   /useGLTF\.preload\(['"`].*?['"`]\)/,
-  "useGLTF.preload('/models/gt3rs/scene-opt.glb')"
+  "useGLTF.preload('/models/gt3rs/scene-opt.glb', '/draco/')"
 );
 
 // --- 5. CLEANUP ---

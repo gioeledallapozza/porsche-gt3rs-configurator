@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useHelper } from '@react-three/drei';
 import { useLevaStore } from '@/store/levaStore';
@@ -15,8 +15,14 @@ const StudioLighting: React.FC = () => {
 
   const dirLightRef = useRef<THREE.DirectionalLight>(null!);
   const ceilingLightRef = useRef<THREE.SpotLight>(null!);
-  const leftPaneRef = useRef<THREE.RectAreaLight>(null!);
-  const rightPaneRef = useRef<THREE.RectAreaLight>(null!);
+  const leftPaneRef = useRef<THREE.SpotLight>(null!);
+  const rightPaneRef = useRef<THREE.SpotLight>(null!);
+
+  // Explicit, stable target objects: position + aim are now fully decoupled and
+  // independently Leva-tunable (no more position+rotation+fixed-local-offset trig).
+  const ceilingTarget = useMemo(() => new THREE.Object3D(), []);
+  const leftPaneTarget = useMemo(() => new THREE.Object3D(), []);
+  const rightPaneTarget = useMemo(() => new THREE.Object3D(), []);
 
   useHelper(dynamicLight.enabled && dynamicLight.showHelper && dirLightRef, THREE.DirectionalLightHelper, 1, 'yellow');
   
@@ -53,58 +59,61 @@ const StudioLighting: React.FC = () => {
         />
 
         {/* CEILING */}
+        <primitive
+            object={ceilingTarget}
+            position={[interiorLight.ceiling.targetX, interiorLight.ceiling.targetY, interiorLight.ceiling.targetZ]}
+        />
         <spotLight
             ref={ceilingLightRef}
             visible={interiorLight.ceiling.enabled}
             position={[interiorLight.ceiling.positionX, interiorLight.ceiling.positionY, interiorLight.ceiling.positionZ]}
+            target={ceilingTarget}
             angle={interiorLight.ceiling.angle}
             penumbra={interiorLight.ceiling.penumbra}
             intensity={interiorLight.ceiling.intensity * intensityMultiplier}
             distance={interiorLight.ceiling.distance}
-            decay={2.0}
+            decay={interiorLight.ceiling.decay}
             color="#ffffff"
             castShadow={false}
         />
 
        {/* LEFT WINDOW */}
-        {/* <group
+        <primitive
+            object={leftPaneTarget}
+            position={[interiorLight.leftPane.targetX, interiorLight.leftPane.targetY, interiorLight.leftPane.targetZ]}
+        />
+        <spotLight
+            ref={leftPaneRef}
+            visible={interiorLight.leftPane.enabled}
             position={[interiorLight.leftPane.positionX, interiorLight.leftPane.positionY, interiorLight.leftPane.positionZ]}
-            rotation={[interiorLight.leftPane.rotationX, interiorLight.leftPane.rotationY, interiorLight.leftPane.rotationZ]}
-        >
-          <spotLight
-              ref={leftPaneRef}
-              visible={interiorLight.leftPane.enabled}
-              color="#ffffff"
-              intensity={interiorLight.leftPane.intensity * intensityMultiplier}
-              angle={Math.PI / 3}
-              penumbra={1.0}
-              distance={interiorLight.leftPane.distance} // FIX: Now reads from Leva Store!
-              decay={2.0}
-              castShadow={false}
-          >
-              <object3D position={[0, 0, -1]} attach="target" />
-          </spotLight>
-        </group> */}
+            target={leftPaneTarget}
+            color="#ffffff"
+            intensity={interiorLight.leftPane.intensity * intensityMultiplier}
+            angle={interiorLight.leftPane.angle}
+            penumbra={interiorLight.leftPane.penumbra}
+            distance={interiorLight.leftPane.distance}
+            decay={interiorLight.leftPane.decay}
+            castShadow={false}
+        />
 
         {/* RIGHT WINDOW */}
-        <group
+        <primitive
+            object={rightPaneTarget}
+            position={[interiorLight.rightPane.targetX, interiorLight.rightPane.targetY, interiorLight.rightPane.targetZ]}
+        />
+        <spotLight
+            ref={rightPaneRef}
+            visible={interiorLight.rightPane.enabled}
             position={[interiorLight.rightPane.positionX, interiorLight.rightPane.positionY, interiorLight.rightPane.positionZ]}
-            rotation={[interiorLight.rightPane.rotationX, interiorLight.rightPane.rotationY, interiorLight.rightPane.rotationZ]}
-        >
-          <spotLight
-              ref={rightPaneRef}
-              visible={interiorLight.rightPane.enabled}
-              color="#ffffff"
-              intensity={interiorLight.rightPane.intensity * intensityMultiplier}
-              angle={Math.PI / 3}
-              penumbra={1.0}
-              distance={interiorLight.rightPane.distance} // FIX: Now reads from Leva Store!
-              decay={2.0}
-              castShadow={false}
-          >
-              <object3D position={[0, 0, -1]} attach="target" />
-          </spotLight>
-        </group>
+            target={rightPaneTarget}
+            color="#ffffff"
+            intensity={interiorLight.rightPane.intensity * intensityMultiplier}
+            angle={interiorLight.rightPane.angle}
+            penumbra={interiorLight.rightPane.penumbra}
+            distance={interiorLight.rightPane.distance}
+            decay={interiorLight.rightPane.decay}
+            castShadow={false}
+        />
       </group>
 
       {/* SHADOW PLANE */}

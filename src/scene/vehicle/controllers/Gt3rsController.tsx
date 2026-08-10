@@ -36,7 +36,7 @@ interface Gt3rsControllerProps {
 /* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
-  const { materials, nodes } = useGLTF(modelPath);
+  const { materials, nodes } = useGLTF(modelPath, '/draco/');
   const { camera, scene, gl } = useThree();
   const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
   const setModelReady = useConfiguratorStore((state) => state.setModelReady);

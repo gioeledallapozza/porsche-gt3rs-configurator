@@ -30,7 +30,7 @@ export const applyLeather = (
   material.roughness = tweaks.roughness;
   material.roughnessMap = textures.armMap;
 
-  material.metalnessMap = textures.armMap;
+  // material.metalnessMap = textures.armMap; //DO not use add a little metalness to simulate Ambiennt occlusion map
   material.metalness = tweaks.metalness;
 
   material.clearcoat = tweaks.clearcoat;

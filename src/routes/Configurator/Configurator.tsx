@@ -115,7 +115,8 @@ const Configurator: React.FC = () => {
             </Html>
           }>
             <VirtualStudio />  {/* EnvMap */}
-            <StudioLighting /> {/* Dynamic shadows */}
+             {/* Dynamic shadows */}
+             <StudioLighting /> 
           </Suspense>
 
           <Suspense fallback={
