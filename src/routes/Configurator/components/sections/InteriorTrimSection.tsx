@@ -19,7 +19,7 @@ const InteriorTrimSection: React.FC<InteriorTrimSectionProps> = ({ options }) =>
       selectedValue={interiorTrimPackage} 
       onSelect={setInteriorTrimPackage} 
       dynamicHex={carColor}
-      defaultOpen={false}
+      defaultOpen={true}
     />
   );
 };

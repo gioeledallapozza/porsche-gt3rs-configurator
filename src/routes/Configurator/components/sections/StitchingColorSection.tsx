@@ -16,7 +16,13 @@ const StitchingColorSection: React.FC<StitchingColorSectionProps> = ({ options }
   }));
 
   return (
-    <ColorPicker title="Stitching Color" options={mappedOptions} selectedValue={stitchingColor} onSelect={setStitchingColor} defaultOpen={false} />
+    <ColorPicker 
+      title="Stitching Color" 
+      options={mappedOptions} 
+      selectedValue={stitchingColor} 
+      onSelect={setStitchingColor} 
+      defaultOpen={true} 
+    />
   );
 };
 

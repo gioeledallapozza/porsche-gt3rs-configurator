@@ -21,7 +21,7 @@ const LeatherColorSection: React.FC<LeatherColorSectionProps> = ({ options }) =>
       options={mappedOptions} 
       selectedValue={interiorColor} 
       onSelect={setInteriorColor} 
-      defaultOpen={false}
+      defaultOpen={true}
     />
   );
 };

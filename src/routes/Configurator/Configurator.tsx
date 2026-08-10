@@ -104,8 +104,6 @@ const Configurator: React.FC = () => {
             fov: 35 //This need to match leva Store value
           }}
         >
-          {/* Only for development purposes */}
-          <Perf position="top-left" minimal={false} deepAnalyze={true}/>
 
           {/* SEPARATED SUSPENSE, So when GLTF loads the materials of the vehicle model the envMap EXISTS */}
           <Suspense fallback={
@@ -157,7 +155,8 @@ const Configurator: React.FC = () => {
 
           <CameraTransitionManager controlsRef={cameraControlsRef} />
           {/* Only developments */}
-          <CameraDebugHelper controlsRef={cameraControlsRef} />
+          {/* <CameraDebugHelper controlsRef={cameraControlsRef} /> */}
+          {/* <Perf position="top-left" minimal={false} deepAnalyze={true}/> */}
           <LevaControllers />
 
 

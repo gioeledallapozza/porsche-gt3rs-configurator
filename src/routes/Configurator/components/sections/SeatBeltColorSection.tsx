@@ -16,7 +16,12 @@ const SeatbeltColorSection: React.FC<SeatbeltColorSectionProps> = ({ options }) 
   }));
 
   return (
-    <ColorPicker title="Seatbelts" options={mappedOptions} selectedValue={seatbeltColor} onSelect={setSeatbeltColor} defaultOpen={false} />
+    <ColorPicker 
+      title="Seatbelts" 
+      options={mappedOptions} 
+      selectedValue={seatbeltColor} 
+      onSelect={setSeatbeltColor} 
+      defaultOpen={true} />
   );
 };
 

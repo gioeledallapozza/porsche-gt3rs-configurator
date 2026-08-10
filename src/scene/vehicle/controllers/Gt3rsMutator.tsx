@@ -28,6 +28,8 @@ interface Gt3rsMutatorProps {
 
 export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   // Extract state specifically (component only re-evaluates when these specific slices change)
+  const renderedCameraPreset = useConfiguratorStore((state) => state.renderedCameraPreset);
+
   //Exterior
   const carColor = useConfiguratorStore((state) => state.carColor);
   const aeroPackage = useConfiguratorStore((state) => state.aeroPackage);
@@ -152,40 +154,52 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
     invalidate();
   }, [interiorColor, leatherPrimaryMat, leatherSecondaryMat, textures]);
 
-// INTERIOR TRIMS
-useEffect(() => {
-  if (!interiorTrimMat) return;
+  // INTERIOR TRIMS
+  useEffect(() => {
+    if (!interiorTrimMat) return;
 
-  //Cleanup
-  interiorTrimMat.normalMap = null;
-  interiorTrimMat.roughnessMap = null;
-  interiorTrimMat.clearcoatMap = null;
+    //Cleanup
+    interiorTrimMat.normalMap = null;
+    interiorTrimMat.roughnessMap = null;
+    interiorTrimMat.clearcoatMap = null;
 
-  if (interiorTrimPackage === 'exterior') {
-    applyPaintToMaterial(interiorTrimMat);
-  } 
-  else if (interiorTrimPackage === 'carbon' && textures.carbonNormal && textures.carbonRoughness) {
-    applyCarbonFiber(interiorTrimMat, { 
-      normalMap: textures.carbonNormal, 
-      roughnessMap: textures.carbonRoughness 
-    });
-  }
-  else if (interiorTrimPackage === 'plastic') {
-    applyPlastic(interiorTrimMat);
-  }
-  else if (
-    interiorTrimPackage === 'aluminum' &&
-    textures.aluminumNormal &&
-    textures.aluminumRoughness
-  ) {
-    applyAluminum(interiorTrimMat, {
-      normalMap: textures.aluminumNormal,
-      roughnessMap: textures.aluminumRoughness,
-    });
-  }
+    if (interiorTrimPackage === 'exterior') {
+      applyPaintToMaterial(interiorTrimMat);
+    } 
+    else if (interiorTrimPackage === 'carbon' && textures.carbonNormal && textures.carbonRoughness) {
+      applyCarbonFiber(interiorTrimMat, { 
+        normalMap: textures.carbonNormal, 
+        roughnessMap: textures.carbonRoughness 
+      });
+    }
+    else if (interiorTrimPackage === 'plastic') {
+      applyPlastic(interiorTrimMat);
+    }
+    else if (
+      interiorTrimPackage === 'aluminum' &&
+      textures.aluminumNormal &&
+      textures.aluminumRoughness
+    ) {
+      applyAluminum(interiorTrimMat, {
+        normalMap: textures.aluminumNormal,
+        roughnessMap: textures.aluminumRoughness,
+      });
+    }
 
-  invalidate();
-}, [interiorTrimPackage, carColor, interiorTrimMat, textures, applyPaintToMaterial]);
+    invalidate();
+  }, [interiorTrimPackage, carColor, interiorTrimMat, textures, applyPaintToMaterial]);
+
+  // GLASS CABIN WHEN INSIDE WIEV
+  useEffect(() => {
+    const glassCabinMat = mats.glassCabin as THREE.MeshPhysicalMaterial;
+    if (!glassCabinMat) return;
+
+    // Determinate if is a interior view
+    const isInterior = renderedCameraPreset.toLowerCase().includes('interior');
+    glassCabinMat.opacity = isInterior ? 0.25 : 0.92;
+    glassCabinMat.needsUpdate = true;
+    invalidate();
+  }, [renderedCameraPreset, mats.glassCabin]);
   
   // Future EVENTS can be easily added here (e.g. Calipers, Wheels) without bloating logic
 

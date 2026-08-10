@@ -15,19 +15,20 @@ export interface CameraPreset {
 }
 
 export const cameraPresets: CameraPreset[] = [
-  { 
-    id: 'debug_view', 
-    name: 'Free Roam (Debug)', 
-    position: [0.0, 1.2, 2.0], 
-    target: [0.0, 1.2, 0.0], 
-    thumbnail: '', // Nessuna immagine, è solo per noi
+  // { 
+  //   id: 'debug_view', 
+  //   name: 'Free Roam (Debug)', 
+  //   position: [0.0, 1.2, 2.0], 
+  //   target: [0.0, 1.2, 0.0], 
+  //   thumbnail: '', // Nessuna immagine, è solo per noi
+  //   fov:70,
     
-    // NESSUN LIMITE
-    minDistance: 0.01,
-    maxDistance: 100,
-    minPolarAngle: 0,
-    maxPolarAngle: Math.PI, 
-  },
+  //   // NESSUN LIMITE
+  //   minDistance: 0.01,
+  //   maxDistance: 100,
+  //   minPolarAngle: 0,
+  //   maxPolarAngle: Math.PI, 
+  // },
   { 
     id: 'hero_view', 
     name: 'Front 3/4', 
@@ -98,21 +99,22 @@ export const cameraPresets: CameraPreset[] = [
     maxPolarAngle: Math.PI / 1.5,
     
   },
-  // { 
-  //   id: 'interior_rear_view', 
-  //   name: 'Interior Seats & Belts', 
-  //   position: [0.350, 1.150, 0.150], 
-  //   target: [0.340, 1.100, 0.140], 
-  //   thumbnail: '/placeholders/cam-interior-rear.webp',
-  //   fov: 70,
+  { 
+    id: 'interior_rear_view', 
+    name: 'Interior Seats & Belts', 
+    position: [-0.405, 1.043, 0.357],
+    target: [-0.400, 1.040, 0.349],
+    thumbnail: '/placeholders/cam-interior-rear.webp',
+    fov: 70,
 
-  //   minDistance: 0.01,
-  //   maxDistance: 0.01,
+    minDistance: 0.01,
+    maxDistance: 0.01,
     
-  //   minPolarAngle: Math.PI / 2.5,
-  //   maxPolarAngle: Math.PI / 1.5,
+    minPolarAngle: 0.882,
+    maxPolarAngle: 1.387,
+    
 
-  //   minAzimuthAngle: -0.2, 
-  //   maxAzimuthAngle: Math.PI / 1.5,
-  // }
+    minAzimuthAngle: -0.907,
+    maxAzimuthAngle: -0.060
+  }
 ];

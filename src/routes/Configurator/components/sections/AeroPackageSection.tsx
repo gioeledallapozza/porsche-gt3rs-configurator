@@ -20,6 +20,7 @@ const AeroPackageSection: React.FC<AeroPackageSectionProps> = ({ options }) => {
       selectedValue={aeroPackage} 
       onSelect={setAeroPackage} 
       dynamicHex={carColor}
+      defaultOpen={true}
     />
   );
 };
