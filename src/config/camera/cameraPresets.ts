@@ -4,6 +4,7 @@ export interface CameraPreset {
   position: [number, number, number];
   target: [number, number, number];
   thumbnail: string;
+  fov?: number;
 
   minDistance?: number;
   maxDistance?: number;
@@ -14,12 +15,27 @@ export interface CameraPreset {
 }
 
 export const cameraPresets: CameraPreset[] = [
+  // { 
+  //   id: 'debug_view', 
+  //   name: 'Free Roam (Debug)', 
+  //   position: [0.0, 1.2, 2.0], 
+  //   target: [0.0, 1.2, 0.0], 
+  //   thumbnail: '', // Nessuna immagine, è solo per noi
+  //   fov:70,
+    
+  //   // NESSUN LIMITE
+  //   minDistance: 0.01,
+  //   maxDistance: 100,
+  //   minPolarAngle: 0,
+  //   maxPolarAngle: Math.PI, 
+  // },
   { 
     id: 'hero_view', 
     name: 'Front 3/4', 
-    position: [3.5, 1.5, 4.5], 
+    position: [2.153, 1.421, 5.297], 
     target: [0, 0.2, 0], 
-    thumbnail: '/placeholders/cam-front-34.webp' 
+    thumbnail: '/placeholders/cam-front-34.webp',
+    fov: 35
   },
   { 
     id: 'wheel_close', 
@@ -27,6 +43,7 @@ export const cameraPresets: CameraPreset[] = [
     position: [2.0, 0.5, 1.5], 
     target: [0.9, 0.4, 1.2], 
     thumbnail: '/placeholders/cam-wheel.webp',
+    fov: 45,
     
     minDistance: 1.5,
     maxDistance: 2.5,
@@ -62,4 +79,42 @@ export const cameraPresets: CameraPreset[] = [
     target: [0.0, 1.2, -2.0], 
     thumbnail: '/placeholders/cam-wing.webp' 
   },
+  { 
+    id: 'interior_view', 
+    name: 'Interior', 
+    // position: [0.223, 1.112, -0.505], 
+    // target: [-0.132, 0.507, 0.965], 
+    position: [0.0, 1.150, -0.450],
+    target: [0.0, 1.145, -0.441], 
+
+    thumbnail: '/placeholders/cam-interior.webp',
+    fov: 70,
+    
+    //Low zoom scrooll
+    minDistance: 0.01,
+    maxDistance: 0.01,
+    
+    // Vertical rotation limits (Polar)
+    minPolarAngle: Math.PI / 3,    
+    maxPolarAngle: Math.PI / 1.5,
+    
+  },
+  { 
+    id: 'interior_rear_view', 
+    name: 'Interior Seats & Belts', 
+    position: [-0.405, 1.043, 0.357],
+    target: [-0.400, 1.040, 0.349],
+    thumbnail: '/placeholders/cam-interior-rear.webp',
+    fov: 70,
+
+    minDistance: 0.01,
+    maxDistance: 0.01,
+    
+    minPolarAngle: 0.882,
+    maxPolarAngle: 1.387,
+    
+
+    minAzimuthAngle: -0.907,
+    maxAzimuthAngle: -0.060
+  }
 ];

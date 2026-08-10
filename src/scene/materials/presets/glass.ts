@@ -24,11 +24,11 @@ export const configureCabinGlass = (material: THREE.MeshPhysicalMaterial): void 
 };
 
 // 2. OPTICAL LIGHTS GLASS (Headlights & Taillights)
-// Uses Physical Transmission: Perfect optical clarity, bends light inside the headlight housing.
+// NO TRASMISSION, TRANSMISSION WHIL DUPLICATE TRIANGLES BAD FOR PERFORMANCE
 export const configureLightsGlass = (material: THREE.MeshPhysicalMaterial): void => {
   const tweaks = useLevaStore.getState().glassLights;
 
-  material.color.setHex(0xffffff);
+  material.color.setHex(0x222222);
   material.transparent = true;
   material.depthWrite = false;
 

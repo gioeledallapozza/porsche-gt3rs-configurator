@@ -30,7 +30,9 @@ files.forEach(file => {
     
    try {
      if (file.includes('normal')) {
-        execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode uastc --uastc_quality 4 --zcmp 22 --normal_mode "${outFile}" "${inFile}"`);
+        // execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode uastc --uastc_quality 4 --zcmp 22 --normal_mode "${outFile}" "${inFile}"`);
+        // Do not use --normal_mode, MeshPhysical material DON'T calculate Z coordinate in real time from other coordinates. The normal-mode removes the Z coordinates for optimization
+        execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode uastc --uastc_quality 4 --zcmp 22 "${outFile}" "${inFile}"`);
         { stdio: 'inherit' }
       } else if (file.includes('roughness') || file.includes('metalness')) {
         execSync(`toktx --t2 --assign_oetf linear --genmipmap --encode etc1s --clevel 5 "${outFile}" "${inFile}"`);

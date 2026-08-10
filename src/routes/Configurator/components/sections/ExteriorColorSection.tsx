@@ -18,6 +18,7 @@ const ExteriorColorSection: React.FC<ExteriorColorSectionProps> = ({ options }) 
       options={options} 
       selectedValue={carColor} 
       onSelect={setCarColor} 
+      defaultOpen={true}
     />
   );
 };

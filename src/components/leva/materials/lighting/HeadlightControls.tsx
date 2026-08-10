@@ -16,6 +16,7 @@ export const HeadlightControls: React.FC = () => {
           roughness: { value: state.headlight.roughness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('headlight', { roughness: value as number }) },
           metalness: { value: state.headlight.metalness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('headlight', { metalness: value as number }) },
           ior: { value: state.headlight.ior, min: 1, max: 3, step: 0.01, onEditEnd: (value) => setTweaks('headlight', { ior: value as number }) },
+          envMapIntensity: { value: state.headlight.envMapIntensity, min: 0, max: 5, step: 0.01, onEditEnd: (value) => setTweaks('headlight', { envMapIntensity: value as number }) }
         }, { collapsed: true }),
       }, { collapsed: true }),
     }, { collapsed: true }),

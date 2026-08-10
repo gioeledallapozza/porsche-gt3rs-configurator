@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export const applyBlackPlastic = (material: THREE.MeshPhysicalMaterial): void => {
+export const applyPlastic = (material: THREE.MeshPhysicalMaterial): void => {
   material.color.setHex(0x111111);
   material.normalMap = null;
   material.roughnessMap = null;

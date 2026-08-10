@@ -36,18 +36,46 @@ content = content.replace(
 
 // --- 3. REPLACE HARDCODED PATH WITH DYNAMIC URL ---
 content = content.replace(
-  /const { nodes, materials } = useGLTF\(['"`].*?['"`]\)/,
-  'const { nodes, materials } = useGLTF(url) as unknown as GLTFResult'
+  /const { nodes, materials } = useGLTF\(['"`].*?['"`]\)( as GLTFResult)?/,
+  "const { nodes, materials } = useGLTF(url, '/draco/') as unknown as GLTFResult"
 );
 
 // --- 4. FIX PRELOAD STATIC PATH ---
 content = content.replace(
   /useGLTF\.preload\(['"`].*?['"`]\)/,
-  "useGLTF.preload('/models/gt3rs/scene-opt.glb')"
+  "useGLTF.preload('/models/gt3rs/scene-opt.glb', '/draco/')"
 );
 
 // --- 5. CLEANUP ---
 content = content.replace(/\s+animations: GLTFAction\[\]/, '');
+
+
+// --- 6. INJECT SHADOW INHERITANCE LOGIC ---
+const shadowHelper = `
+// Function dynamically injected by patch-model.js
+const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
+  if (!gltfNode) return false;
+  if (gltfNode.userData[property] !== undefined) {
+    return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
+  }
+  if (gltfNode.parent) {
+    return getInheritedShadow(gltfNode.parent, property);
+  }
+  return false;
+};
+`;
+
+// Add the helper before the component declaration
+content = content.replace(
+  "export default function Gt3rsModel", 
+  shadowHelper + "\nexport default function Gt3rsModel"
+);
+
+// Locate all the meshes and inject the props evaluated at runtime into the nodes
+content = content.replace(
+  /<mesh([^>]*)geometry=\{nodes\.([\w-]+)\.geometry\}([^>]*?)\/?>/g,
+  "<mesh$1geometry={nodes.$2.geometry}$3 castShadow={getInheritedShadow(nodes.$2, 'castShadow')} receiveShadow={getInheritedShadow(nodes.$2, 'receiveShadow')} />"
+);
 
 // Write file and clean up
 fs.writeFileSync(targetPath, content);

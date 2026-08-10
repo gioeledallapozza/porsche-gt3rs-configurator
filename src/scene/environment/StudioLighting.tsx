@@ -1,44 +1,118 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { useThree } from '@react-three/fiber';
+import { useHelper } from '@react-three/drei';
+import { useLevaStore } from '@/store/levaStore';
 
 const StudioLighting: React.FC = () => {
+  const dynamicLight = useLevaStore((state) => state.environment.dynamic);
+  const interiorLight = useLevaStore((state) => state.environment.interior);
+
   const dirLightRef = useRef<THREE.DirectionalLight>(null!);
-  const { scene } = useThree();
+  const ceilingLightRef = useRef<THREE.SpotLight>(null!);
+  const leftPaneRef = useRef<THREE.SpotLight>(null!);
+  const rightPaneRef = useRef<THREE.SpotLight>(null!);
 
-  useEffect(() => {
-    if (dirLightRef.current) {
-    
-      dirLightRef.current.updateMatrixWorld();
-      
-      const shadowHelper = new THREE.CameraHelper(dirLightRef.current.shadow.camera);
-      scene.add(shadowHelper);
+  // Explicit, stable target objects: position + aim are now fully decoupled and
+  // independently Leva-tunable (no more position+rotation+fixed-local-offset trig).
+  const ceilingTarget = useMemo(() => new THREE.Object3D(), []);
+  const leftPaneTarget = useMemo(() => new THREE.Object3D(), []);
+  const rightPaneTarget = useMemo(() => new THREE.Object3D(), []);
 
-      // invalidate();
-
-      return () => {
-        scene.remove(shadowHelper);
-        shadowHelper.dispose();
-      };
-    }
-  }, [scene]);
+  useHelper(dynamicLight.enabled && dynamicLight.showHelper && dirLightRef, THREE.DirectionalLightHelper, 1, 'yellow');
+  
+  const showIntHelper = interiorLight.enabled && interiorLight.showHelper;
+  useHelper(showIntHelper && interiorLight.ceiling.enabled && ceilingLightRef, THREE.SpotLightHelper, 'cyan');
+  useHelper(showIntHelper && interiorLight.leftPane.enabled && leftPaneRef, THREE.SpotLightHelper, 'cyan');
+  useHelper(showIntHelper && interiorLight.rightPane.enabled && rightPaneRef, THREE.SpotLightHelper, 'cyan');
 
   return (
     <group>
+      {/* EXTERIOR LIGHTING */}
       <directionalLight
-        // ref={dirLightRef} // ONLY FOR DEBUG
+        ref={dirLightRef}
         castShadow
-        position={[5, 8, 3]}
-        intensity={0.5} 
-        shadow-mapSize={[2048, 2048]}
-        shadow-bias={-0.0005}
-        shadow-normalBias={0.04}
+        visible={dynamicLight.enabled}
+        position={[dynamicLight.positionX, dynamicLight.positionY, dynamicLight.positionZ]}
+        intensity={dynamicLight.intensity}
+        shadow-mapSize={[dynamicLight.shadowMapSize, dynamicLight.shadowMapSize]}
+        shadow-bias={dynamicLight.shadowBias}
+        shadow-normalBias={dynamicLight.shadowNormalBias}
       >
-        <orthographicCamera attach="shadow-camera" args={[-2.5, 2.5, 2.5, -2.5, 0.5, 12]} />
+        <orthographicCamera
+          attach="shadow-camera"
+          args={[-dynamicLight.shadowCameraSize, dynamicLight.shadowCameraSize, dynamicLight.shadowCameraSize, -dynamicLight.shadowCameraSize, 0.5, 12]}
+        />
       </directionalLight>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]} receiveShadow> 
-        <planeGeometry args={[30, 30]} /> 
+     {/* INTERIOR STUDIO LIGHTING */}
+      <group visible={interiorLight.enabled}>
+        <ambientLight 
+            layers={1} 
+            intensity={interiorLight.ambientIntensity} 
+            color="#ffffff" 
+        />
+
+        {/* CEILING */}
+        <primitive
+            object={ceilingTarget}
+            position={[interiorLight.ceiling.targetX, interiorLight.ceiling.targetY, interiorLight.ceiling.targetZ]}
+        />
+        <spotLight
+            ref={ceilingLightRef}
+            visible={interiorLight.ceiling.enabled}
+            position={[interiorLight.ceiling.positionX, interiorLight.ceiling.positionY, interiorLight.ceiling.positionZ]}
+            target={ceilingTarget}
+            angle={interiorLight.ceiling.angle}
+            penumbra={interiorLight.ceiling.penumbra}
+            intensity={interiorLight.ceiling.intensity}
+            distance={interiorLight.ceiling.distance}
+            decay={interiorLight.ceiling.decay}
+            color="#ffffff"
+            castShadow={false}
+        />
+
+       {/* LEFT WINDOW */}
+        <primitive
+            object={leftPaneTarget}
+            position={[interiorLight.leftPane.targetX, interiorLight.leftPane.targetY, interiorLight.leftPane.targetZ]}
+        />
+        <spotLight
+            ref={leftPaneRef}
+            visible={interiorLight.leftPane.enabled}
+            position={[interiorLight.leftPane.positionX, interiorLight.leftPane.positionY, interiorLight.leftPane.positionZ]}
+            target={leftPaneTarget}
+            color="#ffffff"
+            intensity={interiorLight.leftPane.intensity}
+            angle={interiorLight.leftPane.angle}
+            penumbra={interiorLight.leftPane.penumbra}
+            distance={interiorLight.leftPane.distance}
+            decay={interiorLight.leftPane.decay}
+            castShadow={false}
+        />
+
+        {/* RIGHT WINDOW */}
+        <primitive
+            object={rightPaneTarget}
+            position={[interiorLight.rightPane.targetX, interiorLight.rightPane.targetY, interiorLight.rightPane.targetZ]}
+        />
+        <spotLight
+            ref={rightPaneRef}
+            visible={interiorLight.rightPane.enabled}
+            position={[interiorLight.rightPane.positionX, interiorLight.rightPane.positionY, interiorLight.rightPane.positionZ]}
+            target={rightPaneTarget}
+            color="#ffffff"
+            intensity={interiorLight.rightPane.intensity}
+            angle={interiorLight.rightPane.angle}
+            penumbra={interiorLight.rightPane.penumbra}
+            distance={interiorLight.rightPane.distance}
+            decay={interiorLight.rightPane.decay}
+            castShadow={false}
+        />
+      </group>
+
+      {/* SHADOW PLANE */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.06, 0]} receiveShadow>
+        <planeGeometry args={[30, 30]} />
         <shadowMaterial transparent opacity={0.6} color="#000000" />
       </mesh>
     </group>

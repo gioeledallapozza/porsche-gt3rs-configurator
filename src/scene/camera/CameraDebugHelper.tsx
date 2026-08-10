@@ -17,10 +17,16 @@ export default function CameraDebugHelper({ controlsRef }: CameraDebugHelperProp
         controlsRef.current.getPosition(position);
         controlsRef.current.getTarget(target);
 
+        const azimuth = controlsRef.current.azimuthAngle;
+        const polar = controlsRef.current.polarAngle;
+
         console.log(`
             ======== CAMERA PRESET DATA ========
             position: [${position.x.toFixed(3)}, ${position.y.toFixed(3)}, ${position.z.toFixed(3)}],
             target: [${target.x.toFixed(3)}, ${target.y.toFixed(3)}, ${target.z.toFixed(3)}]
+
+            currentAzimuth: ${azimuth.toFixed(3)}
+            currentPolar: ${polar.toFixed(3)}
             ====================================
         `);
       }

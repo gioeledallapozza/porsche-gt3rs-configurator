@@ -3,6 +3,20 @@ import type { VehicleConfig } from '../types';
 export const gt3rsConfig: VehicleConfig = {
   id: 'gt3rs',
   modelPath: '/models/gt3rs/scene.glb',
+  texturePack: {
+    carbonNormal: '/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2',
+    carbonRoughness: '/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2',
+    forgedNormal: '/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2',
+    forgedRoughness: '/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2',
+    aluminumNormal: '/textures/materials/aluminum/aluminum_normal.ktx2',
+    aluminumRoughness: '/textures/materials/aluminum/aluminum_roughness.ktx2',
+    leatherNormal: '/textures/materials/leather/leather_v1_normal.ktx2',
+    leatherArm: '/textures/materials/leather/leather_v1_arm.ktx2',
+    carpetAo: '/textures/materials/ambient_occlusion/carpet_ao.ktx2',
+    // tubAo: '/textures/materials/ambient_occlusion/interior_tub_ao.ktx2',
+    // metalAccentAo: '/textures/materials/ambient_occlusion/metal_accent_ao.ktx2',
+  },
+
   paintOptions: [
 
     // --- STANDARD ---
@@ -187,12 +201,27 @@ export const gt3rsConfig: VehicleConfig = {
     { name: 'Cream White', hex: '#E3DAC6', finish: 'solid', category: 'pts' },
     { name: 'Carrara White Metallic', hex: '#EBEBEB', finish: 'metallic', category: 'pts' }
   ],
-  aeroOptions: [
-    { id: 'standard', label: 'Standard (Painted Body Color)' },
-    { id: 'weissach', label: 'Weissach Package (Twill Carbon)' },
-    { id: 'weissach_forged', label: 'Weissach Package (Forged Carbon)' }
+ aeroOptions: [
+    { 
+      id: 'standard', 
+      label: 'Standard (Painted Body Color)', 
+      thumbnailUrl: '/textures/ui/car_paint_nobackground.webp',
+      hexFallback: '#555555' 
+    },
+    { 
+      id: 'weissach', 
+      label: 'Weissach Package (Twill Carbon)', 
+      thumbnailUrl: '/textures/ui/carbon_twill.webp',
+      hexFallback: '#111111' 
+    },
+    { 
+      id: 'weissach_forged', 
+      label: 'Weissach Package (Forged Carbon)', 
+      thumbnailUrl: '/textures/ui/carbon_forged.webp',
+      hexFallback: '#222222' 
+    }
   ],
-  wheelOption: [
+  wheelOptions: [
     { id: 'silver', name: 'Standard Silver Alloy', hex: '#888C8D' },
     { id: 'gold', name: 'Satin Aurum', hex: '#7F6B46' }
   ],
@@ -201,5 +230,79 @@ export const gt3rsConfig: VehicleConfig = {
     { id: 'yellow', name: 'Speed Yellow (PCCB)', hex: '#f0d722' },
     { id: 'green', name: 'Acid Green (Hybrid)', hex: '#87d30f' },
     { id: 'black', name: 'High Gloss Black', hex: '#111111' }
+  ],
+  interiorTrimOptions: [
+    { 
+      id: 'carbon', 
+      label: 'Matte Carbon Fiber',
+      thumbnailUrl: '/textures/ui/carbon_twill.webp', // Puoi riutilizzare quella del Weissach!
+      hexFallback: '#111111'
+    },
+    { 
+      id: 'exterior', 
+      label: 'Painted in Exterior Color',
+      thumbnailUrl: '/textures/ui/car_paint_nobackground.webp', // Se usi la logica DynamicHex, questo diventerà invisibile a favore del backgroundColor
+      hexFallback: '#555555'
+    },
+    { 
+      id: 'aluminum', 
+      label: 'Brushed Aluminum',
+      thumbnailUrl: '/textures/ui/aluminum.webp', // Dovrai creare questa immagine (o usare solo l'hexFallback)
+      hexFallback: '#d4d4d4'
+    },
+    { 
+      id: 'plastic', 
+      label: 'Standard Matte Black',
+      thumbnailUrl: '/textures/ui/plastic.webp', // Dovrai creare questa immagine (o usare solo l'hexFallback)
+      hexFallback: '#151515'
+    }
+  ],
+  interiorColorOptions: [
+    // --- 16 Leather Color (Exclusive Manufaktur) ---
+    { id: 'black', name: 'Black', hex: '#111111' },
+    { id: 'chalk', name: 'Chalk', hex: '#D3D3D1' }, 
+    { id: 'slate_grey', name: 'Slate Grey', hex: '#8C908E' },
+    { id: 'graphite_blue', name: 'Graphite Blue', hex: '#44515E' },
+    { id: 'mojave_beige', name: 'Mojave Beige', hex: '#E7DEC8' },
+    { id: 'sahara_beige', name: 'Sahara Beige', hex: '#A19385' },
+    { id: 'cognac', name: 'Cognac', hex: '#AA7048' },
+    { id: 'truffle_brown', name: 'Truffle Brown', hex: '#4C392D' },
+    { id: 'miami_blue', name: 'Miami Blue', hex: '#057BB7' },
+    { id: 'agave_green', name: 'Agave Green', hex: '#2A4B44' },
+    { id: 'night_blue', name: 'Night Blue', hex: '#163A4B' },
+    { id: 'blackberry', name: 'Blackberry', hex: '#725B61' },
+    { id: 'cohiba_brown', name: 'Cohiba Brown', hex: '#493B35' },
+    { id: 'bordeaux_red', name: 'Bordeaux Red', hex: '#602526' },
+    { id: 'guards_red', name: 'Guards Red', hex: '#AC2325' },
+    { id: 'pine_green', name: 'Pine Green', hex: '#37423D' }
+  ],
+ stitchingOptions: [
+    // --- 19 Stitching Colors (Exclusive Manufaktur) ---
+    { id: 'gt_silver', name: 'GT Silver', hex: '#D1D1CF' },
+    { id: 'chalk', name: 'Chalk', hex: '#DFDFDD' },
+    { id: 'agate_grey', name: 'Agate Grey', hex: '#5C6060' },
+    { id: 'black', name: 'Black', hex: '#111111' },
+    { id: 'white', name: 'White', hex: '#F0F0F0' },
+    { id: 'mojave_beige', name: 'Mojave Beige', hex: '#9C8C7D' },
+    { id: 'cognac', name: 'Cognac', hex: '#B67E48' },
+    { id: 'truffle_brown', name: 'Truffle Brown', hex: '#382721' },
+    { id: 'arctic_blue', name: 'Arctic Blue', hex: '#338BB8' },
+    { id: 'agave_green', name: 'Agave Green', hex: '#335651' },
+    { id: 'shark_blue', name: 'Shark Blue', hex: '#02639A' },
+    { id: 'ocean_blue', name: 'Ocean Blue', hex: '#0E3D4A' },
+    { id: 'ruby_star', name: 'Ruby Star', hex: '#982154' },
+    { id: 'mahogany', name: 'Mahogany', hex: '#62302D' },
+    { id: 'guards_red', name: 'Guards Red', hex: '#AD1820' },
+    { id: 'lava_orange', name: 'Lava Orange', hex: '#EF6E13' },
+    { id: 'racing_yellow', name: 'Racing Yellow', hex: '#F4C712' },
+    { id: 'lizard_green', name: 'Lizard Green', hex: '#1E993F' },
+    { id: 'olive_green', name: 'Olive Green', hex: '#3E463E' }
+  ],
+  seatbeltOptions: [
+    { id: 'black', name: 'Black', hex: '#0a0a0a' },
+    { id: 'silver', name: 'Silver Grey', hex: '#888C8D' },
+    { id: 'red', name: 'Guards Red', hex: '#d32f2f' },
+    { id: 'yellow', name: 'Racing Yellow', hex: '#f7d117' },
+    { id: 'blue', name: 'Shark Blue', hex: '#0277bd' }
   ]
 };

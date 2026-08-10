@@ -3,7 +3,11 @@ import * as THREE from 'three';
 import { invalidate } from '@react-three/fiber';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
+import { applyPlastic } from '@/scene/materials/presets/plastic';
 import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/materials/presets/paint';
+import { applyLeather, applyStitching } from '@/scene/materials/presets/leather';
+import { applyPolyester } from '@/scene/materials/presets/polyester';
+import { applyAluminum } from '@/scene/materials/presets/aluminum';
 import { gt3rsConfig } from '@/config/vehicles/gt3rs.config';
 import { applyAlloyFinish } from '@/scene/materials/presets/metals';
 import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
@@ -15,21 +19,43 @@ interface Gt3rsMutatorProps {
     carbonRoughness: THREE.Texture | null;
     forgedNormal: THREE.Texture | null;
     forgedRoughness: THREE.Texture | null;
+    aluminumNormal: THREE.Texture | null;
+    aluminumRoughness: THREE.Texture | null;
+    leatherNormal: THREE.Texture | null;
+    leatherArm: THREE.Texture | null;
   };
 }
 
+/* eslint-disable react-hooks/immutability */
 export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
   // Extract state specifically (component only re-evaluates when these specific slices change)
+  const renderedCameraPreset = useConfiguratorStore((state) => state.renderedCameraPreset);
+
+  //Exterior
   const carColor = useConfiguratorStore((state) => state.carColor);
   const aeroPackage = useConfiguratorStore((state) => state.aeroPackage);
   const wheelColor = useConfiguratorStore((state) => state.wheelColor);
   const caliperColor = useConfiguratorStore((state) => state.caliperColor);
 
+  //Interior
+  const interiorTrimPackage = useConfiguratorStore((state) => state.interiorTrimPackage); 
+  const interiorColor = useConfiguratorStore((state) => state.interiorColor);
+  const stitchingColor = useConfiguratorStore((state) => state.stitchingColor);
+  const seatbeltColor = useConfiguratorStore((state) => state.seatbeltColor);
+
+  //Exterior Materials
   const paintMat = mats.paint as THREE.MeshPhysicalMaterial;
   const weissachMat = mats.exteriorWeissach as THREE.MeshPhysicalMaterial;
   const rimPrimaryMat = mats.rimPrimary as THREE.MeshPhysicalMaterial;
   const rimCenterMat = mats.rimCenter as THREE.MeshPhysicalMaterial;
   const caliperMat = mats.caliper as THREE.MeshPhysicalMaterial;
+
+  //Interior Materials
+  const interiorTrimMat = mats.interiorTrim as THREE.MeshPhysicalMaterial;
+  const leatherPrimaryMat = mats.leatherPrimary as THREE.MeshPhysicalMaterial;
+  const leatherSecondaryMat = mats.leatherSecondary as THREE.MeshPhysicalMaterial;
+  const stitchingMat = mats.stitching as THREE.MeshPhysicalMaterial;
+  const seatbeltMat = mats.seatbelt as THREE.MeshPhysicalMaterial;
 
   //CORE LOGIC: apply paint on a material
  const applyPaintToMaterial = useCallback((material: THREE.MeshPhysicalMaterial) => {
@@ -107,6 +133,74 @@ export default function Gt3rsMutator({ mats, textures }: Gt3rsMutatorProps) {
     applyCaliperPaint(caliperMat, caliperColor);
     invalidate();
   }, [caliperColor, caliperMat]);
+
+  // STITCHING AND SEATBELT 
+  useEffect(() => {
+    if (stitchingMat) applyStitching(stitchingMat, stitchingColor);
+    if (seatbeltMat) applyPolyester(seatbeltMat, seatbeltColor);
+    
+    invalidate();
+  }, [stitchingColor, seatbeltColor, stitchingMat, seatbeltMat]);
+
+  // LEATHER COLOR CHANGE
+  useEffect(() => {
+  if (leatherPrimaryMat) {
+      applyLeather(leatherPrimaryMat, interiorColor, { normalMap: textures.leatherNormal, armMap: textures.leatherArm });
+    }
+    
+    if (leatherSecondaryMat) {
+      applyLeather(leatherSecondaryMat, interiorColor, { normalMap: textures.leatherNormal, armMap: textures.leatherArm });
+    }
+
+    invalidate();
+  }, [interiorColor, leatherPrimaryMat, leatherSecondaryMat, textures]);
+
+  // INTERIOR TRIMS
+  useEffect(() => {
+    if (!interiorTrimMat) return;
+
+    //Cleanup
+    interiorTrimMat.normalMap = null;
+    interiorTrimMat.roughnessMap = null;
+    interiorTrimMat.clearcoatMap = null;
+
+    if (interiorTrimPackage === 'exterior') {
+      applyPaintToMaterial(interiorTrimMat);
+    } 
+    else if (interiorTrimPackage === 'carbon' && textures.carbonNormal && textures.carbonRoughness) {
+      applyCarbonFiber(interiorTrimMat, { 
+        normalMap: textures.carbonNormal, 
+        roughnessMap: textures.carbonRoughness 
+      });
+    }
+    else if (interiorTrimPackage === 'plastic') {
+      applyPlastic(interiorTrimMat);
+    }
+    else if (
+      interiorTrimPackage === 'aluminum' &&
+      textures.aluminumNormal &&
+      textures.aluminumRoughness
+    ) {
+      applyAluminum(interiorTrimMat, {
+        normalMap: textures.aluminumNormal,
+        roughnessMap: textures.aluminumRoughness,
+      });
+    }
+
+    invalidate();
+  }, [interiorTrimPackage, carColor, interiorTrimMat, textures, applyPaintToMaterial]);
+
+  // GLASS CABIN WHEN INSIDE WIEV
+  useEffect(() => {
+    const glassCabinMat = mats.glassCabin as THREE.MeshPhysicalMaterial;
+    if (!glassCabinMat) return;
+
+    // Determinate if is a interior view
+    const isInterior = renderedCameraPreset.toLowerCase().includes('interior');
+    glassCabinMat.opacity = isInterior ? 0.25 : 0.92;
+    glassCabinMat.needsUpdate = true;
+    invalidate();
+  }, [renderedCameraPreset, mats.glassCabin]);
   
   // Future EVENTS can be easily added here (e.g. Calipers, Wheels) without bloating logic
 

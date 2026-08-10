@@ -3,11 +3,12 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 // import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, Html } from '@react-three/drei';
+import { CameraControls, Html, Preload } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SSAO } from '@react-three/postprocessing';
 
 //Components
+import { useConfiguratorStore } from '@/store/configuratorStore';
 import { vehicleRegistry } from '@/config/vehicles';
 import { cameraPresets } from '@/config/camera/cameraPresets';
 import Vehicle from '@/scene/vehicle/Vehicle';
@@ -15,15 +16,17 @@ import VirtualStudio from '@/scene/environment/VirtualStudio.tsx';
 import StudioLighting from '@/scene/environment/StudioLighting.tsx';
 import CameraPresetsUI from './components/canvas/camera/CameraPresetsUI.tsx';
 import CameraTransitionManager from '@/scene/camera/CameraTransitionManager';
-import CameraDebugHelper from '@/scene/camera/CameraDebugHelper';
 import SocialLinks from '@/routes/Configurator/components/canvas/overlay/SocialLinks.tsx';
+import ConfiguratorSidebar from './components/layout/ConfiguratorSidebar.tsx';
+import CameraTransitionOverlay from './components/canvas/overlay/CameraTransitionOverlay.tsx';
+import ConfiguratorLoadingOverlay from './components/canvas/overlay/ConfiguratorLoadingOverlay.tsx';
+
 // import LevaControllers from '@/components/LevaControllers.tsx';
+// import CameraDebugHelper from '@/scene/camera/CameraDebugHelper';
 
 //Css
 import styles from '@/routes/Configurator/components/layout/Configurator.module.css';
 
-//Smart Sections
-import ConfiguratorSidebar from './components/layout/ConfiguratorSidebar.tsx';
 
 
 
@@ -33,7 +36,19 @@ const Configurator: React.FC = () => {
   const config = vehicleId ? vehicleRegistry[vehicleId] : null; //Get the vehicle configuration if vehicleId is not null
   const cameraControlsRef = useRef<CameraControls | null>(null);
 
+  //Extract initial state
+  const initVehicle = useConfiguratorStore((state) => state.initVehicle);
+  // const isInitialized = useConfiguratorStore((state) => state.isInitialized);
+  // const setModelReady = useConfiguratorStore((state) => state.setModelReady);
+
   const initialPreset = cameraPresets.find(p => p.id === 'hero_view') || cameraPresets[0];
+
+  // UseEffect to initialize vehicle as soon as is ready
+  useEffect(() => {
+    if (config) {
+      initVehicle(config);
+    }
+  }, [config, initVehicle]);
 
   //Setup invalidation for frameloop=demand
   useEffect(() => {
@@ -55,8 +70,6 @@ const Configurator: React.FC = () => {
     const onUpdate = () => invalidate();
     controls.addEventListener('update', onUpdate);
 
-
-
     return () => {
       controls.removeEventListener('update', onUpdate);
     };
@@ -74,6 +87,8 @@ const Configurator: React.FC = () => {
 
         <SocialLinks />
         <CameraPresetsUI />
+        <CameraTransitionOverlay />
+        
         <Canvas
           shadows={{ type: THREE.PCFSoftShadowMap }}
           frameloop="demand" //Only render when there are changes in the scene
@@ -90,17 +105,23 @@ const Configurator: React.FC = () => {
             fov: 35 //This need to match leva Store value
           }}
         >
-          {/* Only for development purposes */}
-          {/* <Perf position="top-left" minimal={false} /> */}
 
+          {/* SEPARATED SUSPENSE, So when GLTF loads the materials of the vehicle model the envMap EXISTS */}
           <Suspense fallback={
             <Html center>
-              <div className={styles.vehicleLoader}>Loading 3D Assets...</div>
+              {/* NOT USED THERE IS THE LOADER OVERLAY IN THE END BUT WE KEEP IT TO BE SAFE */}
+              <div className={styles.vehicleLoader}>Loading Lighting...</div>
             </Html>
           }>
             <VirtualStudio />  {/* EnvMap */}
-            <StudioLighting /> {/* Dynamic shadows */}
+             {/* Dynamic shadows */}
+             <StudioLighting /> 
+          </Suspense>
 
+          <Suspense fallback={
+            null
+            // <Html center><div className={styles.vehicleLoader}>Loading 3D Assets...</div></Html>
+          }>
             <Vehicle vehicleId={config.id} />
           </Suspense>
 
@@ -135,13 +156,16 @@ const Configurator: React.FC = () => {
 
           <CameraTransitionManager controlsRef={cameraControlsRef} />
           {/* Only developments */}
-          <CameraDebugHelper controlsRef={cameraControlsRef} />
+          {/* <CameraDebugHelper controlsRef={cameraControlsRef} /> */}
+          {/* <Perf position="top-left" minimal={false} deepAnalyze={true}/> */}
           {/* <LevaControllers /> */}
+
+
+          <Preload all/>
         </Canvas>
       </div>
-
-
-      <ConfiguratorSidebar config={config} />
+        <ConfiguratorSidebar config={config} />
+        <ConfiguratorLoadingOverlay />
     </div>
   );
 };

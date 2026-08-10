@@ -12,9 +12,11 @@ const flatNormalMap = new THREE.DataTexture(flatNormalData, 1, 1, THREE.RGBAForm
 flatNormalMap.needsUpdate = true;
 
 export const applyCarbonFiber = (
-  material: THREE.MeshPhysicalMaterial,
+  material: THREE.MeshPhysicalMaterial | undefined,
   textures: CarbonTextures
 ): void => {
+  if (!material) return;
+
   const tweaks = useLevaStore.getState().carbonTwill;
 
   material.color.set(tweaks.color);
@@ -44,12 +46,14 @@ export const applyCarbonFiber = (
 };
 
 export const applyForgedCarbon = (
-  material: THREE.MeshPhysicalMaterial, 
+  material: THREE.MeshPhysicalMaterial | undefined, 
   textures: CarbonTextures
 ): void => {
+  if (!material) return;
+
   const tweaks = useLevaStore.getState().carbonForged;
 
-  material.color.set(tweaks.color);; 
+  material.color.set(tweaks.color);
 
   material.normalMap = textures.normalMap;
   material.normalScale.set(Math.max(0.2, tweaks.normalScale * 1.8), Math.max(0.2, tweaks.normalScale * 1.8)); 

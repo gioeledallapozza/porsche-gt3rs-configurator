@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { invalidate, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useKtx2Disposal } from '@/hooks/useKtx2Disposal';
 import { useConfiguratorStore } from '@/store/configuratorStore';
@@ -13,7 +13,7 @@ import LevaLiveSubscriber from './LevaLiveSubscriber';
 
 //MATERIALS SETUP
 import { configureCabinGlass, configureLightsGlass } from '@/scene/materials/presets/glass';
-import { applyBlackPlastic } from '@/scene/materials/presets/plastic';
+import { applyPlastic } from '@/scene/materials/presets/plastic';
 import { applyCarbonFiber, applyForgedCarbon } from '@/scene/materials/presets/carbonFiber';
 import { 
   configureHeadlightDRL, 
@@ -25,6 +25,7 @@ import { applyMetallicPaint, applySolidPaint, applySpecialPaint } from '@/scene/
 import { applyAlloyFinish } from '@/scene/materials/presets/metals';
 import { applyCaliperPaint } from '@/scene/materials/presets/caliper';
 import { applyRubberFinish } from '@/scene/materials/presets/rubber';
+import { applyLeather } from '@/scene/materials/presets/leather';
 
 const MemoizedGt3rsModel = React.memo(Gt3rsModel);
 
@@ -32,66 +33,93 @@ interface Gt3rsControllerProps {
   modelPath: string;
 }
 
-/* eslint-disable react-hooks/immutability */
 export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
   //Assets loading
-  const { materials, nodes } = useGLTF(modelPath);
-  const { scene, gl } = useThree();
+  const { materials, nodes } = useGLTF(modelPath, '/draco/');
+  const { camera, scene, gl } = useThree();
   const groupRefs = useRef<Record<string, THREE.Object3D>>({}); //Nodes
+  const setModelReady = useConfiguratorStore((state) => state.setModelReady);
   
-  //To define which carbon texture to load
-  const carbonNormal = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2');
-  const carbonRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2');
-  const forgedNormal = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_normal_1k.ktx2');
-  const forgedRoughness = useKtx2Disposal('/textures/materials/carbon/carbon_forged_v1_roughness_1k.ktx2');
-  //const flakeNormal = useKtx2Disposal('/textures/materials/flakes/flakes_v5_normal_2k.ktx2');
+  //Load textures
+  const {
+  carbonNormal, carbonRoughness,
+  forgedNormal, forgedRoughness,
+  aluminumNormal, aluminumRoughness,
+  leatherNormal, leatherArm,
+  carpetAo, 
+  // tubAo, metalAccentAo,
+  } = useKtx2Disposal(gt3rsConfig.texturePack);
+  
 
-  // Search correct nodes
-  useLayoutEffect(() => {
+ // Apply shadows only to certains nodes based on custom blender properties
+ // Assign reference to certains nodes to enable animations
+ useLayoutEffect(() => {
   if (!nodes) return;
+
+  // Setup Animation Nodes
   ['Node_Door_L', 'Node_Door_R', 'Node_Hood', 'Wheel_Node_FL', 'Wheel_Node_FR'].forEach(name => {
-    scene.traverse((obj) => {
-      if (obj.name === name) groupRefs.current[name] = obj;
-    });
+    const node = scene.getObjectByName(name);
+    if (node) groupRefs.current[name] = node;
   });
+
+  // Recursive function: searches for the custom property in the node. If it is not found, it checks the parent.
+  // NOTE: maybe assign manually to each mesh the properties instead of the group for efficiency
+  // const getInheritedShadow = (gltfNode: THREE.Object3D, property: 'castShadow' | 'receiveShadow'): boolean => {
+  //   if (!gltfNode) return false;
+    
+  //   // If Blender has saved the property (1 or true)
+  //   if (gltfNode.userData[property] !== undefined) {
+  //     return gltfNode.userData[property] === 1 || gltfNode.userData[property] === true;
+  //   }
+    
+  //   // If it's not there, check the parent.
+  //   if (gltfNode.parent) {
+  //     return getInheritedShadow(gltfNode.parent, property);
+  //   }
+    
+  //   return false;
+  // };
+
+  // By default gltfjsx groups doesn't support custom properties, this is why we get the original node
+  // scene.traverse((r3fNode) => {
+  //   // Only meshes
+  //   if (!(r3fNode instanceof THREE.Mesh)) return;
+
+  //   // // Retrieve the original GLTF object using the name.
+  //   // const gltfNode = nodes[r3fNode.name];
+  //   // if (!gltfNode) return;
+
+  //   // // Calculates inheritance in real time (O(D), where D is the depth of the tree).
+  //   // const shouldCast = getInheritedShadow(gltfNode, 'castShadow');
+  //   // const shouldReceive = getInheritedShadow(gltfNode, 'receiveShadow');
+
+  //   // // Apply only in case of discrepancy to save on WebGL recalculations
+  //   // if (r3fNode.castShadow !== shouldCast) {
+  //   //   r3fNode.castShadow = shouldCast;
+  //   // }
+  //   // if (r3fNode.receiveShadow !== shouldReceive) {
+  //   //   r3fNode.receiveShadow = shouldReceive;
+  //   // }
+
+  //   // Ensure uv2 exists for baked AO / lightmap workflows
+  //   // const geometry = r3fNode.geometry;
+  //   // if (
+  //   //   geometry &&
+  //   //   geometry.attributes &&
+  //   //   !geometry.attributes.uv2 &&
+  //   //   geometry.attributes.uv
+  //   // ) {
+  //   //   geometry.setAttribute('uv2', geometry.attributes.uv);
+  //   // }
+  // });
 }, [nodes, scene]);
-
-  // TEXTURES SETUPS
-  useMemo(() => {
-   // Twill Carbon
-    if (carbonNormal && carbonRoughness) {
-      carbonNormal.wrapS = carbonNormal.wrapT = THREE.RepeatWrapping;
-      carbonRoughness.wrapS = carbonRoughness.wrapT = THREE.RepeatWrapping;
-
-      carbonNormal.minFilter = THREE.LinearMipMapLinearFilter;
-      carbonRoughness.minFilter = THREE.LinearMipMapLinearFilter;
-
-      carbonNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
-      carbonRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
-
-      carbonNormal.colorSpace = THREE.NoColorSpace;
-      carbonRoughness.colorSpace = THREE.NoColorSpace;
-    }
-    // Forged Carbon
-    if (forgedNormal && forgedRoughness) {
-      forgedNormal.wrapS = forgedNormal.wrapT = THREE.RepeatWrapping;
-      forgedRoughness.wrapS = forgedRoughness.wrapT = THREE.RepeatWrapping;
-
-      forgedNormal.minFilter = THREE.LinearMipMapLinearFilter;
-      forgedRoughness.minFilter = THREE.LinearMipMapLinearFilter;
-
-      forgedNormal.anisotropy = gl.capabilities.getMaxAnisotropy();
-      forgedRoughness.anisotropy = gl.capabilities.getMaxAnisotropy();
-      
-      forgedNormal.colorSpace = THREE.NoColorSpace;
-      forgedRoughness.colorSpace = THREE.NoColorSpace;
-    }
-  }, [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl.capabilities]);
 
   // STATIC MATERIAL INITIALIZATION
   const mats = useMemo(() => {
 
-    [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness].forEach(tex => {
+    [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, 
+      aluminumRoughness, leatherNormal, leatherArm, carpetAo].forEach(tex => {
+      if (!tex) return;
       tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
       tex.minFilter = THREE.LinearMipMapLinearFilter;
       tex.anisotropy = gl.capabilities.getMaxAnisotropy();
@@ -104,6 +132,7 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       glassCabin: materials.Material_Glass_Cabin_Static as THREE.MeshPhysicalMaterial,
       glassLights: materials.Material_Glass_Lights_Static as THREE.MeshPhysicalMaterial,
       carbonTrimStatic: materials.Material_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
+      interiorCarbonTrimStatic: materials.Material_Interior_Carbon_Trim_Static as THREE.MeshPhysicalMaterial,
       exteriorLowerAero: materials.Material_Exterior_LowerAero_Dynamic as THREE.MeshPhysicalMaterial,
       exteriorWeissach: materials.Material_Exterior_Weissach_Dynamic as THREE.MeshPhysicalMaterial,
       rimPrimary: materials.Material_Rim_Primary as THREE.MeshPhysicalMaterial,
@@ -117,6 +146,14 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       taillightEmissive: materials.Material_Taillight_Emissive as THREE.MeshStandardMaterial,
       signalEmissive: materials.Material_Signal_Emissive as THREE.MeshStandardMaterial,
       licensePlateLight: materials.Material_LicensePlateLight_Emissive as THREE.MeshStandardMaterial,
+
+      // Interior Dynamics
+      stitching: materials.Material_Interior_Stitching_Dynamic as THREE.MeshPhysicalMaterial,
+      interiorTrim: materials.Material_Interior_Accent_Dynamic as THREE.MeshPhysicalMaterial,
+      leatherPrimary: materials.Material_Leather_Primary as THREE.MeshPhysicalMaterial,
+      leatherSecondary: materials.Material_Leather_Secondary as THREE.MeshPhysicalMaterial,
+      seatbelt: materials.Material_SeatBelt_Dynamic as THREE.MeshPhysicalMaterial,
+      leatherUpper: materials.Material_Upper_Leather_Dynamic as THREE.MeshPhysicalMaterial,
     };
 
     // Glass
@@ -130,9 +167,10 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
     configureSignalEmissive(extractedMaterials.signalEmissive);
     configureLicensePlateLight(extractedMaterials.licensePlateLight);
 
-    // Plastic & rubber
-    applyBlackPlastic(extractedMaterials.exteriorLowerAero)
+    // Static 
+    applyPlastic(extractedMaterials.exteriorLowerAero)
     applyRubberFinish(extractedMaterials.tire);
+    applyLeather(extractedMaterials.leatherUpper, 'rgb(22, 22, 22)', { normalMap: leatherNormal, armMap: leatherArm });
     
     // PURGE BLENDER TEXTURES
     if (extractedMaterials.exteriorWeissach.map) {
@@ -142,6 +180,10 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
 
     // Standard
     applyCarbonFiber(extractedMaterials.carbonTrimStatic, {
+      normalMap: carbonNormal,
+      roughnessMap: carbonRoughness,
+    });
+    applyCarbonFiber(extractedMaterials.interiorCarbonTrimStatic, {
       normalMap: carbonNormal,
       roughnessMap: carbonRoughness,
     });
@@ -177,42 +219,100 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
       }
     }
 
-    // 3. EnvMap (se l'ambiente è già caricato via Suspense)
+    // EnvMap
     if (scene.environment) {
-      Object.values(extractedMaterials).forEach((mat) => {
-        if ('envMap' in mat) mat.envMap = scene.environment;
+      // Update to all materials the envMap
+      // Cache Patching: useGLTF ignores the custom envMap even if is loaded
+      Object.values(materials).forEach((mat) => {
+        if ('envMap' in mat && mat.envMap !== scene.environment) {
+          mat.envMap = scene.environment;
+        }
       });
     }
 
-    return extractedMaterials;
-  }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, gl, scene.environment]);
+    // AMBIENT OCCLUSION MAPS APPLY ONLY ONE TIME
+    // CARPET
+    if (carpetAo) {
+      [
+        materials.Material_Interior_Carpet_Static as THREE.MeshStandardMaterial,
+        materials.Material_Interior_Structure_Static as THREE.MeshStandardMaterial,
+      ].forEach((mat) => {
+        if (!mat) return;
+        mat.aoMap = carpetAo;
+        mat.aoMapIntensity = 1.0;
 
-  // EXPLICIT INJECTION OF ENVMAP (the useMemo load the materials before the envmap is loaded)
-  useEffect(() => {
-    
-    if (!scene.environment) return;
+        if (mat.name.includes('Carpet')) mat.envMapIntensity = 0.0;
 
-    //Iterate through all materials
-    Object.values(mats).forEach((mat) => {
-      // If the material support the envMap and is null update it
-      if ('envMap' in mat && mat.envMap === null) {
-        mat.envMap = scene.environment;
         mat.needsUpdate = true;
-      }
-    });
+      });
+    }
 
-    invalidate();
-  }, [mats, scene.environment]);
+    // NOT USED BECAUSE OF UV MAP BUGGED IN MODEL
+    // TUB
+    // if (tubAo) {
+    //   [
+    //     materials.Material_Interior_Metal_Black_Lucid_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Interior_Plastic_Lucid_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Carbon_Trim_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Warning_Triangle_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Speakers_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Behind_Vents_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Interior_Plastic_Darker_Static as THREE.MeshStandardMaterial,
+    //     materials.Material_Interior_Metallic_Structure_Static as THREE.MeshStandardMaterial,
+    //   ].forEach((mat) => {
+    //     if (!mat) return;
+    //     mat.aoMap = tubAo;
+    //     mat.aoMapIntensity = 1.0;
+    //     mat.needsUpdate = true;
+    //   });
+    // }
 
+    // METAL INTERIOR
+    // if (metalAccentAo) {
+    //   const accentMat = materials.Material_Interior_Metal_Static as THREE.MeshStandardMaterial;
+    //   if (accentMat) {
+    //     accentMat.aoMap = metalAccentAo;
+    //     accentMat.aoMapIntensity = 1.0;
+    //     accentMat.needsUpdate = true;
+    //   }
+    // }
+
+    return extractedMaterials;
+  }, [materials, carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm, carpetAo, gl, scene.environment]);
 
   // Memoize textures to prevent infinite reference changes and battery drain
   const texturePack = useMemo(() => ({
     carbonNormal,
     carbonRoughness,
     forgedNormal,
-    forgedRoughness
-  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness]);
+    forgedRoughness,
+    aluminumNormal,
+    aluminumRoughness,
+    leatherNormal,
+    leatherArm
+  }), [carbonNormal, carbonRoughness, forgedNormal, forgedRoughness, aluminumNormal, aluminumRoughness, leatherNormal, leatherArm]);
 
+  // Determinate when to show the car and hide the loading overlay. 
+  // We need to wait for the model to be fully compiled and ready to render.
+  useEffect(() => {
+    // Give React time to mount the nodes in the DOM and update the loader
+    const timer = setTimeout(() => {
+      
+      // Forces the renderer to synchronously compile all materials in the scene
+      // This will block the main thread for a fraction of a second, but the CSS
+      // loader will mask the stuttering.
+      gl.compile(scene, camera);
+
+      // Wait next frame to be sure everything loaded
+      requestAnimationFrame(() => {
+        setModelReady(true);
+      });
+      
+    }, 50); 
+
+    return () => clearTimeout(timer);
+  }, [gl, scene, camera, setModelReady]); // Stable dependencies
+  
   // Orchestration
   return (
     <>

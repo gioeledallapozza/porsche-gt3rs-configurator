@@ -5,7 +5,10 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), glsl()],
+  plugins: [
+    react(), 
+    glsl()
+  ],
   server: {
     host: true,
     port: 5173,

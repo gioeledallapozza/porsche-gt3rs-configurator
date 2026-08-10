@@ -1,152 +1,145 @@
 import { Html } from '@react-three/drei';
-import { useFrame, invalidate } from '@react-three/fiber';
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useFrame, useThree, invalidate } from '@react-three/fiber';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 
+type HotspotAction = 'toggleDoors' | 'toggleHood' | 'toggleSteering';
+
+const HOTSPOTS_BASE: Array<{ id: string; pos: THREE.Vector3; actionName: HotspotAction }> = [
+  { id: 'door_l', pos: new THREE.Vector3(0.9, 0.6, 0.2), actionName: 'toggleDoors' },
+  { id: 'door_r', pos: new THREE.Vector3(-0.9, 0.6, 0.2), actionName: 'toggleDoors' },
+  { id: 'hood', pos: new THREE.Vector3(0, 0.7, 1.8), actionName: 'toggleHood' },
+  { id: 'wheel_fl', pos: new THREE.Vector3(-0.9, 0.4, 1.2), actionName: 'toggleSteering' },
+  { id: 'wheel_fr', pos: new THREE.Vector3(0.9, 0.4, 1.2), actionName: 'toggleSteering' },
+];
+
+//HOTPOTINS CONST
+const HOTSPOTS = HOTSPOTS_BASE.map((hp) => ({
+  ...hp,
+  // Calculation of the radial normal (outward direction)
+  normal: hp.pos.clone().setY(0).normalize(),
+}));
+
+const VEC_ZERO = new THREE.Vector3();
+
 export default function Gt3rsHotspots() {
-  const { toggleDoors, toggleHood, toggleSteering } = useConfiguratorStore();
+  const { camera } = useThree();
 
-  const [isVisible, setIsVisible] = useState(true);
+  const htmlRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   const lastCamPos = useRef(new THREE.Vector3());
+  const movementTimer = useRef<number>(0);
   const isMoving = useRef(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const proxyRef = useRef<THREE.Mesh>(null!);
+  // Helper for applying styles to DOM nodes in batches
+  const applyToAll = (opacity: number, transform: string, pointerEvents: string) => {
+    htmlRefs.current.forEach((el) => {
+      if (el) {
+        el.style.opacity = opacity.toString();
+        el.style.transform = transform;
+        el.style.pointerEvents = pointerEvents;
+      }
+    });
+  };
+
+  // Initialize camera
+  useEffect(() => {
+    lastCamPos.current.copy(camera.position);
+  }, [camera]);
   
-  // The state that triggers HTML rendering only when the ref is populated.
-  const [isReady, setIsReady] = useState(false);
 
-  // Stable array to avoid infinite Drei re-renders
-  const colliders = useMemo(() => [proxyRef], []);
+  // CORE LOGIC: Frameloop high performance
+  useFrame((state, delta) => {
+    // Read live at every frame, never cached: no re-renders, no stale state
+    const { renderedCameraPreset, isCameraTransitioning } = useConfiguratorStore.getState();
+    const isInterior = renderedCameraPreset === 'interior_view';
+    const isTransitioning = isCameraTransitioning;
 
-  // Callback Ref: triggers exactly when Three.js mounts the mesh.
-  const handleMeshMount = useCallback((node: THREE.Mesh) => {
-    if (node) {
-      proxyRef.current = node; 
-      node.updateMatrixWorld(true); 
-      setIsReady(true); 
-      invalidate(); 
-    }
-  }, []);
-
-  // LOOP TO DETERMINATE IF THE HOTPOINT IS VISIBLE OR NOT
-  useFrame((state) => {
-
-    //If the vector is 0,0,0 initialize the position of the camera correctly
-    if (lastCamPos.current.lengthSq() === 0) {
+    // Conditional selector to ruthlessly disable everything
+    if (isInterior || isTransitioning) {
+      applyToAll(0, 'scale(0)', 'none');
       lastCamPos.current.copy(state.camera.position);
       return;
     }
 
-    const delta = lastCamPos.current.distanceTo(state.camera.position);
+    const distMoved = lastCamPos.current.distanceToSquared(state.camera.position);
 
-    if (delta > 0.005) { 
+    // Movement Management
+    if (distMoved > 0.0001) { // 0.0001 for the squared distance is an excellent tolerance
       if (!isMoving.current) {
         isMoving.current = true;
-        setIsVisible(false);
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        applyToAll(0, 'scale(0)', 'none');
       }
-    } else { 
-      if (isMoving.current) {
+      movementTimer.current = 0;
+    } else if (isMoving.current) {
+      movementTimer.current += delta;
+
+      invalidate(); // Force refresh
+
+      // Reappearance delay(400ms = 0.4s)
+      if (movementTimer.current > 0.4) {
         isMoving.current = false;
-        timeoutRef.current = setTimeout(() => setIsVisible(true), 400);
       }
     }
+
+    // If the camera is stationary, we perform the vector calculations for occlusion
+    if (!isMoving.current) {
+      const camPos = state.camera.position;
+
+      HOTSPOTS.forEach((hotspot, i) => {
+        const el = htmlRefs.current[i];
+        if (!el) return;
+
+        // View vector: from the hotspot position towards the camera
+        const viewVector = VEC_ZERO.subVectors(camPos, hotspot.pos).normalize();
+
+        // Dot product to check if the hotspot is facing us
+        const dot = viewVector.dot(hotspot.normal);
+
+        // Threshold to 0.4
+        if (dot > 0.4) {
+          el.style.opacity = '1';
+          el.style.transform = 'scale(1)';
+          el.style.pointerEvents = 'auto';
+        } else {
+          el.style.opacity = '0';
+          el.style.transform = 'scale(0)';
+          el.style.pointerEvents = 'none';
+        }
+      });
+    }
+
     lastCamPos.current.copy(state.camera.position);
   });
-  
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
 
-  // Style of the hotpoint
-  const getHotspotStyle = (visible: boolean): React.CSSProperties => ({
-    width: '24px',
-    height: '24px',
-    borderRadius: '50%',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    border: '2px solid rgba(255, 255, 255, 0.8)',
-    cursor: visible ? 'pointer' : 'default',
-    backdropFilter: 'blur(4px)',
-    pointerEvents: visible ? 'auto' : 'none',
-    transform: visible ? 'scale(1)' : 'scale(0)',
-    opacity: visible ? 1 : 0,
+  // CSS STYLE
+  const getInitialStyle = (): React.CSSProperties => ({
+    width: '24px', height: '24px', borderRadius: '50%',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)', border: '2px solid rgba(255, 255, 255, 0.8)',
+    cursor: 'pointer', backdropFilter: 'blur(4px)',
+    opacity: 0, transform: 'scale(0)', pointerEvents: 'none',
     transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, background-color 0.2s',
   });
 
-  //Handle click
-  const handleClick = (e: React.MouseEvent, action: () => void) => {
-    e.stopPropagation(); 
-    action();
+  const handleClick = (e: React.MouseEvent, actionName: HotspotAction) => {
+    e.stopPropagation();
+    useConfiguratorStore.getState()[actionName]();
   };
 
   return (
     <group>
-      {/* Use the callback to intercept the mesh on the fly. */}
-      <mesh ref={handleMeshMount} position={[0, 0.7, 0]}>
-        <boxGeometry args={[1.7, 1.0, 3.4]} />
-        <meshBasicMaterial colorWrite={false} depthWrite={false} wireframe={false} />
-      </mesh>
-      
-      {/* Render the HTML ONLY when we are sure the Ref is ready. */}
-      {isReady && (
-        <>
-          {/* STRICT FIX: Pass 'undefined' to occlude when moving to completely kill CPU raycasting overhead */}
-
-          {/* LEFT DOOR */}
-          <Html position={[0.9, 0.6, 0.2]} center occlude={isVisible ? colliders : undefined}>
-            <div 
-              style={getHotspotStyle(isVisible)} 
-              onClick={(e) => handleClick(e, toggleDoors)}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-            />
-          </Html>
-
-          {/* RIGHT DOOR */}
-          <Html position={[-0.9, 0.6, 0.2]} center occlude={isVisible ? colliders : undefined}>
-            <div 
-              style={getHotspotStyle(isVisible)} 
-              onClick={(e) => handleClick(e, toggleDoors)}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-            />
-          </Html>
-          
-          {/* HOOD */}
-          <Html position={[0, 0.7, 1.8]} center occlude={isVisible ? colliders : undefined}>
-            <div 
-              style={getHotspotStyle(isVisible)} 
-              onClick={(e) => handleClick(e, toggleHood)}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-            />
-          </Html>
-
-          {/* WHEEL Left-Front */}
-          <Html position={[-0.9, 0.4, 1.2]} center occlude={isVisible ? colliders : undefined}>
-            <div 
-              style={getHotspotStyle(isVisible)} 
-              onClick={(e) => handleClick(e, toggleSteering)}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-            />
-          </Html>
-
-          {/* WHEEL Right-Front */}
-          <Html position={[0.9, 0.4, 1.2]} center occlude={isVisible ? colliders : undefined}>
-            <div 
-              style={getHotspotStyle(isVisible)} 
-              onClick={(e) => handleClick(e, toggleSteering)}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-            />
-          </Html>
-        </>
-      )}
+      {HOTSPOTS.map((hotspot, i) => (
+        <Html key={hotspot.id} position={hotspot.pos} center zIndexRange={[100, 0]}>
+          <div
+            ref={(el) => { htmlRefs.current[i] = el; }}
+            style={getInitialStyle()}
+            onClick={(e) => handleClick(e, hotspot.actionName)}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.8)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
+          />
+        </Html>
+      ))}
     </group>
   );
 }

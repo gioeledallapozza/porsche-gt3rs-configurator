@@ -1,10 +1,10 @@
 import React from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import ColorPicker from '../ui/ColorPicker';
-import type { WheelOption } from '@/config/types';
+import type { ColorOption } from '@/config/types';
 
 interface WheelColorSectionProps {
-  options: WheelOption[];
+  options: ColorOption[];
 }
 
 const WheelColorSection: React.FC<WheelColorSectionProps> = ({ options }) => {

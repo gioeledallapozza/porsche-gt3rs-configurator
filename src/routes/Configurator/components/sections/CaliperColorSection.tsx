@@ -1,10 +1,10 @@
 import React from 'react';
 import { useConfiguratorStore } from '@/store/configuratorStore';
 import ColorPicker from '../ui/ColorPicker';
-import type { CaliperOption } from '@/config/types';
+import type { ColorOption } from '@/config/types';
 
 interface CaliperColorSectionProps {
-  options: CaliperOption[];
+  options: ColorOption[];
 }
 
 const CaliperColorSection: React.FC<CaliperColorSectionProps> = ({ options }) => {

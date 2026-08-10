@@ -16,6 +16,7 @@ export const TaillightControls: React.FC = () => {
           roughness: { value: state.taillight.roughness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('taillight', { roughness: value as number }) },
           metalness: { value: state.taillight.metalness, min: 0, max: 1, step: 0.01, onEditEnd: (value) => setTweaks('taillight', { metalness: value as number }) },
           ior: { value: state.taillight.ior, min: 1, max: 3, step: 0.01, onEditEnd: (value) => setTweaks('taillight', { ior: value as number }) },
+          envMapIntensity: { value: state.taillight.envMapIntensity, min: 0, max: 5, step: 0.01, onEditEnd: (value) => setTweaks('taillight', { envMapIntensity: value as number }) }
         }, { collapsed: true }),
       }, { collapsed: true }),
     }, { collapsed: true }),
