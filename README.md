@@ -7,9 +7,9 @@ Built from scratch focusing on high performance, photorealistic materials, and s
 
 
 ## ✨ Core Features
-*   **High-Performance Rendering:** Optimized for steady 60 FPS, maintaining visual fidelity without frying mobile GPUs.
+*   **High-Performance Rendering:** Optimized, maintaining visual fidelity without frying mobile GPUs.
 *   **Seamless Camera Transitions:** Custom transition manager masking viewpoint changes (Exterior <-> Interior) with synchronized fade overlays.
-*   **Dynamic Studio Lighting:** Discoupled lighting systems for exterior and interior. Lights are pre-loaded and dynamically scaled to eliminate shader compilation stutter.
+*   **Real-Time Material & Color Changes:** Instantaneous updates across all paint finishes, wheel options, and interior trims with zero delay or lag (unlike traditional web configurators).
 *   **Smart Hotspots & Auto-Focus:** UI interactions (e.g., changing seatbelt colors) automatically trigger camera animations to the optimal viewing angle.
 
 ## 🛠️ Tech Stack
@@ -22,7 +22,7 @@ Built from scratch focusing on high performance, photorealistic materials, and s
 
 ## 📦 Asset Pipeline & Optimization
 
-To achieve fast loading times (under 7s on mid-range mobile devices), this project relies on a strict asset optimization pipeline.
+To achieve fast loading times, this project relies on a strict asset optimization pipeline.
 
 ### 1. 3D Models (`gltfjsx`)
 The base model is processed via `gltfjsx` to generate declarative React components, allowing imperative control over materials, geometry, and shadow properties directly in the JSX.
