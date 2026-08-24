@@ -25,7 +25,8 @@ export default function CameraPresetsUI() {
                   <img
                     src={preset.thumbnail}
                     alt={preset.name}
-                    loading="lazy"
+                    loading={isActive ? "eager" : "lazy"}
+                    fetchPriority={isActive ? "high" : "auto"}
                     className={styles.thumbnailImg}
                   />
                 ) : (
