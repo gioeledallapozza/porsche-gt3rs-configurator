@@ -2,7 +2,7 @@ import type { VehicleConfig } from '../types';
 
 export const gt3rsConfig: VehicleConfig = {
   id: 'gt3rs',
-  modelPath: '/models/gt3rs/scene.glb',
+  modelPath: '/models/gt3rs/scene-opt.glb',
   texturePack: {
     carbonNormal: '/textures/materials/carbon/carbon_twill_v1_normal_1k.ktx2',
     carbonRoughness: '/textures/materials/carbon/carbon_twill_v1_roughness_1k.ktx2',

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import * as THREE from 'three'
 // import { Perf } from 'r3f-perf';
 import { Canvas, invalidate } from '@react-three/fiber';
-import { CameraControls, Html, Preload } from '@react-three/drei';
+import { CameraControls, Preload } from '@react-three/drei';
 // import { EffectComposer } from '@react-three/postprocessing';
 // import { SSAO } from '@react-three/postprocessing';
 
@@ -107,11 +107,11 @@ const Configurator: React.FC = () => {
         >
 
           {/* SEPARATED SUSPENSE, So when GLTF loads the materials of the vehicle model the envMap EXISTS */}
-          <Suspense fallback={
-            <Html center>
-              {/* NOT USED THERE IS THE LOADER OVERLAY IN THE END BUT WE KEEP IT TO BE SAFE */}
-              <div className={styles.vehicleLoader}>Loading Lighting...</div>
-            </Html>
+          <Suspense fallback={ null
+            // <Html center>
+            //   {/* NOT USED THERE IS THE LOADER OVERLAY IN THE END BUT WE KEEP IT TO BE SAFE */}
+            //   {/* <div className={styles.vehicleLoader}>Loading Lighting...</div> */}
+            // </Html>
           }>
             <VirtualStudio />  {/* EnvMap */}
              {/* Dynamic shadows */}

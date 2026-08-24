@@ -294,24 +294,59 @@ export default function Gt3rsController({ modelPath }: Gt3rsControllerProps) {
 
   // Determinate when to show the car and hide the loading overlay. 
   // We need to wait for the model to be fully compiled and ready to render.
+  // useEffect(() => {
+  //   // Give React time to mount the nodes in the DOM and update the loader
+  //   const timer = setTimeout(() => {
+      
+  //     // Forces the renderer to synchronously compile all materials in the scene
+  //     // This will block the main thread for a fraction of a second, but the CSS
+  //     // loader will mask the stuttering.
+  //     gl.compile(scene, camera);
+
+  //     // Wait next frame to be sure everything loaded
+  //     requestAnimationFrame(() => {
+  //       setModelReady(true);
+  //     });
+      
+  //   }, 50); 
+
+  //   return () => clearTimeout(timer);
+  // }, [gl, scene, camera, setModelReady]); // Stable dependencies
+
+  // Determinate when to show the car and hide the loading overlay. 
+  // We need to wait for the model to be fully compiled and ready to render. 
+  // NEW VERSION WITH ASYNC COMPILATION USING WEBGL2
   useEffect(() => {
-    // Give React time to mount the nodes in the DOM and update the loader
-    const timer = setTimeout(() => {
-      
-      // Forces the renderer to synchronously compile all materials in the scene
-      // This will block the main thread for a fraction of a second, but the CSS
-      // loader will mask the stuttering.
-      gl.compile(scene, camera);
+    let isMounted = true;
 
-      // Wait next frame to be sure everything loaded
-      requestAnimationFrame(() => {
+    const prepareModel = async () => {
+      // We wait 50ms to allow React to render and animate the loader UI.
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      try {
+        // Leverage WebGL2 to compile shaders without freezing the DOM.
+        if (gl.compileAsync) {
+          await gl.compileAsync(scene, camera);
+        } else {
+          // Legacy fallback if the extension is not supported by the browser
+          gl.compile(scene, camera);
+        }
+      } catch (error) {
+        console.warn("Error during asynchronous shader compilation:", error);
+      }
+
+      // Reveal the car only when it is guaranteed that there will be no photos taken.
+      if (isMounted) {
         setModelReady(true);
-      });
-      
-    }, 50); 
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, [gl, scene, camera, setModelReady]); // Stable dependencies
+    prepareModel();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [gl, scene, camera, setModelReady]);
   
   // Orchestration
   return (
